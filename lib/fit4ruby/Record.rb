@@ -1,19 +1,17 @@
+#!/usr/bin/env ruby -w
+# encoding: UTF-8
+#
+# = Record.rb -- Fit4Ruby - FIT file processing library for Ruby
+#
+# Copyright (c) 2014 by Chris Schlaeger <cs@taskjuggler.org>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of version 2 of the GNU General Public License as
+# published by the Free Software Foundation.
+#
+
 module Fit4Ruby
 
-  # Message: record
-  #   timestamp: 2014-05-29 19:18:39
-  #   position_lat: 52.51584554091096
-  #   position_long: 13.372714882716537
-  #   distance: 5392.59 m
-  #   altitude: 17.799999999999955 m
-  #   speed: 3.331 m/s
-  #   vertical_oscillation: 91.7 mm
-  #   stance_time_percent: 30.0 percent
-  #   stance_time: 209.0 ms
-  #   heart_rate: 191 bpm
-  #   cadence: 85 rpm
-  #   activity_type: running
-  #   fractional_cadence: 0.5
   class Record
 
     attr_reader :timestamp, :latitude, :longitude, :altitude, :distance,
