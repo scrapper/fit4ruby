@@ -1,0 +1,65 @@
+require 'bindata'
+require 'fit4ruby/Log'
+require 'fit4ruby/GlobalFitMessage'
+
+module Fit4Ruby
+
+  class FitMessageRecord
+
+    attr_reader :global_message_number, :name, :message_record
+
+    def initialize(definition)
+      @definition = definition
+      @global_message_number = definition.global_message_number.snapshot
+
+      if (@gfm = GlobalFitMessages[@global_message_number])
+        @name = @gfm.name
+      else
+        @name = "message#{@global_message_number}"
+        Log.warn { "Unknown global message number #{@global_message_number}" }
+      end
+      @message_record = produce(definition)
+    end
+
+    def read(io, activity, filter = nil, fields_dump = nil)
+      @message_record.read(io)
+
+      obj = case @name
+            when 'activity'
+              activity
+            when 'session'
+              activity.new_session
+            when 'record'
+              activity.new_record
+            else
+              nil
+            end
+
+      @definition.fields.each do |field|
+        value = @message_record[field.name].snapshot
+        obj.set(field.name, field.to_machine(value)) if obj
+        if filter && fields_dump &&
+           (filter.field_names.nil? ||
+            filter.field_names.include?(field.name)) &&
+           (value != field.undefined_value || !filter.ignore_undef)
+          fields_dump[field] = value
+        end
+      end
+    end
+
+    private
+
+    def produce(definition)
+      fields = []
+      definition.fields.each do |field|
+        fields << [ field.type, field.name ]
+      end
+
+      BinData::Struct.new(:endian => definition.endian, :fields => fields)
+    end
+
+
+  end
+
+end
+
