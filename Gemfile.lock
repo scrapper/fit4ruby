@@ -1,0 +1,21 @@
+PATH
+  remote: .
+  specs:
+    fit4ruby (0.0.1)
+      bindata (>= 2.0.0)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    bindata (2.1.0)
+    rake (0.9.6)
+    yard (0.8.7.4)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  bundler (>= 1.6.4)
+  fit4ruby!
+  rake
+  yard
