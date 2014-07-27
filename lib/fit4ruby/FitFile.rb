@@ -32,7 +32,7 @@ module Fit4Ruby
       definitions = {}
       begin
         io = ::File.open(file_name, 'rb')
-      rescue RuntimeError => e
+      rescue StandardError => e
         Log.critical("Cannot open FIT file '#{file_name}'", e)
       end
       header = FitHeader.read(io)
