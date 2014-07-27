@@ -14,8 +14,8 @@ require 'fit4ruby/FitFile'
 
 module Fit4Ruby
 
-  def self.read(file, dump = false)
-    FitFile.new.read(file, dump)
+  def self.read(file, filter = nil)
+    FitFile.new.read(file, filter)
   end
 
   def self.write(file, activity)
