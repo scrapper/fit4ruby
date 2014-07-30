@@ -43,7 +43,7 @@ module Fit4Ruby
     field 17, 'uint8', 'max_heart_rate', :unit => 'bpm'
     field 18, 'uint8', 'avg_running_cadence', :unit => 'strides/min'
     field 19, 'uint8', 'max_running_cadence', :unit => 'strides/min'
-    field 22, 'uint16', 'total_ascent', :unit => 'm'
+    field 22, 'uint16', 'total_ascend', :unit => 'm'
     field 23, 'uint16', 'total_descent', :unit => 'm'
     field 24, 'uint8', 'total_training_effect', :scale => 10
     field 25, 'uint16', 'first_lap_index'

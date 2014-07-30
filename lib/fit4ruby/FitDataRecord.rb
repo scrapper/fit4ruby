@@ -19,11 +19,32 @@ module Fit4Ruby
 
     def initialize(record_id)
       @message = GlobalFitMessages.find_by_name(record_id)
-      @renames = {}
+
+      # Create instance variables that correspond to every field of the
+      # corresponding FIT # data record.
+      @message.fields.each do |field_number, field|
+        create_instance_variable(field.name)
+      end
     end
 
-    def rename(fit_var, var)
-      @renames[fit_var] = var
+    def set(name, value)
+      ivar_name = '@' + name
+      unless instance_variable_defined?(ivar_name)
+        Log.warn("Undeclared variable #{ivar_name}")
+      end
+      instance_variable_set('@' + name, value)
+    end
+
+    def ==(fdr)
+      @message.fields.each do |field_number, field|
+        ivar_name = '@' + field.name
+        unless instance_variable_get(ivar_name) ==
+               fdr.instance_variable_get(ivar_name)
+          return false
+        end
+      end
+
+      true
     end
 
     def write(io, id_mapper)
@@ -57,7 +78,7 @@ module Fit4Ruby
       # Fill the BinData::Struct object with the values from the corresponding
       # instance variables.
       @message.fields.each do |field_number, field|
-        iv = "@#{@renames[field.name] || field.name}"
+        iv = "@#{field.name}"
         if instance_variable_defined?(iv) &&
            !(iv_value = instance_variable_get(iv)).nil?
           value = field.native_to_fit(iv_value)
@@ -71,6 +92,16 @@ module Fit4Ruby
 
       # Write the data record to the file.
       bd.write(io)
+    end
+
+    private
+
+    def create_instance_variable(name)
+      # Create a new instance variable for 'name'. We initialize it with a
+      # provided default value or nil.
+      instance_variable_set('@' + name, nil)
+      # And create an accessor method for it as well.
+      self.class.__send__(:attr_accessor, name)
     end
 
   end

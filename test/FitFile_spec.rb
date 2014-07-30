@@ -18,12 +18,11 @@ describe Fit4Ruby do
     fit_file = 'test.fit'
 
     a = Fit4Ruby::Activity.new
-    a.start_time = Time.parse('2014-07-14-21:00')
-    a.duration = 30 * 60
+    a.timestamp = Time.parse('2014-07-14-21:00')
+    a.total_timer_time = 30 * 60
     Fit4Ruby.write(fit_file, a)
     b = Fit4Ruby.read(fit_file)
-    a.start_time.should == b.start_time
-    a.duration.should == b.duration
+    a.should == b
     File.delete(fit_file)
   end
 

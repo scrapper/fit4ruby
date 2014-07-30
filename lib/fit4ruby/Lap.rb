@@ -10,32 +10,14 @@
 # published by the Free Software Foundation.
 #
 
+require 'fit4ruby/FitDataRecord'
+
 module Fit4Ruby
 
-  class Lap
+  class Lap < FitDataRecord
 
-    def set(field, value)
-      case field
-      when 'start_time'
-        @start_time = value
-      when 'total_timer_time'
-        @duration = value
-      when 'avg_speed'
-        @avg_speed = value
-      when 'avg_heart_rate'
-        @avg_heart_rate = value
-      when 'max_heart_rate'
-        @max_heart_rate = value
-      when 'avg_vertical_oscillation'
-        @avg_vertical_oscillation = value
-      when 'avg_stance_time'
-        @avg_stance_time = value
-      when 'avg_running_cadence'
-        @avg_running_cadence = 2 * value
-      when 'avg_fraction_cadence'
-        @avg_running_cadence += 2 * value
-      else
-      end
+    def initialize
+      super('lap')
     end
 
   end

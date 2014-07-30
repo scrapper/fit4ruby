@@ -41,6 +41,8 @@ module Fit4Ruby
               activity
             when 'session'
               activity.new_session
+            when 'lap'
+              activity.new_lap
             when 'record'
               activity.new_record
             else
