@@ -19,6 +19,8 @@ module Fit4Ruby
 
     include Converters
 
+    attr_reader :laps
+
     def initialize(laps, first_lap_index)
       super('session')
       @laps = laps
