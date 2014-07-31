@@ -10,40 +10,14 @@
 # published by the Free Software Foundation.
 #
 
+require 'fit4ruby/FitDataRecord'
+
 module Fit4Ruby
 
-  class Record
-
-    attr_reader :timestamp, :latitude, :longitude, :altitude, :distance,
-                :speed, :vertical_oscillation, :cadence, :stance_time
+  class Record < FitDataRecord
 
     def initialize
-    end
-
-    def set(field, value)
-      case field
-      when 'timestamp'
-        @timestamp = value
-      when 'position_lat'
-        @latitude = value
-      when 'position_long'
-        @longitude = value
-      when 'altitude'
-        @altitude = value
-      when 'distance'
-        @distance = value
-      when 'speed'
-        @speed = value
-      when 'vertical_oscillation'
-        @vertical_oscillation = value
-      when 'cadence'
-        @cadence = 2 * value
-      when 'fractional_cadence'
-        @cadence += 2 * value if @cadence
-      when 'stance_time'
-        @stance_time = value
-      else
-      end
+      super('record')
     end
 
     def pace

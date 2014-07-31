@@ -19,12 +19,20 @@ module Fit4Ruby
 
     include Converters
 
-    def initialize
+    def initialize(laps, first_lap_index)
       super('session')
-      @laps = []
+      @laps = laps
+      @first_lap_index = first_lap_index
+      @num_laps = @laps.length
     end
 
     def check(activity)
+      unless @first_lap_index
+        Log.error 'first_lap_index is not set'
+      end
+      unless @num_laps
+        Log.error 'num_laps is not set'
+      end
       @first_lap_index.upto(@first_lap_index - @num_laps) do |i|
         if (lap = activity.lap[i])
           @laps << lap
@@ -33,6 +41,13 @@ module Fit4Ruby
                     "the FIT file."
         end
       end
+    end
+
+    def write(io, id_mapper)
+      @laps.each do |s|
+        s.write(io, id_mapper)
+      end
+      super
     end
 
     def avg_stride_length

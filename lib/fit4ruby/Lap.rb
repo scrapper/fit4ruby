@@ -16,8 +16,16 @@ module Fit4Ruby
 
   class Lap < FitDataRecord
 
-    def initialize
+    def initialize(records)
       super('lap')
+      @records = records
+    end
+
+    def write(io, id_mapper)
+      @records.each do |s|
+        s.write(io, id_mapper)
+      end
+      super
     end
 
   end

@@ -23,9 +23,12 @@ module Fit4Ruby
 
     def initialize
       super('activity')
+      @num_sessions = 0
+
       @sessions = []
       @laps = []
       @records = []
+      @lap_counter = 1
     end
 
     def check
@@ -43,19 +46,35 @@ module Fit4Ruby
       @sessions.each { |s| s.check(self) }
     end
 
+    def write(io, id_mapper)
+      @sessions.each do |s|
+        s.write(io, id_mapper)
+      end
+      super
+    end
+
     def new_session
-      @sessions << (session = Session.new)
+      @num_sessions += 1
+      @sessions << (session = Session.new(@laps, @lap_counter))
+      @laps = []
       session
     end
 
     def new_lap
-      @laps << (lap = Lap.new)
+      @lap_counter += 1
+      @laps << (lap = Lap.new(@records))
+      @records = []
       lap
     end
 
     def new_record
       @records << (record = Record.new)
       record
+    end
+
+    def ==(a)
+      super(a) && @sessions == a.sessions &&
+        @laps == a.laps && @records == a.records
     end
 
   end
