@@ -39,12 +39,22 @@ module Fit4Ruby
       obj = case @name
             when 'activity'
               activity
+            when 'device_info'
+              activity.new_device_info
+            when 'event'
+              activity.new_event
+            when 'file_creator'
+              activity.new_file_creator
             when 'session'
               activity.new_session
             when 'lap'
               activity.new_lap
             when 'record'
               activity.new_record
+            when 'user_profile'
+              activity.new_user_profile
+            when 'personal_record'
+              activity.new_personal_record
             else
               nil
             end

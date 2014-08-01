@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby -w
 # encoding: UTF-8
 #
-# = FitFileId.rb -- Fit4Ruby - FIT file processing library for Ruby
+# = FileCreator.rb -- Fit4Ruby - FIT file processing library for Ruby
 #
 # Copyright (c) 2014 by Chris Schlaeger <cs@taskjuggler.org>
 #
@@ -10,18 +10,16 @@
 # published by the Free Software Foundation.
 #
 
+require 'fit4ruby/version'
 require 'fit4ruby/FitDataRecord'
 
 module Fit4Ruby
 
-  class FitFileId < FitDataRecord
+  class FileCreator < FitDataRecord
 
     def initialize
-      super('file_id')
-      @serial_number = 1234567890
-      @time_created = Time.now
-      @manufacturer = 'development'
-      @type = 'activity'
+      super('file_creator')
+      @software_version = VERSION.split('.').join('').to_i
     end
 
   end

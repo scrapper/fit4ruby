@@ -10,24 +10,33 @@
 # published by the Free Software Foundation.
 #
 
+require 'fit4ruby/FileCreator'
+require 'fit4ruby/DeviceInfo'
 require 'fit4ruby/Session'
 require 'fit4ruby/Lap'
 require 'fit4ruby/Record'
+require 'fit4ruby/Event'
+require 'fit4ruby/UserProfile'
 require 'fit4ruby/FitDataRecord'
 
 module Fit4Ruby
 
   class Activity < FitDataRecord
 
-    attr_accessor :sessions, :laps, :records
+    attr_accessor :device_info, :sessions, :laps, :records, :events
 
     def initialize
       super('activity')
       @num_sessions = 0
 
+      @file_creators = []
+      @device_infos = []
+      @user_profiles = []
       @sessions = []
       @laps = []
       @records = []
+      @events = []
+      @personal_records = []
       @lap_counter = 1
     end
 
@@ -47,10 +56,21 @@ module Fit4Ruby
     end
 
     def write(io, id_mapper)
-      @sessions.each do |s|
+      (@file_creators + @device_infos + @user_profiles +
+       @sessions + @events + @personal_records).each do |s|
         s.write(io, id_mapper)
       end
       super
+    end
+
+    def new_file_creator
+      @file_creators << (file_creator = FileCreator.new)
+      file_creator
+    end
+
+    def new_device_info
+      @device_infos << (device_info = DeviceInfo.new)
+      device_info
     end
 
     def new_session
@@ -72,9 +92,24 @@ module Fit4Ruby
       record
     end
 
+    def new_event
+      @events << (event = Event.new)
+      event
+    end
+
+    def new_user_profile
+      @user_profiles << (user_profile = UserProfile.new)
+      user_profile
+    end
+
+    def new_personal_record
+      @personal_records << (personal_record = PersonalRecords.new)
+      personal_record
+    end
+
     def ==(a)
       super(a) && @sessions == a.sessions &&
-        @laps == a.laps && @records == a.records
+        @events == a.events
     end
 
   end

@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby -w
 # encoding: UTF-8
 #
-# = FitFileId.rb -- Fit4Ruby - FIT file processing library for Ruby
+# = Event.rb -- Fit4Ruby - FIT file processing library for Ruby
 #
 # Copyright (c) 2014 by Chris Schlaeger <cs@taskjuggler.org>
 #
@@ -14,14 +14,10 @@ require 'fit4ruby/FitDataRecord'
 
 module Fit4Ruby
 
-  class FitFileId < FitDataRecord
+  class Event < FitDataRecord
 
     def initialize
-      super('file_id')
-      @serial_number = 1234567890
-      @time_created = Time.now
-      @manufacturer = 'development'
-      @type = 'activity'
+      super('event')
     end
 
   end
