@@ -18,12 +18,14 @@ require 'fit4ruby/Record'
 require 'fit4ruby/Event'
 require 'fit4ruby/UserProfile'
 require 'fit4ruby/FitDataRecord'
+require 'fit4ruby/PersonalRecords'
 
 module Fit4Ruby
 
   class Activity < FitDataRecord
 
-    attr_accessor :device_info, :sessions, :laps, :records, :events
+    attr_accessor :file_creators, :device_info, :user_profiles,
+                  :sessions, :laps, :records, :events, :personal_records
 
     def initialize
       super('activity')
@@ -53,6 +55,22 @@ module Fit4Ruby
                   "FIT file."
       end
       @sessions.each { |s| s.check(self) }
+    end
+
+    def total_distance
+      d = 0.0
+      @sessions.each { |s| d += s.total_distance }
+      d
+    end
+
+    def aggregate
+      @sessions.each { |s| s.aggregate }
+    end
+
+    def avg_speed
+      speed = 0.0
+      @sessions.each { |s| speed += s.avg_speed }
+      speed / @sessions.length
     end
 
     def write(io, id_mapper)
@@ -102,7 +120,7 @@ module Fit4Ruby
       user_profile
     end
 
-    def new_personal_record
+    def new_personal_records
       @personal_records << (personal_record = PersonalRecords.new)
       personal_record
     end

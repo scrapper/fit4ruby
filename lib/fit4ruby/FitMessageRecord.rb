@@ -53,8 +53,8 @@ module Fit4Ruby
               activity.new_record
             when 'user_profile'
               activity.new_user_profile
-            when 'personal_record'
-              activity.new_personal_record
+            when 'personal_records'
+              activity.new_personal_records
             else
               nil
             end

@@ -43,6 +43,30 @@ module Fit4Ruby
                     "the FIT file."
         end
       end
+      @laps.each { |l| l.check }
+    end
+
+    def aggregate
+      @total_distance = 0
+      @total_elapsed_time = 0
+      @laps.each do |lap|
+        lap.aggregate
+        @total_distance += lap.total_distance if lap.total_distance
+        @total_elapsed_time += lap.total_elapsed_time if lap.total_elapsed_time
+      end
+      if (l = @laps[0])
+        @start_time = l.start_time
+        @start_position_lat = l.start_position_lat
+        @start_position_long = l.start_position_long
+      end
+      if (l = @laps[-1])
+        @end_position_lat = l.end_position_lat
+        @end_position_long = l.end_position_long
+      end
+
+      if @total_distance && @total_elapsed_time
+        @avg_speed = @total_distance / @total_elapsed_time
+      end
     end
 
     def write(io, id_mapper)
