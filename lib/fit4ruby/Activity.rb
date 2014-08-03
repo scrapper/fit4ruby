@@ -10,6 +10,7 @@
 # published by the Free Software Foundation.
 #
 
+require 'fit4ruby/FileId'
 require 'fit4ruby/FileCreator'
 require 'fit4ruby/DeviceInfo'
 require 'fit4ruby/Session'
@@ -24,14 +25,16 @@ module Fit4Ruby
 
   class Activity < FitDataRecord
 
-    attr_accessor :file_creators, :device_info, :user_profiles,
+    attr_accessor :file_id, :file_creator, :device_info, :user_profiles,
                   :sessions, :laps, :records, :events, :personal_records
 
     def initialize
       super('activity')
       @num_sessions = 0
 
-      @file_creators = []
+      @file_id = FileId.new
+      @file_creator = FileCreator.new
+
       @device_infos = []
       @user_profiles = []
       @sessions = []
@@ -74,16 +77,14 @@ module Fit4Ruby
     end
 
     def write(io, id_mapper)
-      (@file_creators + @device_infos + @user_profiles +
+      @file_id.write(io, id_mapper)
+      @file_creator.write(io, id_mapper)
+
+      (@device_infos + @user_profiles +
        @sessions + @events + @personal_records).each do |s|
         s.write(io, id_mapper)
       end
       super
-    end
-
-    def new_file_creator
-      @file_creators << (file_creator = FileCreator.new)
-      file_creator
     end
 
     def new_device_info

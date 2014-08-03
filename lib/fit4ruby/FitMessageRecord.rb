@@ -44,7 +44,9 @@ module Fit4Ruby
             when 'event'
               activity.new_event
             when 'file_creator'
-              activity.new_file_creator
+              activity.file_creator
+            when 'file_id'
+              activity.file_id
             when 'session'
               activity.new_session
             when 'lap'

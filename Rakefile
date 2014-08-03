@@ -4,6 +4,7 @@ $:.unshift File.join(File.dirname(__FILE__))
 lib = File.expand_path('../lib', __FILE__)
 $:.unshift lib unless $:.include?(lib)
 
+require "rspec/core/rake_task"
 require 'rake/clean'
 
 Dir.glob( 'tasks/*.rake').each do |fn|
@@ -14,6 +15,7 @@ Dir.glob( 'tasks/*.rake').each do |fn|
   end
 end
 
-task :default  => [ :test ]
+task :default  => :spec
+task :test => :spec
 
 desc 'Run all unit and spec tests'

@@ -15,7 +15,6 @@ require 'fit4ruby/FitHeader'
 require 'fit4ruby/FitRecord'
 require 'fit4ruby/FitFilter'
 require 'fit4ruby/FitMessageIdMapper'
-require 'fit4ruby/FitFileId'
 require 'fit4ruby/GlobalFitMessages'
 require 'fit4ruby/GlobalFitDictionaries'
 
@@ -75,7 +74,6 @@ module Fit4Ruby
       # Move the pointer behind the header section.
       io.seek(start_pos)
       id_mapper = FitMessageIdMapper.new
-      FitFileId.new.write(io, id_mapper)
       activity.write(io, id_mapper)
       end_pos = io.pos
 
