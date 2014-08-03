@@ -36,7 +36,7 @@ module Fit4Ruby
 
         if @opts.include?(:dict) &&
            (dict = GlobalFitDictionaries[@opts[:dict]])
-          return [ dict.name(value) || "Undocumented value #{value}", nil ]
+          return dict.name(value) || "Undocumented value #{value}"
         end
 
         case @opts[:type]

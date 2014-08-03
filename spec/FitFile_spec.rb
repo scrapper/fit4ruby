@@ -21,16 +21,16 @@ describe Fit4Ruby do
     a.timestamp = Time.parse('2014-07-14-21:00')
     a.total_timer_time = 30 * 60
     0.upto(30) do |mins|
-      r = a.new_record
+      r = a.new_record('record')
       r.timestamp = a.timestamp + mins * 60
       r.distance = 200.0 * mins
       r.cadence = 75
 
       if mins > 0 && mins % 5 == 0
-        s = a.new_lap
+        s = a.new_record('lap')
       end
     end
-    a.new_session
+    a.new_record('session')
     Fit4Ruby.write(fit_file, a)
     b = Fit4Ruby.read(fit_file)
     b.should == a

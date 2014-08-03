@@ -36,30 +36,7 @@ module Fit4Ruby
     def read(io, activity, filter = nil, fields_dump = nil)
       @message_record.read(io)
 
-      obj = case @name
-            when 'activity'
-              activity
-            when 'device_info'
-              activity.new_device_info
-            when 'event'
-              activity.new_event
-            when 'file_creator'
-              activity.file_creator
-            when 'file_id'
-              activity.file_id
-            when 'session'
-              activity.new_session
-            when 'lap'
-              activity.new_lap
-            when 'record'
-              activity.new_record
-            when 'user_profile'
-              activity.new_user_profile
-            when 'personal_records'
-              activity.new_personal_records
-            else
-              nil
-            end
+      obj = @name == 'activity' ? activity : activity.new_record(@name)
 
       @definition.fields.each do |field|
         value = @message_record[field.name].snapshot

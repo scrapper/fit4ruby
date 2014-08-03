@@ -19,7 +19,8 @@ module Fit4Ruby
     def initialize
       super('file_id')
       @serial_number = 1234567890
-      @time_created = Time.now
+      # Ignore the sub-seconds to avoid problems when comparing records.
+      @time_created = Time.at(Time.now.to_i)
       @manufacturer = 'development'
       @type = 'activity'
     end
