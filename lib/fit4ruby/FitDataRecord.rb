@@ -40,7 +40,9 @@ module Fit4Ruby
         ivar_name = '@' + field.name
         unless instance_variable_get(ivar_name) ==
                fdr.instance_variable_get(ivar_name)
-        exit
+          Log.error "#{field.name}: #{instance_variable_get(ivar_name)} != " +
+                    "#{fdr.instance_variable_get(ivar_name)}"
+          exit
           return false
         end
       end

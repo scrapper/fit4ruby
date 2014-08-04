@@ -23,7 +23,6 @@ module Fit4Ruby
 
     def add_global(id)
       unless (slot = @entries.index { |e| e.nil? })
-        puts @entries.inspect
         # No more free slots. We have to find the least recently used one.
         slot = 0
         0.upto(15) do |i|

@@ -24,7 +24,6 @@ module Fit4Ruby
     def initialize(laps, first_lap_index)
       super('session')
       @laps = laps
-      puts laps.length
       @first_lap_index = first_lap_index
       @num_laps = @laps.length
     end

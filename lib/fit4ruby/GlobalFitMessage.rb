@@ -12,6 +12,7 @@
 
 require 'fit4ruby/GlobalFitDictList'
 require 'fit4ruby/Converters'
+require 'fit4ruby/FitDefinitionField'
 
 module Fit4Ruby
 
@@ -73,10 +74,15 @@ module Fit4Ruby
       end
 
       def native_to_fit(value)
-        return nil if value.nil?
+        return FitDefinitionField.undefined_value(@type) if value.nil?
 
         if @opts.include?(:dict) && (dict = GlobalFitDictionaries[@opts[:dict]])
-          return dict.value_by_name(value)
+          unless (dv = dict.value_by_name(value))
+            Log.error "Unknown value '#{value}' assigned to field #{@name}"
+            return FitDefinitionField.undefined_value(@type)
+          else
+            return dv
+          end
         end
 
         value = (value * @opts[:scale].to_f).to_i if @opts[:scale]
