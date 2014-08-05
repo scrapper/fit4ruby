@@ -38,7 +38,9 @@ describe Fit4Ruby do
       end
     end
     a.new_record('session')
+    a.aggregate
     Fit4Ruby.write(fit_file, a)
+
     b = Fit4Ruby.read(fit_file)
     b.should == a
     File.delete(fit_file)

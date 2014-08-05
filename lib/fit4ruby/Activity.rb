@@ -76,6 +76,22 @@ module Fit4Ruby
       speed / @sessions.length
     end
 
+    def recovery_time
+      @events.each do |e|
+        return e.data if e.event == 'recovery_time'
+      end
+
+      nil
+    end
+
+    def vo2max
+      @events.each do |e|
+        return e.data if e.event == 'vo2max'
+      end
+
+      nil
+    end
+
     def write(io, id_mapper)
       @file_id.write(io, id_mapper)
       @file_creator.write(io, id_mapper)

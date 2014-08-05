@@ -38,11 +38,15 @@ module Fit4Ruby
     def ==(fdr)
       @message.fields.each do |field_number, field|
         ivar_name = '@' + field.name
-        unless instance_variable_get(ivar_name) ==
-               fdr.instance_variable_get(ivar_name)
-          Log.error "#{field.name}: #{instance_variable_get(ivar_name)} != " +
-                    "#{fdr.instance_variable_get(ivar_name)}"
-          exit
+        v1 = instance_variable_get(ivar_name)
+        v2 = fdr.instance_variable_get(ivar_name)
+        if (scale = field.opts[:scale])
+          v1 = (v1 * scale).to_i if v1
+          v2 = (v2 * scale).to_i if v2
+        end
+
+        unless v1 == v2
+          Log.error "#{field.name}: #{v1} != #{v2}"
           return false
         end
       end
