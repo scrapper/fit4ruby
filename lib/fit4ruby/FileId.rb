@@ -16,13 +16,15 @@ module Fit4Ruby
 
   class FileId < FitDataRecord
 
-    def initialize
+    def initialize(field_values = {})
       super('file_id')
       @serial_number = 1234567890
       # Ignore the sub-seconds to avoid problems when comparing records.
       @time_created = Time.at(Time.now.to_i)
       @manufacturer = 'development'
       @type = 'activity'
+
+      set_field_values(field_values)
     end
 
   end

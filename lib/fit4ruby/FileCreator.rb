@@ -17,9 +17,11 @@ module Fit4Ruby
 
   class FileCreator < FitDataRecord
 
-    def initialize
+    def initialize(field_values = {})
       super('file_creator')
       @software_version = VERSION.split('.').join('').to_i
+
+      set_field_values(field_values)
     end
 
   end

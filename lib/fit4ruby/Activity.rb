@@ -36,11 +36,14 @@ module Fit4Ruby
       @file_creator = FileCreator.new
       @device_infos = []
       @user_profiles = []
+      @events = []
       @sessions = []
       @laps = []
       @records = []
-      @events = []
       @personal_records = []
+
+      @cur_session_laps = []
+      @cur_lap_records = []
 
       @lap_counter = 1
     end
@@ -96,48 +99,47 @@ module Fit4Ruby
       @file_id.write(io, id_mapper)
       @file_creator.write(io, id_mapper)
 
-      (@device_infos + @user_profiles + @events +
-       @sessions + @personal_records).each do |s|
+      (@device_infos + @user_profiles + @events + @sessions + @laps +
+       @records + @personal_records).sort.each do |s|
         s.write(io, id_mapper)
       end
       super
     end
 
-    def new_record(record_type)
-      case record_type
-      when 'file_id'
-        @file_id = (record = FileId.new)
-      when 'file_creator'
-        @file_creator = (record = FileCreator.new)
-      when 'device_info'
-        @device_infos << (record = DeviceInfo.new)
-      when 'user_profile'
-        @user_profiles << (record = UserProfile.new)
-      when 'event'
-        @events << (record = Event.new)
-      when 'session'
-        unless @records.empty?
-          # Ensure that all previous records have been assigned to a lap.
-          @lap_counter += 1
-          @laps << Lap.new(@records)
-          @records = []
-        end
-        @num_sessions += 1
-        @sessions << (record = Session.new(@laps, @lap_counter))
-        @laps = []
-      when 'lap'
-        @lap_counter += 1
-        @laps << (record = Lap.new(@records))
-        @records = []
-      when 'personal_records'
-        @personal_records << (record = PersonalRecords.new)
-      when 'record'
-        @records << (record = Record.new)
-      else
-        record = nil
-      end
+    def new_file_id(field_values = {})
+      new_fit_data_record('file_id', field_values)
+    end
 
-      record
+    def new_file_creator(field_values = {})
+      new_fit_data_record('file_creator', field_values)
+    end
+
+    def new_device_info(field_values = {})
+      new_fit_data_record('device_info', field_values)
+    end
+
+    def new_user_profile(field_values = {})
+      new_fit_data_record('user_profile', field_values)
+    end
+
+    def new_event(field_values = {})
+      new_fit_data_record('event', field_values)
+    end
+
+    def new_session(field_values = {})
+      new_fit_data_record('session', field_values)
+    end
+
+    def new_lap(field_values = {})
+      new_fit_data_record('lap', field_values)
+    end
+
+    def new_personal_record(field_values = {})
+      new_fit_data_record('personal_record', field_values)
+    end
+
+    def new_record(field_values = {})
+      new_fit_data_record('record', field_values)
     end
 
     def ==(a)
@@ -146,6 +148,47 @@ module Fit4Ruby
         @device_infos == a.device_infos && @user_profiles == a.user_profiles &&
         @events == a.events &&
         @sessions == a.sessions && personal_records == a.personal_records
+    end
+
+    def new_fit_data_record(record_type, field_values = {})
+      case record_type
+      when 'file_id'
+        @file_id = (record = FileId.new(field_values))
+      when 'file_creator'
+        @file_creator = (record = FileCreator.new(field_values))
+      when 'device_info'
+        @device_infos << (record = DeviceInfo.new(field_values))
+      when 'user_profile'
+        @user_profiles << (record = UserProfile.new(field_values))
+      when 'event'
+        @events << (record = Event.new(field_values))
+      when 'session'
+        unless @cur_lap_records.empty?
+          # Ensure that all previous records have been assigned to a lap.
+          @lap_counter += 1
+          @cur_session_laps << (lap = Lap.new(@cur_lap_records, field_values))
+          @laps << lap
+          @cur_lap_records = []
+        end
+        @num_sessions += 1
+        @sessions << (record = Session.new(@cur_session_laps, @lap_counter,
+                                           field_values))
+        @cur_session_laps = []
+      when 'lap'
+        @lap_counter += 1
+        @cur_session_laps << (record = Lap.new(@cur_lap_records, field_values))
+        @laps << record
+        @cur_lap_records = []
+      when 'record'
+        @cur_lap_records << (record = Record.new(field_values))
+        @records << record
+      when 'personal_records'
+        @personal_records << (record = PersonalRecords.new(field_values))
+      else
+        record = nil
+      end
+
+      record
     end
 
   end

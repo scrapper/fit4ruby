@@ -25,12 +25,20 @@ module Fit4Ruby
       @message.fields.each do |field_number, field|
         create_instance_variable(field.name)
       end
+      @timestamp = Time.now
+    end
+
+    def set_field_values(field_values)
+      field_values.each do |field, value|
+        set(field.to_s, value)
+      end
     end
 
     def set(name, value)
       ivar_name = '@' + name
       unless instance_variable_defined?(ivar_name)
-        Log.warn("Undeclared variable #{ivar_name}")
+        Log.warn("Unknown FIT record field '#{ivar_name}'")
+        return
       end
       instance_variable_set('@' + name, value)
     end
@@ -38,12 +46,10 @@ module Fit4Ruby
     def ==(fdr)
       @message.fields.each do |field_number, field|
         ivar_name = '@' + field.name
-        v1 = instance_variable_get(ivar_name)
-        v2 = fdr.instance_variable_get(ivar_name)
-        if (scale = field.opts[:scale])
-          v1 = (v1 * scale).to_i if v1
-          v2 = (v2 * scale).to_i if v2
-        end
+        v1 = field.fit_to_native(field.native_to_fit(
+          instance_variable_get(ivar_name)))
+        v2 = field.fit_to_native(field.native_to_fit(
+          fdr.instance_variable_get(ivar_name)))
 
         unless v1 == v2
           Log.error "#{field.name}: #{v1} != #{v2}"
@@ -52,6 +58,10 @@ module Fit4Ruby
       end
 
       true
+    end
+
+    def <=>(fdr)
+      @timestamp <=> fdr.timestamp
     end
 
     def write(io, id_mapper)
@@ -99,6 +109,15 @@ module Fit4Ruby
 
       # Write the data record to the file.
       bd.write(io)
+    end
+
+    def inspect
+      fields = {}
+      @message.fields.each do |field_number, field|
+        ivar_name = '@' + field.name
+        fields[field.name] = instance_variable_get(ivar_name)
+      end
+      fields.inspect
     end
 
     private

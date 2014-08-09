@@ -16,8 +16,9 @@ module Fit4Ruby
 
   class DeviceInfo < FitDataRecord
 
-    def initialize
+    def initialize(field_values = {})
       super('device_info')
+      set_field_values(field_values)
     end
 
   end

@@ -16,9 +16,12 @@ module Fit4Ruby
 
   class Lap < FitDataRecord
 
-    def initialize(records)
+    attr_reader :records
+
+    def initialize(records, field_values)
       super('lap')
       @records = records
+      set_field_values(field_values)
     end
 
     def check
@@ -39,27 +42,20 @@ module Fit4Ruby
       end
     end
 
-    def write(io, id_mapper)
-      @records.each do |s|
-        s.write(io, id_mapper)
-      end
-      super
-    end
-
     def aggregate
-      if (r = @records[0])
-        @start_time = r.timestamp
-        @start_position_lat = r.position_lat
-        @start_position_long = r.position_long
-      end
+      return if @records.empty?
 
-      if (r = @records[-1])
-        @end_position_lat = r.position_lat
-        @end_position_long = r.position_long
-        @total_elapsed_time = r.timestamp - @start_time
-        @total_timer_time = @total_elapsed_time
-        @avg_speed = ((@total_distance.to_f / @total_elapsed_time) * 1000).to_i
-      end
+      r = @records[0]
+      @start_time = r.timestamp
+      @start_position_lat = r.position_lat
+      @start_position_long = r.position_long
+
+      r = @records[-1]
+      @end_position_lat = r.position_lat
+      @end_position_long = r.position_long
+      @total_elapsed_time = r.timestamp - @start_time
+      @total_timer_time = @total_elapsed_time
+      @avg_speed = ((@total_distance.to_f / @total_elapsed_time) * 1000).to_i
 
       @max_speed = 0
       first_distance, last_distance = nil, nil
@@ -67,9 +63,28 @@ module Fit4Ruby
         first_distance = r.distance if first_distance.nil? && r.distance
         last_distance = r.distance if r.distance
         @max_speed = r.speed if r.speed && @max_speed < r.speed
+
+        if r.position_lat
+          if (@swc_lat.nil? || r.position_lat < @swc_lat)
+            @swc_lat = r.position_lat
+          end
+          if (@nec_lat.nil? || r.position_lat > @nec_lat)
+            @nec_lat = r.position_lat
+          end
+        end
+        if r.position_long
+          if (@swc_long.nil? || r.position_long < @swc_long)
+            @swc_long = r.position_long
+          end
+          if (@nec_long.nil? || r.position_long > @nec_long)
+            @nec_long = r.position_long
+          end
+        end
+
       end
 
-      @total_distance = last_distance - first_distance
+      @total_distance = last_distance && first_distance ?
+        last_distance - first_distance : 0
     end
 
   end

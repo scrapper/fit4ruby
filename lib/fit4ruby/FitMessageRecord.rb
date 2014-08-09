@@ -36,7 +36,7 @@ module Fit4Ruby
     def read(io, activity, filter = nil, fields_dump = nil)
       @message_record.read(io)
 
-      obj = @name == 'activity' ? activity : activity.new_record(@name)
+      obj = @name == 'activity' ? activity : activity.new_fit_data_record(@name)
 
       @definition.fields.each do |field|
         value = @message_record[field.name].snapshot

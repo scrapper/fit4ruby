@@ -16,8 +16,9 @@ module Fit4Ruby
 
   class UserProfile < FitDataRecord
 
-    def initialize
+    def initialize(field_values = {})
       super('user_profile')
+      set_field_values(field_values)
     end
 
   end

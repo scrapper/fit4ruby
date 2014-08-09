@@ -16,8 +16,9 @@ module Fit4Ruby
 
   class PersonalRecords < FitDataRecord
 
-    def initialize
+    def initialize(field_values = {})
       super('personal_records')
+      set_field_values(field_values)
     end
 
   end

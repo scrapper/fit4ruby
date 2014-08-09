@@ -73,6 +73,26 @@ module Fit4Ruby
         [ value, @opts[:unit] ]
       end
 
+      def fit_to_native(value)
+        return nil if value == FitDefinitionField.undefined_value(@type)
+
+        if @opts.include?(:dict) && (dict = GlobalFitDictionaries[@opts[:dict]])
+          return dict.name(value) || "Undocumented value #{value}"
+        end
+
+        value /= @opts[:scale].to_f if @opts[:scale]
+        value -= @opts[:offset] if @opts[:offset]
+
+        case @opts[:type]
+        when 'coordinate'
+          value *= 180.0 / 2147483648
+        when 'date_time'
+          value = fit_time_to_time(value)
+        end
+
+        value
+      end
+
       def native_to_fit(value)
         return FitDefinitionField.undefined_value(@type) if value.nil?
 
@@ -85,12 +105,12 @@ module Fit4Ruby
           end
         end
 
-        value = (value * @opts[:scale].to_f).to_i if @opts[:scale]
         value += @opts[:offset] if @opts[:offset]
+        value = (value * @opts[:scale].to_f).to_i if @opts[:scale]
 
         case @opts[:type]
         when 'coordinate'
-          value *= 2147483648.0 / 180.0
+          value = (value * 2147483648.0 / 180.0).to_i
         when 'date_time'
           value = time_to_fit_time(value)
         end

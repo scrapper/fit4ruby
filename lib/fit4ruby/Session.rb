@@ -21,11 +21,12 @@ module Fit4Ruby
 
     attr_reader :laps
 
-    def initialize(laps, first_lap_index)
+    def initialize(laps, first_lap_index, field_values)
       super('session')
       @laps = laps
       @first_lap_index = first_lap_index
       @num_laps = @laps.length
+      set_field_values(field_values)
     end
 
     def check(activity)
@@ -67,13 +68,6 @@ module Fit4Ruby
       if @total_distance && @total_elapsed_time
         @avg_speed = @total_distance / @total_elapsed_time
       end
-    end
-
-    def write(io, id_mapper)
-      @laps.each do |s|
-        s.write(io, id_mapper)
-      end
-      super
     end
 
     def avg_stride_length

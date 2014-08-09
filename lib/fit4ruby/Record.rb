@@ -16,8 +16,9 @@ module Fit4Ruby
 
   class Record < FitDataRecord
 
-    def initialize
+    def initialize(field_values = {})
       super('record')
+      set_field_values(field_values)
     end
 
     def pace

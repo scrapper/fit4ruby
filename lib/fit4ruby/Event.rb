@@ -16,8 +16,9 @@ module Fit4Ruby
 
   class Event < FitDataRecord
 
-    def initialize
+    def initialize(field_values = {})
       super('event')
+      set_field_values(field_values)
     end
 
   end
