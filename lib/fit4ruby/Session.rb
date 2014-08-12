@@ -15,12 +15,19 @@ require 'fit4ruby/FitDataRecord'
 
 module Fit4Ruby
 
+  # The Session objects correspond to the session FIT messages. They hold
+  # accumlated data for a set of Lap objects.
   class Session < FitDataRecord
 
     include Converters
 
     attr_reader :laps
 
+    # Create a new Session object.
+    # @param laps [Array of Laps] Laps to associate with the Session.
+    # @param first_lap_index [Fixnum] Index of the first Lap in this Session.
+    # @param field_values [Hash] Hash that provides initial values for certain
+    #        fields.
     def initialize(laps, first_lap_index, field_values)
       super('session')
       @laps = laps
@@ -29,6 +36,8 @@ module Fit4Ruby
       set_field_values(field_values)
     end
 
+    # Perform some basic consistency and logical checks on the object. Errors
+    # are reported via the Log object.
     def check(activity)
       unless @first_lap_index
         Log.error 'first_lap_index is not set'
@@ -47,6 +56,9 @@ module Fit4Ruby
       @laps.each { |l| l.check }
     end
 
+    # Aggregate the data from the Laps associated with this session and store
+    # them in the fields. Calling this method will override any previously
+    # stored values.
     def aggregate
       @total_distance = 0
       @total_elapsed_time = 0
@@ -70,6 +82,7 @@ module Fit4Ruby
       end
     end
 
+    # Compute the average stride length for this Session.
     def avg_stride_length
       return nil unless @total_strides
 

@@ -23,11 +23,15 @@ require 'fit4ruby/PersonalRecords'
 
 module Fit4Ruby
 
+  # This is the most important class of this library. It holds references to
+  # all other data structures. Each of the objects it references are direct
+  # equivalents of the message record structures used in the FIT file.
   class Activity < FitDataRecord
 
     attr_accessor :file_id, :file_creator, :device_infos, :user_profiles,
                   :sessions, :laps, :records, :events, :personal_records
 
+    # Create a new Activity object.
     def initialize
       super('activity')
       @num_sessions = 0
@@ -48,6 +52,8 @@ module Fit4Ruby
       @lap_counter = 1
     end
 
+    # Perform some basic logical checks on the object and all references sub
+    # objects. Any errors will be reported via the Log object.
     def check
       unless @timestamp && @timestamp >= Time.parse('1990-01-01')
         Log.error "Activity has no valid timestamp"
@@ -63,22 +69,30 @@ module Fit4Ruby
       @sessions.each { |s| s.check(self) }
     end
 
+    # Convenience method that aggregates all the distances from the included
+    # sessions.
     def total_distance
       d = 0.0
       @sessions.each { |s| d += s.total_distance }
       d
     end
 
+    # Call this method to update the aggregated data fields stored in Lap and
+    # Session objects.
+    # TODO: Only a small subset of field is currently supported.
     def aggregate
       @sessions.each { |s| s.aggregate }
     end
 
+    # Convenience method that averages the speed over all sessions.
     def avg_speed
       speed = 0.0
       @sessions.each { |s| speed += s.avg_speed }
       speed / @sessions.length
     end
 
+    # Returns the predicted recovery time needed after this activity.
+    # @return recovery time in seconds.
     def recovery_time
       @events.each do |e|
         return e.data if e.event == 'recovery_time'
@@ -87,6 +101,8 @@ module Fit4Ruby
       nil
     end
 
+    # Returns the computed VO2max value. This value is computed by the device
+    # based on multiple previous activities.
     def vo2max
       @events.each do |e|
         return e.data if e.event == 'vo2max'
@@ -95,6 +111,10 @@ module Fit4Ruby
       nil
     end
 
+    # Write the Activity data to a file.
+    # @param io [IO] File reference
+    # @param id_mapper [FitMessageIdMapper] Maps global FIT record types to
+    #        local ones.
     def write(io, id_mapper)
       @file_id.write(io, id_mapper)
       @file_creator.write(io, id_mapper)
@@ -106,42 +126,91 @@ module Fit4Ruby
       super
     end
 
+    # Add a new FileId to the Activity. It will replace any previously added
+    # FileId object.
+    # @param field_values [Hash] A Hash that provides initial values for
+    #        certain fields of the FitDataRecord.
+    # @return [FileId]
     def new_file_id(field_values = {})
       new_fit_data_record('file_id', field_values)
     end
 
+    # Add a new FileCreator to the Activity. It will replace any previously
+    # added FileCreator object.
+    # @param field_values [Hash] A Hash that provides initial values for
+    #        certain fields of the FitDataRecord.
+    # @return [FileCreator]
     def new_file_creator(field_values = {})
       new_fit_data_record('file_creator', field_values)
     end
 
+    # Add a new DeviceInfo to the Activity.
+    # @param field_values [Hash] A Hash that provides initial values for
+    #        certain fields of the FitDataRecord.
+    # @return [DeviceInfo]
     def new_device_info(field_values = {})
       new_fit_data_record('device_info', field_values)
     end
 
+    # Add a new UserProfile to the Activity.
+    # @param field_values [Hash] A Hash that provides initial values for
+    #        certain fields of the FitDataRecord.
+    # @return [UserProfile]
     def new_user_profile(field_values = {})
       new_fit_data_record('user_profile', field_values)
     end
 
+    # Add a new Event to the Activity.
+    # @param field_values [Hash] A Hash that provides initial values for
+    #        certain fields of the FitDataRecord.
+    # @return [Event]
     def new_event(field_values = {})
       new_fit_data_record('event', field_values)
     end
 
+    # Add a new Session to the Activity. All previously added Lap objects are
+    # associated with this Session unless they have been associated with
+    # another Session before. If there are any Record objects that have not
+    # yet been associated with a Lap, a new lap will be created and the
+    # Record objects will be associated with this Lap. The Lap will be
+    # associated with the newly created Session.
+    # @param field_values [Hash] A Hash that provides initial values for
+    #        certain fields of the FitDataRecord.
+    # @return [Session]
     def new_session(field_values = {})
       new_fit_data_record('session', field_values)
     end
 
+    # Add a new Lap to the Activity. All previoulsy added Record objects are
+    # associated with this Lap unless they have been associated with another
+    # Lap before.
+    # @param field_values [Hash] A Hash that provides initial values for
+    #        certain fields of the FitDataRecord.
+    # @return [Lap]
     def new_lap(field_values = {})
       new_fit_data_record('lap', field_values)
     end
 
+    # Add a new PersonalRecord to the Activity.
+    # @param field_values [Hash] A Hash that provides initial values for
+    #        certain fields of the FitDataRecord.
+    # @return [PersonalRecord]
     def new_personal_record(field_values = {})
       new_fit_data_record('personal_record', field_values)
     end
 
+    # Add a new Record to the Activity.
+    # @param field_values [Hash] A Hash that provides initial values for
+    #        certain fields of the FitDataRecord.
+    # @return [Record]
     def new_record(field_values = {})
       new_fit_data_record('record', field_values)
     end
 
+    # Check if the current Activity is equal to the passed Activity.
+    # @param a [Activity] Activity to compare this Activity with.
+    # @return [TrueClass/FalseClass] true if both Activities are equal,
+    # otherwise false.
     def ==(a)
       super(a) && @file_id == a.file_id &&
         @file_creator == a.file_creator &&
@@ -150,6 +219,12 @@ module Fit4Ruby
         @sessions == a.sessions && personal_records == a.personal_records
     end
 
+    # Create a new FitDataRecord.
+    # @param record_type [String] Type that identifies the FitDataRecord
+    #        derived class to create.
+    # @param field_values [Hash] A Hash that provides initial values for
+    #        certain fields of the FitDataRecord.
+    # @return FitDataRecord
     def new_fit_data_record(record_type, field_values = {})
       case record_type
       when 'file_id'

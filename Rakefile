@@ -6,6 +6,8 @@ $:.unshift lib unless $:.include?(lib)
 
 require "rspec/core/rake_task"
 require 'rake/clean'
+require 'yard'
+YARD::Rake::YardocTask.new
 
 Dir.glob( 'tasks/*.rake').each do |fn|
   begin 
