@@ -82,6 +82,11 @@ module Fit4Ruby
       end
     end
 
+    # Return true if the session contains geographical location data.
+    def has_geo_data?
+      @swc_long && @swc_lat && @nec_long && nec_lat
+    end
+
     # Compute the average stride length for this Session.
     def avg_stride_length
       return nil unless @total_strides
