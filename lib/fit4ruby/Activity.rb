@@ -32,7 +32,9 @@ module Fit4Ruby
                   :sessions, :laps, :records, :events, :personal_records
 
     # Create a new Activity object.
-    def initialize
+    # @param field_values [Hash] A Hash that provides initial values for
+    #        certain fields of the FitDataRecord.
+    def initialize(field_values = {})
       super('activity')
       @num_sessions = 0
 
@@ -50,6 +52,8 @@ module Fit4Ruby
       @cur_lap_records = []
 
       @lap_counter = 1
+
+      set_field_values(field_values)
     end
 
     # Perform some basic logical checks on the object and all references sub
