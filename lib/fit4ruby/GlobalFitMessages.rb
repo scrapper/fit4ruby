@@ -162,6 +162,17 @@ module Fit4Ruby
     field 25, 'enum', 'undocumented_field_25'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
+    message 33, 'totals'
+    field 0, 'uint32', 'timer_time', :unit => 's'
+    field 1, 'uint32', 'distance', :unit => 'm'
+    field 2, 'uint32', 'calories', :unit => 'kcal'
+    field 3, 'enum', 'sport', :dict => 'sport'
+    field 4, 'uint32', 'elapsed_time', :unit => 's'
+    field 5, 'uint16', 'sessions'
+    field 6, 'uint32', 'active_time', :unit => 's'
+    field 253, 'uint32', 'timestamp', :type => 'date_time'
+    field 254, 'uint16', 'message_index'
+
     message 34, 'activity'
     field 0, 'uint32', 'total_timer_time', :type => 'duration',  :scale => 1000
     field 1, 'uint16', 'num_sessions'
