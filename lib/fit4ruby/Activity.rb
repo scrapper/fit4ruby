@@ -244,20 +244,14 @@ module Fit4Ruby
       when 'session'
         unless @cur_lap_records.empty?
           # Ensure that all previous records have been assigned to a lap.
-          @lap_counter += 1
-          @cur_session_laps << (lap = Lap.new(@cur_lap_records, field_values))
-          @laps << lap
-          @cur_lap_records = []
+          record = create_new_lap(field_values)
         end
         @num_sessions += 1
         @sessions << (record = Session.new(@cur_session_laps, @lap_counter,
                                            field_values))
         @cur_session_laps = []
       when 'lap'
-        @lap_counter += 1
-        @cur_session_laps << (record = Lap.new(@cur_lap_records, field_values))
-        @laps << record
-        @cur_lap_records = []
+        record = create_new_lap(field_values)
       when 'record'
         @cur_lap_records << (record = Record.new(field_values))
         @records << record
@@ -268,6 +262,18 @@ module Fit4Ruby
       end
 
       record
+    end
+
+    private
+
+    def create_new_lap(field_values)
+      lap = Lap.new(@cur_lap_records, @laps.last, field_values)
+      @lap_counter += 1
+      @cur_session_laps << lap
+      @laps << lap
+      @cur_lap_records = []
+
+      lap
     end
 
   end

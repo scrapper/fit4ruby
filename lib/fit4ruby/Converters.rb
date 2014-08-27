@@ -14,9 +14,31 @@ module Fit4Ruby
 
   module Converters
 
-    def speedToPace(speed)
-      if speed > 0.01
-        pace = 1000.0 / (speed * 60.0)
+    def conversion_factor(from_unit, to_unit)
+      factors = {
+        'm' => { 'km' => 0.001, 'in' => 39.3701, 'ft' => 3.28084,
+                 'mi' => 0.000621371 },
+        'mm' => { 'cm' => 0.1, 'in' => 0.0393701 },
+        'm/s' => { 'km/h' => 0.277778 },
+        'min/km' => { 'min/mi' => 1.60934 }
+      }
+      return 1.0 if from_unit == to_unit
+      unless factors.include?(from_unit)
+        Log.fatal "No conversion factors defined for unit " +
+                  "'#{from_unit}' to '#{to_unit}'"
+      end
+
+      factor = factors[from_unit][to_unit]
+      if factor.nil?
+        Log.fatal "No conversion factor from '#{from_unit}' to '#{to_unit}' " +
+                  "defined."
+      end
+      factor
+    end
+
+    def speedToPace(speed, distance = 1000.0)
+      if speed && speed > 0.01
+        pace = distance / (speed * 60.0)
         int, dec = pace.divmod 1
         "#{int}:#{'%02d' % (dec * 60)}"
       else

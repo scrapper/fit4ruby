@@ -19,8 +19,6 @@ module Fit4Ruby
   # accumlated data for a set of Lap objects.
   class Session < FitDataRecord
 
-    include Converters
-
     attr_reader :laps
 
     # Create a new Session object.
@@ -30,6 +28,7 @@ module Fit4Ruby
     #        fields.
     def initialize(laps, first_lap_index, field_values)
       super('session')
+      @meta_field_units['avg_stride_length'] = 'm'
       @laps = laps
       @first_lap_index = first_lap_index
       @num_laps = @laps.length
@@ -68,7 +67,6 @@ module Fit4Ruby
         @total_elapsed_time += lap.total_elapsed_time if lap.total_elapsed_time
       end
       if (l = @laps[0])
-        @start_time = l.start_time
         @start_position_lat = l.start_position_lat
         @start_position_long = l.start_position_long
       end
@@ -91,7 +89,7 @@ module Fit4Ruby
     def avg_stride_length
       return nil unless @total_strides
 
-      @total_distance / @total_strides
+      @total_distance / (@total_strides * 2.0)
     end
 
   end

@@ -17,14 +17,17 @@ module Fit4Ruby
 
   class FitDataRecord
 
+    include Converters
+
     def initialize(record_id)
       @message = GlobalFitMessages.find_by_name(record_id)
 
       # Create instance variables that correspond to every field of the
-      # corresponding FIT # data record.
+      # corresponding FIT data record.
       @message.fields.each do |field_number, field|
         create_instance_variable(field.name)
       end
+      @meta_field_units = {}
       @timestamp = Time.now
     end
 
@@ -41,6 +44,29 @@ module Fit4Ruby
         return
       end
       instance_variable_set('@' + name, value)
+    end
+
+    def get(name)
+      ivar_name = '@' + name
+      return nil unless instance_variable_defined?(ivar_name)
+
+      instance_variable_get('@' + name)
+    end
+
+    def get_as(name, to_unit)
+      value = respond_to?(name) ? send(name) : get(name)
+      return nil if value.nil?
+
+      if @meta_field_units.include?(name)
+        unit = @meta_field_units[name]
+      else
+        field = @message.find_by_name(name)
+        unless (unit = field.opts[:unit])
+          Log.fatal "Field #{name} has no unit"
+        end
+      end
+
+      value * conversion_factor(unit, to_unit)
     end
 
     def ==(fdr)

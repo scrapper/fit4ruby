@@ -23,7 +23,13 @@ module Fit4Ruby
     #        fields.
     def initialize(field_values = {})
       super('record')
+      @meta_field_units['pace'] = 'min/km'
+      @meta_field_units['run_cadence'] = 'spm'
       set_field_values(field_values)
+    end
+
+    def run_cadence
+      (@cadence + @fractional_cadence) * 2
     end
 
     # Convert the 'speed' field into a running pace. The pace is measured in

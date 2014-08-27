@@ -141,6 +141,10 @@ module Fit4Ruby
       @fields[number] = Field.new(type, name, opts)
     end
 
+    def find_by_name(field_name)
+      @fields.values.find { |f| f.name == field_name }
+    end
+
     def write(io, local_message_type)
       header = FitRecordHeader.new
       header.normal = 0
@@ -195,7 +199,7 @@ module Fit4Ruby
     end
 
     def find_by_name(name)
-      @messages.each_value{ |m| return m if m.name == name }
+      @messages.values.find { |m| m.name == name }
     end
 
     def field(number, type, name, opts = {})
