@@ -29,7 +29,13 @@ module Fit4Ruby
     end
 
     def run_cadence
-      (@cadence + @fractional_cadence) * 2
+      if @cadence && @fractional_cadence
+        (@cadence + @fractional_cadence) * 2
+      elsif @cadence
+        @cadence * 2
+      else
+        nil
+      end
     end
 
     # Convert the 'speed' field into a running pace. The pace is measured in
