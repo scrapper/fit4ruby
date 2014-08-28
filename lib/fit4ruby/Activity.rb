@@ -83,8 +83,8 @@ module Fit4Ruby
 
     # Call this method to update the aggregated data fields stored in Lap and
     # Session objects.
-    # TODO: Only a small subset of field is currently supported.
     def aggregate
+      @laps.each { |l| l.aggregate }
       @sessions.each { |s| s.aggregate }
     end
 

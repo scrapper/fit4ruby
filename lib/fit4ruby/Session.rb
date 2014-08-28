@@ -12,12 +12,15 @@
 
 require 'fit4ruby/Converters'
 require 'fit4ruby/FitDataRecord'
+require 'fit4ruby/RecordAggregator'
 
 module Fit4Ruby
 
   # The Session objects correspond to the session FIT messages. They hold
   # accumlated data for a set of Lap objects.
   class Session < FitDataRecord
+
+    include RecordAggregator
 
     attr_reader :laps
 
@@ -30,8 +33,19 @@ module Fit4Ruby
       super('session')
       @meta_field_units['avg_stride_length'] = 'm'
       @laps = laps
+      @records = []
+      @laps.each { |lap| @records += lap.records }
       @first_lap_index = first_lap_index
       @num_laps = @laps.length
+
+      if @records.first
+        # Or to the timestamp of the first record.
+        @start_time = @records.first.timestamp
+        if @records.last
+          @total_elapsed_time = @records.last.timestamp - @start_time
+        end
+      end
+
       set_field_values(field_values)
     end
 
@@ -53,31 +67,6 @@ module Fit4Ruby
         end
       end
       @laps.each { |l| l.check }
-    end
-
-    # Aggregate the data from the Laps associated with this session and store
-    # them in the fields. Calling this method will override any previously
-    # stored values.
-    def aggregate
-      @total_distance = 0
-      @total_elapsed_time = 0
-      @laps.each do |lap|
-        lap.aggregate
-        @total_distance += lap.total_distance if lap.total_distance
-        @total_elapsed_time += lap.total_elapsed_time if lap.total_elapsed_time
-      end
-      if (l = @laps[0])
-        @start_position_lat = l.start_position_lat
-        @start_position_long = l.start_position_long
-      end
-      if (l = @laps[-1])
-        @end_position_lat = l.end_position_lat
-        @end_position_long = l.end_position_long
-      end
-
-      if @total_distance && @total_elapsed_time
-        @avg_speed = @total_distance / @total_elapsed_time
-      end
     end
 
     # Return true if the session contains geographical location data.
