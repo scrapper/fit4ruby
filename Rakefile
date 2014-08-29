@@ -4,6 +4,7 @@ $:.unshift File.join(File.dirname(__FILE__))
 lib = File.expand_path('../lib', __FILE__)
 $:.unshift lib unless $:.include?(lib)
 
+require "bundler/gem_tasks"
 require "rspec/core/rake_task"
 require 'rake/clean'
 require 'yard'
