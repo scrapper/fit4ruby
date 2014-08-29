@@ -114,6 +114,9 @@ module Fit4Ruby
         when 'date_time'
           value = time_to_fit_time(value)
         end
+        if value.is_a?(Float) && @opts[:scale].nil?
+          Log.error "Field #{@name} must not be a Float value"
+        end
 
         value
       end

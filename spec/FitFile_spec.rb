@@ -32,7 +32,7 @@ describe Fit4Ruby do
         :position_lat => 51.5512 - mins * 0.0008,
         :position_long => 11.647 + mins * 0.002,
         :distance => 200.0 * mins,
-        :altitude => 100 + mins * 0.5,
+        :altitude => (100 + mins * 0.5).to_i,
         :speed => 3.1,
         :vertical_oscillation => 9 + mins * 0.02,
         :stance_time => 235.0 * mins * 0.01,
