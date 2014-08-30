@@ -115,6 +115,11 @@ module Fit4Ruby
       nil
     end
 
+    # Returns the sport type of this activity.
+    def sport
+      @sessions[0].sport
+    end
+
     # Write the Activity data to a file.
     # @param io [IO] File reference
     # @param id_mapper [FitMessageIdMapper] Maps global FIT record types to
