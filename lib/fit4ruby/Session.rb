@@ -22,7 +22,7 @@ module Fit4Ruby
 
     include RecordAggregator
 
-    attr_reader :laps
+    attr_reader :laps, :records
 
     # Create a new Session object.
     # @param laps [Array of Laps] Laps to associate with the Session.
