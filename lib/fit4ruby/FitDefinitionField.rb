@@ -28,7 +28,7 @@ module Fit4Ruby
       [ 'uint16', 'uint16', 0xFFFF, 2 ],
       [ 'sint32', 'int32', 0x7FFFFFFF, 4 ],
       [ 'uint32', 'uint32', 0xFFFFFFFF, 4 ],
-      [ 'string', 'stringz', '', 0 ],
+      [ 'string', 'string', '', 0 ],
       [ 'float32', 'float', 0xFFFFFFFF, 4 ],
       [ 'float63', 'double', 0xFFFFFFFF, 4 ],
       [ 'uint8z', 'uint8', 0, 1 ],

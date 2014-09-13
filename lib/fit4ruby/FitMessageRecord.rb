@@ -55,7 +55,11 @@ module Fit4Ruby
     def produce(definition)
       fields = []
       definition.fields.each do |field|
-        fields << [ field.type, field.name ]
+        field_def = [ field.type, field.name ]
+        if field.type == 'string'
+          field_def << { :read_length => field.byte_count }
+        end
+        fields << field_def
       end
 
       BinData::Struct.new(:endian => definition.endian, :fields => fields)
