@@ -40,6 +40,11 @@ module Fit4Ruby
 
       @definition.fields.each do |field|
         value = @message_record[field.name].snapshot
+        # Strings are zero-byte terminated. There may be more bytes in the
+        # file, but we have to discard them.
+        if value.is_a?(String) && (null_byte = value.index("\0"))
+          value = value[0..null_byte]
+        end
         obj.set(field.name, field.to_machine(value)) if obj
         if filter && fields_dump &&
            (filter.field_names.nil? ||
@@ -64,7 +69,6 @@ module Fit4Ruby
 
       BinData::Struct.new(:endian => definition.endian, :fields => fields)
     end
-
 
   end
 
