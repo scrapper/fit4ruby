@@ -120,6 +120,11 @@ module Fit4Ruby
       @sessions[0].sport
     end
 
+    # Returns the sport subtype of this activity.
+    def sub_sport
+      @sessions[0].sub_sport
+    end
+
     # Write the Activity data to a file.
     # @param io [IO] File reference
     # @param id_mapper [FitMessageIdMapper] Maps global FIT record types to
