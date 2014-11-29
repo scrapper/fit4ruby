@@ -256,6 +256,14 @@ module Fit4Ruby
     field 0, 'uint16', 'software_version'
     field 1, 'uint8', 'hardware_version'
 
+    message 72, 'training_file'
+    field 0, 'enum', 'type'
+    field 1, 'uint16', 'manufacturer', :dict => 'manufacturer'
+    field 2, 'uint16', 'product', :dict => 'product'
+    field 3, 'uint32z', 'serial_number'
+    field 4, 'uint32', 'time_created', :type => 'date_time'
+    field 253, 'uint32', 'timestamp', :type => 'date_time'
+
     # Not part of the official ANT SDK doc
     message 79, 'user_profile'
     field 0, 'uint16', 'undocumented_field_0' # seems to strongly correlate with vo2max
