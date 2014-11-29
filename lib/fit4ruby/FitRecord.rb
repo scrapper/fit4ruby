@@ -29,10 +29,10 @@ module Fit4Ruby
     def read(io, activity, filter, record_counters)
       header = FitRecordHeader.read(io)
 
-      if header.normal?
+      if !header.compressed?
         # process normal headers
         local_message_type = header.local_message_type.snapshot
-        if header.message_type == 1
+        if header.message_type.snapshot == 1
           # process definition message
           definition = FitDefinition.read(io)
           @definitions[local_message_type] = FitMessageRecord.new(definition)

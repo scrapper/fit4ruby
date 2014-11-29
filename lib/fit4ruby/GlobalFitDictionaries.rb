@@ -53,6 +53,10 @@ module Fit4Ruby
     entry 123, 'bike_speed'
     entry 124, 'stride_speed_distance'
 
+    dict 'display_measure'
+    entry 0, 'metric'
+    entry 1, 'statute'
+
     dict 'event'
     entry 0, 'timer'
     entry 3, 'workout'
@@ -138,6 +142,10 @@ module Fit4Ruby
     entry 6, 'position_marked'
     entry 7, 'session_end'
     entry 8, 'fitness_equipment'
+
+    dict 'left_right_balance_100'
+    entry 0x3FFF, 'mask'
+    entry 0x8000, 'right'
 
     dict 'manufacturer'
     entry 1, 'Garmin'
@@ -254,6 +262,15 @@ module Fit4Ruby
     entry 18, 'multisport'
     entry 19, 'paddling'
     entry 254, 'all'
+
+    dict 'swim_stroke'
+    entry 0, 'freestyle'
+    entry 1, 'backstroke'
+    entry 2, 'breaststrike'
+    entry 3, 'butterfly'
+    entry 4, 'drill'
+    entry 5, 'mixed'
+    entry 6, 'im'
 
     dict 'sub_sport'
     entry 0, 'generic'

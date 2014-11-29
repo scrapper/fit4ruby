@@ -88,11 +88,17 @@ module Fit4Ruby
       value = nil if value == undefined_value
 
       field_number = field_definition_number.snapshot
-      if @global_message_definition &&
-         (field = @global_message_definition.fields[field_number])
-        field.to_machine(value)
+      if value.kind_of?(Array)
+        ary = []
+        value.each { |v| ary << to_machine(v) }
+        ary
       else
-        value
+        if @global_message_definition &&
+          (field = @global_message_definition.fields[field_number])
+          field.to_machine(value)
+        else
+          value
+        end
       end
     end
 
@@ -101,11 +107,17 @@ module Fit4Ruby
       value = nil if value == undefined_value
 
       field_number = field_definition_number.snapshot
-      if @global_message_definition &&
-         (field = @global_message_definition.fields[field_number])
-        field.to_s(value)
+      if value.kind_of?(Array)
+        s = '[ '
+        value.each { |v| s << to_s(v) + ' ' }
+        s + ']'
       else
-        "[#{value.to_s}]"
+        if @global_message_definition &&
+          (field = @global_message_definition.fields[field_number])
+          field.to_s(value)
+        else
+          "[#{value.to_s}]"
+        end
       end
     end
 
@@ -117,19 +129,41 @@ module Fit4Ruby
     end
 
     def type(fit_type = false)
-      if @@TypeDefs.length <= base_type_number.snapshot
-        Log.fatal "Unknown FIT Base type #{base_type_number.snapshot}"
-      end
-
+      check_fit_base_type
       @@TypeDefs[base_type_number.snapshot][fit_type ? 0 : 1]
     end
 
+    def is_array?
+      if total_bytes > base_type_bytes
+        if total_bytes % base_type_bytes != 0
+          Log.fatal "Total bytes (#{total_bytes}) must be multiple of " +
+                    "base type bytes (#{base_type_bytes})."
+        end
+        return true
+      end
+      false
+    end
+
+    def total_bytes
+      self.byte_count.snapshot
+    end
+
+    def base_type_bytes
+      check_fit_base_type
+      @@TypeDefs[base_type_number.snapshot][3]
+    end
+
     def undefined_value
+      check_fit_base_type
+      @@TypeDefs[base_type_number.snapshot][2]
+    end
+
+    private
+
+    def check_fit_base_type
       if @@TypeDefs.length <= base_type_number.snapshot
         Log.fatal "Unknown FIT Base type #{base_type_number.snapshot}"
       end
-
-      @@TypeDefs[base_type_number.snapshot][2]
     end
 
   end
