@@ -264,6 +264,9 @@ module Fit4Ruby
     field 4, 'uint32', 'time_created', :type => 'date_time'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
+    message 78, 'hrv'
+    field 0, 'uint16', 'time', :array => true, :scale => 1000, :unit => 's'
+
     # Not part of the official ANT SDK doc
     message 79, 'user_profile'
     field 0, 'uint16', 'undocumented_field_0' # seems to strongly correlate with vo2max
