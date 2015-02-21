@@ -27,11 +27,11 @@ module Fit4Ruby
     bit5 :time_offset, :onlyif => :compressed?
 
     def normal?
-      normal == 0
+      normal.snapshot == 0
     end
 
     def compressed?
-      normal == 1
+      normal.snapshot == 1
     end
 
   end

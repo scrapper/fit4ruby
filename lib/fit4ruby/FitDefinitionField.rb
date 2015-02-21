@@ -17,6 +17,11 @@ require 'fit4ruby/GlobalFitMessage'
 
 module Fit4Ruby
 
+  # The FitDefinitionField models the part of the FIT file that contains the
+  # template definition for a field of a FitMessageRecord. It should match the
+  # corresponding definition in GlobalFitMessages. In case we don't have a
+  # known entry in GlobalFitMessages we can still read the file since we know
+  # the exact size of the binary records.
   class FitDefinitionField < BinData::Record
 
     @@TypeDefs = [
@@ -62,9 +67,10 @@ module Fit4Ruby
       @global_message_definition = GlobalFitMessages[@global_message_number]
       field_number = field_definition_number.snapshot
       if @global_message_definition &&
-         (field = @global_message_definition.fields[field_number])
-         @name = field.name
-         @type = field.type
+         (field = @global_message_definition.fields_by_number[field_number])
+         @name = field.respond_to?('name') ? field.name :
+                                             "choice_#{field_number}"
+         @type = field.respond_to?('type') ? field.type : nil
 
          if @type && (td = @@TypeDefs[base_type_number]) && td[0] != @type
            Log.warn "#{@global_message_number}:#{@name} must be of type " +
@@ -88,11 +94,19 @@ module Fit4Ruby
       value = nil if value == undefined_value
 
       field_number = field_definition_number.snapshot
-      if @global_message_definition &&
-         (field = @global_message_definition.fields[field_number])
-        field.to_machine(value)
+      if value.kind_of?(Array)
+        ary = []
+        value.each { |v| ary << to_machine(v) }
+        ary
       else
-        value
+        if @global_message_definition &&
+           (field = @global_message_definition.
+            fields_by_number[field_number]) &&
+           field.respond_to?('to_machine')
+          field.to_machine(value)
+        else
+          value
+        end
       end
     end
 
@@ -100,12 +114,18 @@ module Fit4Ruby
       init unless @global_message_number
       value = nil if value == undefined_value
 
-      field_number = field_definition_number.snapshot
-      if @global_message_definition &&
-         (field = @global_message_definition.fields[field_number])
-        field.to_s(value)
+      if value.kind_of?(Array)
+        s = '[ '
+        value.each { |v| s << to_s(v) + ' ' }
+        s + ']'
       else
-        "[#{value.to_s}]"
+        field_number = field_definition_number.snapshot
+        if @global_message_definition &&
+           (field = @global_message_definition.fields_by_number[field_number])
+          field.to_s(value)
+        else
+          "[#{value.to_s}]"
+        end
       end
     end
 
@@ -117,19 +137,41 @@ module Fit4Ruby
     end
 
     def type(fit_type = false)
-      if @@TypeDefs.length <= base_type_number.snapshot
-        Log.fatal "Unknown FIT Base type #{base_type_number.snapshot}"
-      end
-
+      check_fit_base_type
       @@TypeDefs[base_type_number.snapshot][fit_type ? 0 : 1]
     end
 
+    def is_array?
+      if total_bytes > base_type_bytes
+        if total_bytes % base_type_bytes != 0
+          Log.fatal "Total bytes (#{total_bytes}) must be multiple of " +
+                    "base type bytes (#{base_type_bytes})."
+        end
+        return true
+      end
+      false
+    end
+
+    def total_bytes
+      self.byte_count.snapshot
+    end
+
+    def base_type_bytes
+      check_fit_base_type
+      @@TypeDefs[base_type_number.snapshot][3]
+    end
+
     def undefined_value
+      check_fit_base_type
+      @@TypeDefs[base_type_number.snapshot][2]
+    end
+
+    private
+
+    def check_fit_base_type
       if @@TypeDefs.length <= base_type_number.snapshot
         Log.fatal "Unknown FIT Base type #{base_type_number.snapshot}"
       end
-
-      @@TypeDefs[base_type_number.snapshot][2]
     end
 
   end

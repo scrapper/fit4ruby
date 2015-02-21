@@ -18,10 +18,22 @@ module Fit4Ruby
     message 0, 'file_id'
     field 0, 'enum', 'type', :dict => 'file'
     field 1, 'uint16', 'manufacturer', :dict => 'manufacturer'
-    field 2, 'uint16', 'product', :dict => 'product'
+    alt_field 2, 'manufacturer' do
+      field :default, 'uint16', 'product'
+      field 'garmin', 'uint16', 'garmin_product', :dict => 'product'
+    end
     field 3, 'uint32z', 'serial_number'
     field 4, 'uint32', 'time_created', :type => 'date_time'
     field 5, 'uint16', 'number'
+
+    message 12, 'sport'
+    field 0, 'enum', 'sport', :dict => 'sport'
+    field 1, 'enum', 'sub_sport', :dict => 'sub_sport'
+    field 3, 'string', 'name'
+    field 4, 'uint16', 'undocumented_field_4'
+    field 5, 'enum', 'undocumented_field_5'
+    field 6, 'enum', 'undocumented_field_6'
+    field 10, 'uint8', 'undocumented_field_10', :array => true
 
     message 18, 'session'
     field 0, 'enum', 'event', :dict => 'event'
@@ -43,6 +55,8 @@ module Fit4Ruby
     field 17, 'uint8', 'max_heart_rate', :unit => 'bpm'
     field 18, 'uint8', 'avg_running_cadence', :unit => 'strides/min'
     field 19, 'uint8', 'max_running_cadence', :unit => 'strides/min'
+    field 20, 'uint16', 'avg_power', :unit => 'watts'
+    field 21, 'uint16', 'max_power', :unit => 'watts'
     field 22, 'uint16', 'total_ascent', :unit => 'm'
     field 23, 'uint16', 'total_descent', :unit => 'm'
     field 24, 'uint8', 'total_training_effect', :scale => 10
@@ -54,13 +68,45 @@ module Fit4Ruby
     field 30, 'sint32', 'nec_long', :type => 'coordinate'
     field 31, 'sint32', 'swc_lat', :type => 'coordinate'
     field 32, 'sint32', 'swc_long', :type => 'coordinate'
+    field 33, 'uint16', 'undefined_value_33'
+    field 34, 'uint16', 'normalized_power', :unit => 'watts'
+    field 35, 'uint16', 'training_stress_score', :scale => 10, :unit => 'tss'
+    field 36, 'uint16', 'intensity_factor', :scale => 1000, :unit => 'if'
+    field 37, 'uint16', 'left_right_balance', :dict => 'left_right_balance_100'
+    field 41, 'uint32', 'avg_stroke_count', :scale => 10, :unit => 'strokes/lap'
+    field 42, 'uint16', 'avg_stroke_distance', :scale => 100, :unit => 'm'
+    field 43, 'enum', 'swim_stroke', :dict => 'swim_stroke'
+    field 44, 'uint16', 'pool_length', :scale => 100, :unit => 'm'
+    field 45, 'uint16', 'undefined_value_45'
+    field 46, 'enum', 'pool_length_unit', :dict => 'display_measure'
+    field 47, 'uint16', 'num_active_length', :unit => 'lengths'
+    field 48, 'uint32', 'total_work', :unit => 'J'
+    field 57, 'sint8', 'avg_temperature', :unit => 'C'
+    field 58, 'sint8', 'max_temperature', :unit => 'C'
+    field 65, 'uint32', 'time_in_hr_zone', :array => true, :scale => 1000, :unit => 's'
+    field 68, 'uint32', 'time_in_power_zone', :array => true, :scale => 1000, :unit => 's'
+    field 78, 'uint32', 'undocumented_field_78'
+    field 79, 'uint16', 'undocumented_field_79'
+    field 80, 'uint16', 'undocumented_field_80'
     field 81, 'enum', 'undocumented_field_81'
     field 89, 'uint16', 'avg_vertical_oscillation', :scale => 10, :unit => 'mm'
     field 90, 'uint16', 'avg_stance_time_percent', :scale => 100, :unit => 'percent'
     field 91, 'uint16', 'avg_stance_time', :scale => 10, :unit => 'ms'
-    field 92, 'uint8', 'avg_fraction_cadence', :scale => 128
-    field 93, 'uint8', 'max_fractional_cadence', :scale => 128
-    field 94, 'uint8', 'total_fractional_cycles', :scale => 128
+    field 92, 'uint8', 'avg_fractional_cadence', :scale => 128, :unit => 'rpm'
+    field 93, 'uint8', 'max_fractional_cadence', :scale => 128, :unit => 'rpm'
+    field 94, 'uint8', 'total_fractional_cycles', :scale => 128, :unit => 'cycles'
+    field 95, 'uint16', 'avg_total_hemoglobin_conc', :array => true, :scale => 100, :unit => 'g/dL'
+    field 96, 'uint16', 'min_total_hemoglobin_conc', :array => true, :scale => 100, :unit => 'g/dL'
+    field 97, 'uint16', 'max_total_hemoglobin_conc', :array => true, :scale => 100, :unit => 'g/dL'
+    field 101, 'uint8', 'avg_left_torque_effectiveness', :scale => 2, :unit => 'percent'
+    field 102, 'uint8', 'avg_right_torque_effectiveness', :scale => 2, :unit => 'percent'
+    field 103, 'uint8', 'avg_left_pedal_smoothness', :scale => 2, :unit => 'percent'
+    field 104, 'uint8', 'avg_right_pedal_smoothness', :scale => 2, :unit => 'percent'
+    field 105, 'uint8', 'avg_combined_pedal_smoothness', :scale => 2, :unit => 'percent'
+    field 107, 'uint16', 'undefined_value_107'
+    field 108, 'uint16', 'undefined_value_108'
+    field 109, 'uint8', 'undefined_value_109'
+    field 110, 'string', 'undefined_value_110'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
     field 254, 'uint16', 'message_index'
 
@@ -84,6 +130,8 @@ module Fit4Ruby
     field 16, 'uint8', 'max_heart_rate', :unit => 'bpm'
     field 17, 'uint8', 'avg_running_cadence', :unit => 'strides'
     field 18, 'uint8', 'max_running_cadence', :unit => 'strides'
+    field 19, 'uint16', 'avg_power', :unit => 'watts'
+    field 20, 'uint16', 'max_power', :unit => 'watts'
     field 21, 'uint16', 'total_ascent', :unit => 'm'
     field 22, 'uint16', 'total_descent', :unit => 'm'
     field 23, 'enum', 'intensity', :dict => 'intensity'
@@ -94,15 +142,35 @@ module Fit4Ruby
     field 28, 'sint32', 'nec_long', :type => 'coordinate'
     field 29, 'sint32', 'swc_lat', :type => 'coordinate'
     field 30, 'sint32', 'swc_long', :type => 'coordinate'
+    field 32, 'uint16', 'num_length', :unit => 'lengths'
+    field 33, 'uint16', 'normalized_power', :unit => 'watts'
+    field 34, 'uint16', 'left_right_balance', :dict => 'left_right_balance_100'
+    field 35, 'uint16', 'first_length_index'
+    field 37, 'uint16', 'avg_stroke_distance', :scale => 100, :unit => 'm'
+    field 38, 'enum', 'swim_stroke', :dict => 'swim_stroke'
     field 39, 'enum', 'sub_sport', :dict => 'sub_sport'
+    field 40, 'uint16', 'num_active_length', :unit => 'lengths'
+    field 41, 'uint32', 'total_work', :scale => 'J'
+    field 57, 'uint32', 'time_in_hr_zone', :array => true, :scale => 1000, :unit => 's'
+    field 60, 'uint32', 'avg_pos_vertical_speed', :scale => 1000, :unit => 'm/s'
+    field 70, 'uint32', 'undefined_value_70'
     field 71, 'uint16', 'wkt_step_index'
     field 72, 'enum', 'undocumented_field_72'
+    field 73, 'uint16', 'undefined_value_73'
     field 77, 'uint16', 'avg_vertical_oscillation', :scale => 10, :unit => 'mm'
     field 78, 'uint16', 'avg_stance_time_percent', :scale => 100, :unit => 'percent'
     field 79, 'uint16', 'avg_stance_time', :scale => 10, :unit => 'ms'
     field 80, 'uint8', 'avg_fractional_cadence', :scale => 128
     field 81, 'uint8', 'max_fractional_cadence', :scale => 128
     field 82, 'uint8', 'total_fractional_cycles', :scale => 128
+    field 90, 'uint16', 'undefined_value_90'
+    field 91, 'uint8', 'avg_left_torque_effectiveness', :scale => 2, :unit => 'percent'
+    field 92, 'uint8', 'avg_right_torque_effectiveness', :scale => 2, :unit => 'percent'
+    field 93, 'uint8', 'avg_left_pedal_smoothness', :scale => 2, :unit => 'percent'
+    field 94, 'uint8', 'avg_right_pedal_smoothness', :scale => 2, :unit => 'percent'
+    field 95, 'uint8', 'avg_combined_pedal_smoothness', :scale => 2, :unit => 'percent'
+    field 96, 'uint16', 'undefined_value_96'
+    field 97, 'uint16', 'undefined_value_97'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
     field 254, 'uint16', 'message_index'
 
@@ -119,13 +187,23 @@ module Fit4Ruby
     field 41, 'uint16', 'stance_time', :scale => 10, :unit => 'ms'
     field 42, 'enum', 'activity_type', :dict => 'activity_type'
     field 53, 'uint8', 'fractional_cadence', :scale => 128 # Just a guess
+    field 61, 'uint16', 'undefined_value_61'
+    field 66, 'sint16', 'undefined_value_66'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     message 21, 'event'
     field 0, 'enum', 'event', :dict => 'event'
     field 1, 'enum', 'event_type', :dict => 'event_type'
     field 2, 'uint16', 'data16'
-    field 3, 'uint32', 'data'
+    alt_field 3, 'event' do
+      field :default, 'uint32', 'data'
+      field 'timer', 'enum', 'timer_trigger', :dict => 'timer_trigger'
+      field 'course_point', 'enum', 'message_index', :dict => 'message_index'
+      field 'battery', 'uint16', 'battery_level', :scale => 1000, :unit => 'V'
+      field 'recovery_hr', 'uint32', 'recovery_hr', :unit => 'bpm'
+      field 'recovery_time', 'uint32', 'recovery_time', :unit => 'min'
+      field 'vo2max', 'uint32', 'vo2max'
+    end
     field 4, 'uint8', 'event_group'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
@@ -138,6 +216,8 @@ module Fit4Ruby
     field 3, 'uint8', 'Satellite 4'
     field 4, 'uint8', 'Satellite 5'
     field 5, 'enum', 'lock_status'
+    field 6, 'uint8', 'undocumented_field_6' # First found in FR920XT
+    field 14, 'uint8', 'undocumented_field_14' # First found in FR920XT
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     message 23, 'device_info'
@@ -187,6 +267,17 @@ module Fit4Ruby
     field 0, 'uint16', 'software_version'
     field 1, 'uint8', 'hardware_version'
 
+    message 72, 'training_file'
+    field 0, 'enum', 'type'
+    field 1, 'uint16', 'manufacturer', :dict => 'manufacturer'
+    field 2, 'uint16', 'product', :dict => 'product'
+    field 3, 'uint32z', 'serial_number'
+    field 4, 'uint32', 'time_created', :type => 'date_time'
+    field 253, 'uint32', 'timestamp', :type => 'date_time'
+
+    message 78, 'hrv'
+    field 0, 'uint16', 'time', :array => true, :scale => 1000, :unit => 's'
+
     # Not part of the official ANT SDK doc
     message 79, 'user_profile'
     field 0, 'uint16', 'undocumented_field_0' # seems to strongly correlate with vo2max
@@ -228,6 +319,8 @@ module Fit4Ruby
     field 8, 'uint8', 'undocumented_field_8'
     field 9, 'uint16', 'recovery_time', :scale => 60, :unit => 'hours'
     field 10, 'uint16', 'undocumented_field_10' # always seems to be 340
+    field 11, 'enum', 'undocumented_field_11'
+    field 12, 'enum', 'undocumented_field_12'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     # Not part of the official ANT SDK doc

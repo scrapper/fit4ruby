@@ -99,7 +99,7 @@ module Fit4Ruby
     # @return recovery time in seconds.
     def recovery_time
       @events.each do |e|
-        return e.data if e.event == 'recovery_time'
+        return e.recovery_time if e.event == 'recovery_time'
       end
 
       nil
@@ -109,7 +109,7 @@ module Fit4Ruby
     # based on multiple previous activities.
     def vo2max
       @events.each do |e|
-        return e.data if e.event == 'vo2max'
+        return e.vo2max if e.event == 'vo2max'
       end
 
       nil
