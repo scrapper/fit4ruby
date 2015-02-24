@@ -24,8 +24,8 @@ module Fit4Ruby
 
       # Create instance variables that correspond to every field of the
       # corresponding FIT data record.
-      @message.fields.each do |field_number, field|
-        create_instance_variable(field.name)
+      @message.fields_by_name.each do |name, field|
+        create_instance_variable(name)
       end
       @meta_field_units = {}
       @timestamp = Time.now
@@ -44,14 +44,14 @@ module Fit4Ruby
                  "#{@message.name} (#{@message.number}).")
         return
       end
-      instance_variable_set('@' + name, value)
+      instance_variable_set(ivar_name, value)
     end
 
     def get(name)
       ivar_name = '@' + name
       return nil unless instance_variable_defined?(ivar_name)
 
-      instance_variable_get('@' + name)
+      instance_variable_get(ivar_name)
     end
 
     def get_as(name, to_unit)
@@ -61,7 +61,7 @@ module Fit4Ruby
       if @meta_field_units.include?(name)
         unit = @meta_field_units[name]
       else
-        field = @message.find_by_name(name)
+        field = @message.fields_by_name[name]
         unless (unit = field.opts[:unit])
           Log.fatal "Field #{name} has no unit"
         end
@@ -71,15 +71,15 @@ module Fit4Ruby
     end
 
     def ==(fdr)
-      @message.fields.each do |field_number, field|
-        ivar_name = '@' + field.name
+      @message.fields_by_name.each do |name, field|
+        ivar_name = '@' + name
         v1 = field.fit_to_native(field.native_to_fit(
           instance_variable_get(ivar_name)))
         v2 = field.fit_to_native(field.native_to_fit(
           fdr.instance_variable_get(ivar_name)))
 
         unless v1 == v2
-          Log.error "#{field.name}: #{v1} != #{v2}"
+          Log.error "#{name}: #{v1} != #{v2}"
           return false
         end
       end
@@ -92,16 +92,22 @@ module Fit4Ruby
     end
 
     def write(io, id_mapper)
-      global_message_number = @message.number
+      # Construct a GlobalFitMessage object that matches exactly the provided
+      # set of fields. It does not contain any AltField objects.
+      fields = {}
+      @message.fields_by_name.each_key do |name|
+        fields[name] = instance_variable_get('@' + name)
+      end
+      global_fit_message = @message.construct(fields)
 
       # Map the global message number to the current local message number.
-      unless (local_message_number = id_mapper.get_local(global_message_number))
+      unless (local_message_number = id_mapper.get_local(global_fit_message))
         # If the current dictionary does not contain the global message
         # number, we need to create a new entry for it. The index in the
         # dictionary is the local message number.
-        local_message_number = id_mapper.add_global(global_message_number)
+        local_message_number = id_mapper.add_global(global_fit_message)
         # Write the definition of the global message number to the file.
-        @message.write(io, local_message_number)
+        global_fit_message.write(io, local_message_number)
       end
 
       # Write data record header.
@@ -113,7 +119,7 @@ module Fit4Ruby
 
       # Create a BinData::Struct object to store the data record.
       fields = []
-      @message.fields.each do |field_number, field|
+      global_fit_message.fields_by_number.each do |field_number, field|
         bin_data_type = FitDefinitionField.fit_type_to_bin_data(field.type)
         fields << [ bin_data_type, field.name ]
       end
@@ -121,7 +127,7 @@ module Fit4Ruby
 
       # Fill the BinData::Struct object with the values from the corresponding
       # instance variables.
-      @message.fields.each do |field_number, field|
+      global_fit_message.fields_by_number.each do |field_number, field|
         iv = "@#{field.name}"
         if instance_variable_defined?(iv) &&
            !(iv_value = instance_variable_get(iv)).nil?
@@ -140,7 +146,7 @@ module Fit4Ruby
 
     def inspect
       fields = {}
-      @message.fields.each do |field_number, field|
+      @message.fields_by_name.each do |name, field|
         ivar_name = '@' + field.name
         fields[field.name] = instance_variable_get(ivar_name)
       end

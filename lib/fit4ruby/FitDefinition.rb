@@ -15,6 +15,13 @@ require 'fit4ruby/FitDefinitionField'
 
 module Fit4Ruby
 
+  # The FitDefinition contains the blueprints for FitMessageRecord segments of
+  # FIT files. Before a message record can occur in a FIT file, its definition
+  # must be included in the FIT file. The definition holds enough information
+  # about the message record to define its size. It also contains some basic
+  # information how to interpret the data in the record. To fully understand
+  # the message record data the full definition in the GlobalFitMessage is
+  # required.
   class FitDefinition < BinData::Record
 
     hide :reserved
@@ -40,7 +47,7 @@ module Fit4Ruby
     end
 
     def setup(fit_message_definition)
-      fit_message_definition.fields.each do |number, f|
+      fit_message_definition.fields_by_number.each do |number, f|
         fdf = FitDefinitionField.new
         fdf.field_definition_number = number
         fdf.set_type(f.type)

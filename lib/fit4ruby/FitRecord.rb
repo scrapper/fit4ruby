@@ -19,6 +19,10 @@ require 'fit4ruby/Activity'
 
 module Fit4Ruby
 
+  # The FitRecord is a basic building block of a FIT file. It can either
+  # contain a definition of a message record or an actual message record with
+  # FIT data. A FIT record always starts with a header that describes what
+  # kind of record this is.
   class FitRecord
 
     def initialize(definitions)
@@ -45,12 +49,16 @@ module Fit4Ruby
           if filter
             @number = @definitions[local_message_type].global_message_number
             index = (record_counters[@number] += 1)
+
+            # Check if we have a filter defined to collect raw dumps of the
+            # data in the message records. The dump is collected in @fields
+            # for later output.
             if (filter.record_numbers.nil? ||
                 filter.record_numbers.include?(@number)) &&
                (filter.record_indexes.nil? ||
                 filter.record_indexes.include?(index))
               @name = definition.name
-              @fields = {}
+              @fields = []
             end
           end
           definition.read(io, activity, filter, @fields)
@@ -67,10 +75,13 @@ module Fit4Ruby
     def dump
       return unless @fields
 
-      puts "Message #{@number}: #{@name}" unless @fields.empty?
-      @fields.each do |field, value|
-        puts " [#{"%-7s" % field.type(true)}] #{field.name}: " +
-             "#{field.to_s(value)}"
+      begin
+        puts "Message #{@number}: #{@name}" unless @fields.empty?
+        @fields.each do |type, name, value|
+          puts " [#{"%-7s" % type}] #{name}: " + "#{value}"
+        end
+      rescue Errno::EPIPE
+        # Avoid ugly error message when aborting a less/more pipe.
       end
     end
 

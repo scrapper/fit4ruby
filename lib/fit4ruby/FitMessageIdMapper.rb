@@ -14,14 +14,14 @@ module Fit4Ruby
 
   class FitMessageIdMapper
 
-    class Entry < Struct.new(:global_id, :last_use)
+    class Entry < Struct.new(:global_message, :last_use)
     end
 
     def initialize
       @entries = Array.new(16, nil)
     end
 
-    def add_global(id)
+    def add_global(message)
       unless (slot = @entries.index { |e| e.nil? })
         # No more free slots. We have to find the least recently used one.
         slot = 0
@@ -31,14 +31,14 @@ module Fit4Ruby
           end
         end
       end
-      @entries[slot] = Entry.new(id, Time.now)
+      @entries[slot] = Entry.new(message, Time.now)
 
       slot
     end
 
-    def get_local(id)
+    def get_local(message)
       0.upto(15) do |i|
-        if (entry = @entries[i]) && entry.global_id == id
+        if (entry = @entries[i]) && entry.global_message == message
           entry.last_use = Time.now
           return i
         end

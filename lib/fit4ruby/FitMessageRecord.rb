@@ -16,6 +16,12 @@ require 'fit4ruby/GlobalFitMessage'
 
 module Fit4Ruby
 
+  # The FitMessageRecord models a part of the FIT file that contains the
+  # FIT message records. Each message record has a number, a local type and a
+  # set of data fields. The content of a FitMessageRecord is defined by the
+  # FitDefinition. This class is only used for reading data from a FIT file.
+  # For writing FIT message records, the class FitDataRecord and its
+  # decendents are used.
   class FitMessageRecord
 
     attr_reader :global_message_number, :name, :message_record
@@ -38,7 +44,15 @@ module Fit4Ruby
 
       obj = @name == 'activity' ? activity : activity.new_fit_data_record(@name)
 
-      @definition.fields.each do |field|
+      # It's important to ensure that fields are sorted by their definition
+      # number so that alternative fields are always processed after their
+      # selection fields have been processed.
+      sorted_fields = @definition.fields.sort do |f1, f2|
+        f1.field_definition_number.snapshot <=>
+        f2.field_definition_number.snapshot
+      end
+
+      sorted_fields.each do |field|
         value = @message_record[field.name].snapshot
         # Strings are null byte terminated. There may be more bytes in the
         # file, but we have to discard all bytes from the first null byte
@@ -47,17 +61,47 @@ module Fit4Ruby
           value = value[0..(null_byte - 1)]
         end
 
-        obj.set(field.name, field.to_machine(value)) if obj
+        field_name, field_def = get_field_name_and_global_def(field, obj)
+        obj.set(field_name, field.to_machine(value)) if obj
         if filter && fields_dump &&
            (filter.field_names.nil? ||
-            filter.field_names.include?(field.name)) &&
+            filter.field_names.include?(field_name)) &&
            (value != field.undefined_value || !filter.ignore_undef)
-          fields_dump[field] = value
+          fields_dump << [ field.type(true), field_name,
+                           (field_def ? field_def : field).to_s(value) ]
         end
       end
     end
 
     private
+
+    def get_field_name_and_global_def(field, obj)
+      # If we don't have a corresponding GlobalFitMessage definition, we can't
+      # tell if the field is an alternative or not. We don't treat it as such.
+      return [ field.name, nil ] unless @gfm
+
+      field_def_number = field.field_definition_number.snapshot
+      # Get the corresponding GlobalFitMessage field definition.
+      field_def = @gfm.fields_by_number[field_def_number]
+      # If it's not an AltField, we just use the already given name.
+      unless field_def.is_a?(GlobalFitMessage::AltField)
+        return [ field.name, nil ]
+      end
+
+      # We have an AltField. Now we need to find the selection field and its
+      # value.
+      ref_field = field_def.ref_field
+      ref_value = obj.get(ref_field)
+
+      # Based on that value, we select the Field of the AltField.
+      selected_field = field_def.fields[ref_value] ||
+                       field_def.fields[:default]
+      Log.fatal "The value #{ref_value} of field #{ref_field} does not match " +
+                "any selection of alternative field #{field_def_number} in " +
+                "GlobalFitMessage #{@gfm.name}" unless selected_field
+
+      [ selected_field.name, selected_field ]
+    end
 
     def produce(definition)
       fields = []
@@ -70,7 +114,8 @@ module Fit4Ruby
         elsif field.is_array?
           field_def = [ :array, field.name,
                         { :type => field.type.intern,
-                          :initial_length => field.total_bytes / field.base_type_bytes } ]
+                          :initial_length => field.total_bytes /
+                                             field.base_type_bytes } ]
         end
         fields << field_def
       end

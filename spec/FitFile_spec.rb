@@ -16,7 +16,7 @@ describe Fit4Ruby do
 
   before(:each) do
     a = Fit4Ruby::Activity.new
-    a.total_timer_time = 30 * 60
+    a.total_timer_time = 30 * 60.0
     a.new_user_profile({ :age => 33, :height => 1.78, :weight => 73.0,
                          :gender => 'male', :activity_class => 4.0,
                          :max_hr => 178 })
@@ -50,9 +50,9 @@ describe Fit4Ruby do
     a.new_session({ :timestamp => ts })
     a.new_event({ :timestamp => ts, :event => 'recovery_time',
                   :event_type => 'marker',
-                  :data => 2160 })
+                  :recovery_time => 2160 })
     a.new_event({ :timestamp => ts, :event => 'vo2max',
-                  :event_type => 'marker', :data => 52 })
+                  :event_type => 'marker', :vo2max => 52 })
     a.new_event({ :timestamp => ts, :event => 'timer',
                   :event_type => 'stop_all' })
     a.new_device_info({ :timestamp => ts, :device_index => 0 })
@@ -61,7 +61,7 @@ describe Fit4Ruby do
                         :battery_status => 'low' })
     ts += 120
     a.new_event({ :timestamp => ts, :event => 'recovery_hr',
-                  :event_type => 'marker', :data => 132 })
+                  :event_type => 'marker', :recovery_hr => 132 })
 
     a.aggregate
 

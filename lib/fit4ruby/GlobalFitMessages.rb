@@ -18,7 +18,10 @@ module Fit4Ruby
     message 0, 'file_id'
     field 0, 'enum', 'type', :dict => 'file'
     field 1, 'uint16', 'manufacturer', :dict => 'manufacturer'
-    field 2, 'uint16', 'product', :dict => 'product'
+    alt_field 2, 'manufacturer' do
+      field :default, 'uint16', 'product'
+      field 'garmin', 'uint16', 'garmin_product', :dict => 'product'
+    end
     field 3, 'uint32z', 'serial_number'
     field 4, 'uint32', 'time_created', :type => 'date_time'
     field 5, 'uint16', 'number'
@@ -192,7 +195,15 @@ module Fit4Ruby
     field 0, 'enum', 'event', :dict => 'event'
     field 1, 'enum', 'event_type', :dict => 'event_type'
     field 2, 'uint16', 'data16'
-    field 3, 'uint32', 'data'
+    alt_field 3, 'event' do
+      field :default, 'uint32', 'data'
+      field 'timer', 'enum', 'timer_trigger', :dict => 'timer_trigger'
+      field 'course_point', 'enum', 'message_index', :dict => 'message_index'
+      field 'battery', 'uint16', 'battery_level', :scale => 1000, :unit => 'V'
+      field 'recovery_hr', 'uint32', 'recovery_hr', :unit => 'bpm'
+      field 'recovery_time', 'uint32', 'recovery_time', :unit => 'min'
+      field 'vo2max', 'uint32', 'vo2max'
+    end
     field 4, 'uint8', 'event_group'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
