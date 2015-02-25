@@ -27,6 +27,9 @@ module Fit4Ruby
       @message.fields_by_name.each do |name, field|
         create_instance_variable(name)
       end
+      # Meta fields are additional fields that are not part of the FIT
+      # specification but are convenient to have. These are typcially
+      # aggregated or converted values of regular fields.
       @meta_field_units = {}
       @timestamp = Time.now
     end

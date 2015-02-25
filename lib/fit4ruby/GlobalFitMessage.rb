@@ -197,9 +197,11 @@ module Fit4Ruby
       @fields_by_number = {}
     end
 
+    # Two GlobalFitMessage objects are considered equal if they have the same
+    # number, name and list of named fields.
     def ==(m)
       @number == m.number && @name == m.name &&
-        @fields_by_name == m.fields_by_name
+        @fields_by_name.keys.sort == m.fields_by_name.keys.sort
     end
 
     # Define a new Field for this message definition.
