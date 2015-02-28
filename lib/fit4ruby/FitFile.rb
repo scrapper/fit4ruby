@@ -3,7 +3,7 @@
 #
 # = FitFile.rb -- Fit4Ruby - FIT file processing library for Ruby
 #
-# Copyright (c) 2014 by Chris Schlaeger <cs@taskjuggler.org>
+# Copyright (c) 2014, 2015 by Chris Schlaeger <cs@taskjuggler.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of version 2 of the GNU General Public License as
@@ -12,6 +12,7 @@
 
 require 'fit4ruby/Log'
 require 'fit4ruby/FitHeader'
+require 'fit4ruby/FitFileEntity'
 require 'fit4ruby/FitRecord'
 require 'fit4ruby/FitFilter'
 require 'fit4ruby/FitMessageIdMapper'
@@ -39,7 +40,7 @@ module Fit4Ruby
 
       check_crc(io, header.end_pos)
 
-      activity = Activity.new
+      entity = FitFileEntity.new
       # This Array holds the raw data of the records that may be needed to
       # dump a human readable form of the FIT file.
       records = []
@@ -48,7 +49,7 @@ module Fit4Ruby
       record_counters = Hash.new { 0 }
       while io.pos < header.end_pos
         record = FitRecord.new(definitions)
-        record.read(io, activity, filter, record_counters)
+        record.read(io, entity, filter, record_counters)
         records << record if filter
       end
 
@@ -57,11 +58,11 @@ module Fit4Ruby
       header.dump if filter && filter.record_numbers.nil?
       dump_records(records) if filter
 
-      activity.check
-      activity
+      entity.check
+      entity.top_level_record
     end
 
-    def write(file_name, activity)
+    def write(file_name, top_level_record)
       begin
         io = ::File.open(file_name, 'wb+')
       rescue StandardError => e
@@ -74,7 +75,7 @@ module Fit4Ruby
       # Move the pointer behind the header section.
       io.seek(start_pos)
       id_mapper = FitMessageIdMapper.new
-      activity.write(io, id_mapper)
+      top_level_record.write(io, id_mapper)
       end_pos = io.pos
 
       crc = write_crc(io, start_pos, end_pos)

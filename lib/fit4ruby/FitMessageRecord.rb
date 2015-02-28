@@ -3,7 +3,7 @@
 #
 # = FitMessageRecord.rb -- Fit4Ruby - FIT file processing library for Ruby
 #
-# Copyright (c) 2014 by Chris Schlaeger <cs@taskjuggler.org>
+# Copyright (c) 2014, 2015 by Chris Schlaeger <cs@taskjuggler.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of version 2 of the GNU General Public License as
@@ -13,6 +13,7 @@
 require 'bindata'
 require 'fit4ruby/Log'
 require 'fit4ruby/GlobalFitMessage'
+require 'fit4ruby/FitFileEntity'
 
 module Fit4Ruby
 
@@ -39,10 +40,16 @@ module Fit4Ruby
       @message_record = produce(definition)
     end
 
-    def read(io, activity, filter = nil, fields_dump = nil)
+    def read(io, entity, filter = nil, fields_dump = nil)
       @message_record.read(io)
 
-      obj = @name == 'activity' ? activity : activity.new_fit_data_record(@name)
+      if @name == 'file_id'
+        unless (entity_type = @message_record['type'].snapshot)
+          Log.fatal "Corrupted FIT file: file_id record has no type definition"
+        end
+        entity.set_type(entity_type)
+      end
+      obj = entity.new_fit_data_record(@name)
 
       # It's important to ensure that fields are sorted by their definition
       # number so that alternative fields are always processed after their

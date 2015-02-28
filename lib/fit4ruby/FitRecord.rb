@@ -3,7 +3,7 @@
 #
 # = FitRecord.rb -- Fit4Ruby - FIT file processing library for Ruby
 #
-# Copyright (c) 2014 by Chris Schlaeger <cs@taskjuggler.org>
+# Copyright (c) 2014, 2015 by Chris Schlaeger <cs@taskjuggler.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of version 2 of the GNU General Public License as
@@ -15,7 +15,7 @@ require 'fit4ruby/FitRecordHeader'
 require 'fit4ruby/FitDefinition'
 require 'fit4ruby/FitMessageRecord'
 require 'fit4ruby/FitFilter'
-require 'fit4ruby/Activity'
+require 'fit4ruby/FitFileEntity'
 
 module Fit4Ruby
 
@@ -30,7 +30,7 @@ module Fit4Ruby
       @name = @number = @fields = nil
     end
 
-    def read(io, activity, filter, record_counters)
+    def read(io, entity, filter, record_counters)
       header = FitRecordHeader.read(io)
 
       if !header.compressed?
@@ -61,7 +61,7 @@ module Fit4Ruby
               @fields = []
             end
           end
-          definition.read(io, activity, filter, @fields)
+          definition.read(io, entity, filter, @fields)
         end
       else
         # process compressed timestamp header

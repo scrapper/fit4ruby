@@ -74,10 +74,11 @@ describe Fit4Ruby do
     File.delete(fit_file) if File.exists?(fit_file)
     Fit4Ruby.write(fit_file, @activity)
     File.exists?(fit_file).should be_true
+    puts File.absolute_path(fit_file)
 
     b = Fit4Ruby.read(fit_file)
     b.should == @activity
-    #File.delete(fit_file)
+    File.delete(fit_file)
   end
 
 end
