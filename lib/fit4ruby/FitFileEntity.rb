@@ -44,7 +44,8 @@ module Fit4Ruby
         @top_level_record = Activity.new
         @type = 'activity'
       else
-        Log.fatal "Unsupported FIT file type #{type}"
+        Log.error "Unsupported FIT file type #{type}"
+        return nil
       end
 
       @top_level_record
@@ -52,7 +53,7 @@ module Fit4Ruby
 
     # Add a new data record to the top-level object.
     def new_fit_data_record(type)
-      ensure_top_level
+      return nil unless @top_level_record
 
       # We already have a record for the top-level type. Just return it.
       return @top_level_record if type == @type
@@ -64,22 +65,14 @@ module Fit4Ruby
 
     # Check the consistency of the top-level object.
     def check
-      ensure_top_level
+      return false unless @top_level_record
       @top_level_record.check
     end
 
     # Write the top-level object into a IO stream.
     def write(io, id_mapper)
-      ensure_top_level
+      return unless @top_level_record
       @top_level_record.write(io, id_mapper)
-    end
-
-    private
-
-    def ensure_top_level
-      unless @top_level_record
-        Log.fatal "FIT file type has not been set yet"
-      end
     end
 
   end

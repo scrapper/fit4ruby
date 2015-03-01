@@ -70,6 +70,7 @@ module Fit4Ruby
 
         field_name, field_def = get_field_name_and_global_def(field, obj)
         obj.set(field_name, field.to_machine(value)) if obj
+
         if filter && fields_dump &&
            (filter.field_names.nil? ||
             filter.field_names.include?(field_name)) &&
@@ -98,7 +99,7 @@ module Fit4Ruby
       # We have an AltField. Now we need to find the selection field and its
       # value.
       ref_field = field_def.ref_field
-      ref_value = obj.get(ref_field)
+      ref_value = obj ? obj.get(ref_field) : :default
 
       # Based on that value, we select the Field of the AltField.
       selected_field = field_def.fields[ref_value] ||
