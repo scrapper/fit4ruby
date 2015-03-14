@@ -1,4 +1,4 @@
 module Fit4Ruby
   # The version number of the library.
-  VERSION = '0.0.4'
+  VERSION = '0.0.5'
 end

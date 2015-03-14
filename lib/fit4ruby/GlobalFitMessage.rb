@@ -161,7 +161,13 @@ module Fit4Ruby
 
       def field(ref_value, type, name, opts = {})
         field = Field.new(type, name, opts)
-        @fields[ref_value] = field
+        if ref_value.respond_to?('each')
+          ref_value.each do |rv|
+            @fields[rv] = field
+          end
+        else
+          @fields[ref_value] = field
+        end
         @message.register_field_by_name(field, name)
       end
 
