@@ -44,7 +44,8 @@ describe Fit4Ruby do
       })
 
       if mins > 0 && mins % 5 == 0
-        a.new_lap({ :timestamp => ts, :sport => 'running' })
+        a.new_lap({ :timestamp => ts, :sport => 'running',
+                    :total_cycles => 195 })
       end
     end
     a.new_session({ :timestamp => ts, :sport => 'running' })

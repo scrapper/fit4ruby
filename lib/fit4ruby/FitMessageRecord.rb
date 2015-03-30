@@ -51,12 +51,15 @@ module Fit4Ruby
       end
       obj = entity.new_fit_data_record(@name)
 
-      # It's important to ensure that fields are sorted by their definition
-      # number so that alternative fields are always processed after their
-      # selection fields have been processed.
+      # It's important to ensure that alternative fields processed after the
+      # regular fields so that the decision field is already set.
       sorted_fields = @definition.fields.sort do |f1, f2|
-        f1.field_definition_number.snapshot <=>
-        f2.field_definition_number.snapshot
+        f1alt = is_alt_field?(f1)
+        f2alt = is_alt_field?(f2)
+        f1alt == f2alt ?
+          f1.field_definition_number.snapshot <=>
+          f2.field_definition_number.snapshot :
+          f1alt ? 1 : -1
       end
 
       sorted_fields.each do |field|
@@ -82,6 +85,14 @@ module Fit4Ruby
     end
 
     private
+
+    def is_alt_field?(field)
+      return false unless @gfm
+
+      field_def_number = field.field_definition_number.snapshot
+      field_def = @gfm.fields_by_number[field_def_number]
+      field_def.is_a?(GlobalFitMessage::AltField)
+    end
 
     def get_field_name_and_global_def(field, obj)
       # If we don't have a corresponding GlobalFitMessage definition, we can't
