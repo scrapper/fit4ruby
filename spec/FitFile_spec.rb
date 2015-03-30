@@ -44,10 +44,10 @@ describe Fit4Ruby do
       })
 
       if mins > 0 && mins % 5 == 0
-        a.new_lap({ :timestamp => ts })
+        a.new_lap({ :timestamp => ts, :sport => 'running' })
       end
     end
-    a.new_session({ :timestamp => ts })
+    a.new_session({ :timestamp => ts, :sport => 'running' })
     a.new_event({ :timestamp => ts, :event => 'recovery_time',
                   :event_type => 'marker',
                   :recovery_time => 2160 })

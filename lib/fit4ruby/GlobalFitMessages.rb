@@ -20,7 +20,7 @@ module Fit4Ruby
     field 1, 'uint16', 'manufacturer', :dict => 'manufacturer'
     alt_field 2, 'manufacturer' do
       field :default, 'uint16', 'product'
-      field 'garmin', 'uint16', 'garmin_product', :dict => 'product'
+      field 'garmin', 'uint16', 'garmin_product', :dict => 'garmin_product'
     end
     field 3, 'uint32z', 'serial_number'
     field 4, 'uint32', 'time_created', :type => 'date_time'
@@ -46,15 +46,24 @@ module Fit4Ruby
     field 7, 'uint32', 'total_elapsed_time', :type => 'duration', :scale => 1000
     field 8, 'uint32', 'total_timer_time', :type => 'duration', :scale => 1000
     field 9, 'uint32', 'total_distance', :scale => 100, :unit => 'm'
-    field 10, 'uint32', 'total_strides', :unit => 'strides'
+    alt_field 10, 'sport' do
+      field :default, 'uint32', 'total_cycles', :unit => 'cycles'
+      field [ 'running', 'walking' ], 'uint32', 'total_strides', :unit => 'strides'
+    end
     field 11, 'uint16', 'total_calories', :unit => 'kcal'
     field 13, 'uint16', 'total_fat_calories', :unit => 'kcal'
     field 14, 'uint16', 'avg_speed', :scale => 1000, :unit => 'm/s'
     field 15, 'uint16', 'max_speed', :scale => 1000, :unit => 'm/s'
     field 16, 'uint8', 'avg_heart_rate', :unit => 'bpm'
     field 17, 'uint8', 'max_heart_rate', :unit => 'bpm'
-    field 18, 'uint8', 'avg_running_cadence', :unit => 'strides/min'
-    field 19, 'uint8', 'max_running_cadence', :unit => 'strides/min'
+    alt_field 18, 'sport' do
+      field :default, 'uint8', 'avg_candence', :unit => 'rpm'
+      field 'running', 'uint8', 'avg_running_cadence', :unit => 'strides/min'
+    end
+    alt_field 19, 'sport' do
+      field :default, 'uint8', 'max_cadence', :unit => 'rpm'
+      field 'running', 'uint8', 'max_running_cadence', :unit => 'strides/min'
+    end
     field 20, 'uint16', 'avg_power', :unit => 'watts'
     field 21, 'uint16', 'max_power', :unit => 'watts'
     field 22, 'uint16', 'total_ascent', :unit => 'm'
@@ -121,22 +130,31 @@ module Fit4Ruby
     field 7, 'uint32', 'total_elapsed_time', :type => 'duration', :scale => 1000
     field 8, 'uint32', 'total_timer_time', :type => 'duration', :scale => 1000
     field 9, 'uint32', 'total_distance', :scale => 100, :unit => 'm'
-    field 10, 'uint32', 'total_strides', :unit => 'strides'
+    field 25, 'enum', 'sport', :dict => 'sport'
+    alt_field 10, 'sport' do
+      field :default, 'uint32', 'total_cycles', :unit => 'cycles'
+      field [ 'running', 'walking' ], 'uint32', 'total_strides', :unit => 'strides'
+    end
     field 11, 'uint16', 'total_calories', :unit => 'kcal'
     field 12, 'uint16', 'total_fat_calories', :unit => 'kcal'
     field 13, 'uint16', 'avg_speed', :scale => 1000, :unit => 'm/s'
     field 14, 'uint16', 'max_speed', :scale => 1000, :unit => 'm/s'
     field 15, 'uint8', 'avg_heart_rate', :unit => 'bpm'
     field 16, 'uint8', 'max_heart_rate', :unit => 'bpm'
-    field 17, 'uint8', 'avg_running_cadence', :unit => 'strides'
-    field 18, 'uint8', 'max_running_cadence', :unit => 'strides'
+    alt_field 17, 'sport' do
+      field :default, 'uint8', 'avg_candence', :unit => 'rpm'
+      field 'running', 'uint8', 'avg_running_cadence', :unit => 'strides/min'
+    end
+    alt_field 18, 'sport' do
+      field :default, 'uint8', 'max_cadence', :unit => 'rpm'
+      field 'running', 'uint8', 'max_running_cadence', :unit => 'strides/min'
+    end
     field 19, 'uint16', 'avg_power', :unit => 'watts'
     field 20, 'uint16', 'max_power', :unit => 'watts'
     field 21, 'uint16', 'total_ascent', :unit => 'm'
     field 22, 'uint16', 'total_descent', :unit => 'm'
     field 23, 'enum', 'intensity', :dict => 'intensity'
     field 24, 'enum', 'lap_trigger', :dict => 'lap_trigger'
-    field 25, 'enum', 'sport', :dict => 'sport'
     field 26, 'uint8', 'event_group'
     field 27, 'sint32', 'nec_lat', :type => 'coordinate'
     field 28, 'sint32', 'nec_long', :type => 'coordinate'
@@ -186,7 +204,7 @@ module Fit4Ruby
     field 40, 'uint16', 'stance_time_percent', :scale => 100, :unit => 'percent'
     field 41, 'uint16', 'stance_time', :scale => 10, :unit => 'ms'
     field 42, 'enum', 'activity_type', :dict => 'activity_type'
-    field 53, 'uint8', 'fractional_cadence', :scale => 128 # Just a guess
+    field 53, 'uint8', 'fractional_cadence', :scale => 128
     field 61, 'uint16', 'undefined_value_61'
     field 66, 'sint16', 'undefined_value_66'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
@@ -235,11 +253,11 @@ module Fit4Ruby
     field 11, 'uint8', 'battery_status', :dict => 'battery_status'
     field 15, 'uint32', 'rx_packets_ok' # just a guess
     field 16, 'uint32', 'rx_packets_err' # just a guess
-    field 20, 'uint8z', 'undocumented_field_20'
-    field 21, 'uint16z', 'undocumented_field_21'
-    field 22, 'enum', 'undocumented_field_22'
+    field 20, 'uint8z', 'ant_transmission_type'
+    field 21, 'uint16z', 'ant_device_number'
+    field 22, 'enum', 'ant_network', :dict => 'ant_network'
     field 23, 'uint8', 'undocumented_field_23'
-    field 25, 'enum', 'undocumented_field_25'
+    field 25, 'enum', 'source_type', :dict => 'source_type'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     message 33, 'totals'
@@ -270,7 +288,10 @@ module Fit4Ruby
     message 72, 'training_file'
     field 0, 'enum', 'type'
     field 1, 'uint16', 'manufacturer', :dict => 'manufacturer'
-    field 2, 'uint16', 'product', :dict => 'product'
+    alt_field 2, 'manufacturer' do
+      field :default, 'uint16', 'product'
+      field 'garmin', 'uint16', 'garmin_product', :dict => 'garmin_product'
+    end
     field 3, 'uint32z', 'serial_number'
     field 4, 'uint32', 'time_created', :type => 'date_time'
     field 253, 'uint32', 'timestamp', :type => 'date_time'

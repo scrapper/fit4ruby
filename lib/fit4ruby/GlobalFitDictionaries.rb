@@ -26,6 +26,12 @@ module Fit4Ruby
     entry 6, 'walking'
     entry 254, 'all'
 
+    dict 'ant_network'
+    entry 0, 'public'
+    entry 1, 'antplus'
+    entry 2, 'antfs'
+    entry 3, 'private'
+
     dict 'battery_status'
     entry 1, 'new'
     entry 2, 'good'
@@ -121,6 +127,23 @@ module Fit4Ruby
     entry 20, 'activity_summary'
     entry 28, 'monitoring_daily'
     entry 32, 'monitoring_b'
+
+    dict 'garmin_product'
+    entry 8, 'hrm_run_single_byte_product_id'
+    entry 1551, 'fenix'
+    entry 1623, 'fr620'
+    entry 1632, 'fr220'
+    entry 1752, 'hrm_run'
+    entry 1765, 'fr920xt'
+    entry 1928, 'fr620_japan'
+    entry 1929, 'fr620_china'
+    entry 1930, 'fr220_japan'
+    entry 1931, 'fr220_china'
+    entry 1967, 'fenix2'
+    entry 10007, 'sdm4'
+    entry 20119, 'training_center'
+    entry 65532, 'android_antplus_plugin'
+    entry 65534, 'connect'
 
     dict 'gender'
     entry 0, 'female'
@@ -240,6 +263,14 @@ module Fit4Ruby
     entry 2, 'auto_multi_sport'
     entry 3, 'fitness_equipment'
 
+    dict 'source_type'
+    entry 0, 'ant'
+    entry 1, 'antplus'
+    entry 2, 'bluetooth'
+    entry 3, 'bluetooth_low_enegery'
+    entry 4, 'wifi'
+    entry 5, 'local'
+
     dict 'sport'
     entry 0, 'generic'
     entry 1, 'running'
@@ -301,17 +332,6 @@ module Fit4Ruby
     entry 25, 'indoor_skiing'
     entry 26, 'cardio_training'
     entry 254, 'all'
-
-    dict 'product'
-    entry 8, 'hrm_run_single_byte_product_id'
-    entry 1623, 'fr620'
-    entry 1632, 'fr220'
-    entry 1752, 'hrm_run'
-    entry 1928, 'fr620_japan'
-    entry 1929, 'fr620_china'
-    entry 1930, 'fr220_japan'
-    entry 1931 , 'fr220_china'
-    entry 10007, 'sdm4'
 
   end
 
