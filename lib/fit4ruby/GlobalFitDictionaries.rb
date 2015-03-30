@@ -96,6 +96,7 @@ module Fit4Ruby
     entry 36, 'calibration'
     entry 37, 'vo2max' # guess
     entry 38, 'recovery_time' # guess (in minutes)
+    entry 39, 'recovery_info' # guess (in minutes, < 24 good, > 24h poor)
     entry 42, 'front_gear_change'
     entry 43, 'rear_gear_change'
 
