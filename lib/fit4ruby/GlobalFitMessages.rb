@@ -243,7 +243,10 @@ module Fit4Ruby
     field 1, 'uint8', 'device_type', :dict => 'device_type'
     field 2, 'uint16', 'manufacturer', :dict => 'manufacturer'
     field 3, 'uint32z', 'serial_number'
-    field 4, 'uint16', 'product', :dict => 'product'
+    alt_field 4, 'manufacturer' do
+      field :default, 'uint16', 'product'
+      field 'garmin', 'uint16', 'garmin_product', :dict => 'garmin_product'
+    end
     field 5, 'uint16', 'software_version', :scale => 100
     field 6, 'uint8', 'hardware_version'
     field 7, 'uint32', 'cum_operating_time', :type => 'duration'

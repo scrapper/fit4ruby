@@ -22,8 +22,9 @@ describe Fit4Ruby do
                          :max_hr => 178 })
 
     a.new_event({ :event => 'timer', :event_type => 'start_time' })
-    a.new_device_info({ :device_index => 0 })
-    a.new_device_info({ :device_index => 1, :battery_status => 'ok' })
+    a.new_device_info({ :device_index => 0, :manufacturer => 'garmin' })
+    a.new_device_info({ :device_index => 1, :manufacturer => 'garmin',
+                        :battery_status => 'ok' })
     ts = Time.now
     0.upto(a.total_timer_time / 60) do |mins|
       ts += 60
@@ -56,10 +57,11 @@ describe Fit4Ruby do
                   :event_type => 'marker', :vo2max => 52 })
     a.new_event({ :timestamp => ts, :event => 'timer',
                   :event_type => 'stop_all' })
-    a.new_device_info({ :timestamp => ts, :device_index => 0 })
+    a.new_device_info({ :timestamp => ts, :device_index => 0,
+                        :manufacturer => 'garmin' })
     ts += 1
-    a.new_device_info({ :timestamp => ts, :device_index => 1,
-                        :battery_status => 'low' })
+    a.new_device_info({ :timestamp => ts, :manufacturer => 'garmin',
+                        :device_index => 1, :battery_status => 'low' })
     ts += 120
     a.new_event({ :timestamp => ts, :event => 'recovery_hr',
                   :event_type => 'marker', :recovery_hr => 132 })

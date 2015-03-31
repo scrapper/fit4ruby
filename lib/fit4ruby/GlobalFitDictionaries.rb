@@ -172,7 +172,7 @@ module Fit4Ruby
     entry 0x8000, 'right'
 
     dict 'manufacturer'
-    entry 1, 'Garmin'
+    entry 1, 'garmin'
     entry 2, 'garmin_fr405_antfs'
     entry 3, 'zephyr'
     entry 4, 'dayton'
