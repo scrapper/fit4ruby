@@ -319,7 +319,7 @@ module Fit4Ruby
     # Not part of the official ANT SDK doc
     message 113, 'personal_records'
     field 0, 'uint16', 'longest_distance'
-    field 1, 'enum', 'sport', :dict => sport
+    field 1, 'enum', 'sport', :dict => 'sport'
     field 2, 'uint32', 'distance', :scale => 100, :unit => 'm'
     # If longest_distance is 1, field 3 is the distance, not a duration!
     field 3, 'uint32', 'duration', :scale => 1000, :type => 'duration'
