@@ -225,15 +225,14 @@ module Fit4Ruby
     field 4, 'uint8', 'event_group'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
-    # Possibly the signal quality of the best 6 satellites; Not documented in
-    # FIT SDK
-    message 22, 'gps_signals'
-    field 0, 'uint8', 'Satellite 1'
-    field 1, 'uint8', 'Satellite 2'
-    field 2, 'uint8', 'Satellite 3'
-    field 3, 'uint8', 'Satellite 4'
-    field 4, 'uint8', 'Satellite 5'
-    field 5, 'enum', 'lock_status'
+    # Possibly the status of the sensors; Not documented in FIT SDK
+    message 22, 'sensor_status'
+    field 0, 'uint8', 'undocumented_field_0' # 1 - 5 or no value seen
+    field 1, 'uint8', 'undocumented_field_1' # Always identical to field 0
+    field 2, 'uint8', 'undocumented_field_2' # 1 - 5 or no value seen
+    field 3, 'uint8', 'undocumented_field_3' # 1, 3, 5 or no value seen
+    field 4, 'uint8', 'undocumented_field_4' # 1 - 3 or no value seen
+    field 5, 'enum', 'undocumented_field_5' # 0 or 3 seen
     field 6, 'uint8', 'undocumented_field_6' # First found in FR920XT
     field 14, 'uint8', 'undocumented_field_14' # First found in FR920XT
     field 253, 'uint32', 'timestamp', :type => 'date_time'
