@@ -95,6 +95,20 @@ module Fit4Ruby
       speed / @sessions.length
     end
 
+    # Return the heart rate when the activity recording was last stopped.
+    def ending_hr
+      @records.empty? ? nil : @records[-1].heart_rate
+    end
+
+    # Return the measured recovery heart rate.
+    def recovery_hr
+      @events.each do |e|
+        return e.recovery_hr if e.event == 'recovery_hr'
+      end
+
+      nil
+    end
+
     # Returns the predicted recovery time needed after this activity.
     # @return recovery time in seconds.
     def recovery_time
