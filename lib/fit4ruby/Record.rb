@@ -40,7 +40,11 @@ module Fit4Ruby
 
     # Convert the 'speed' field into a running pace. The pace is measured in
     # minutes per Kilometer.
+    # @return [Float or nil] pace for this Record in m/s or nil if not
+    #         available.
     def pace
+      return nil unless @speed
+
       1000.0 / (@speed * 60.0)
     end
 
