@@ -200,6 +200,8 @@ module Fit4Ruby
     field 4, 'uint8', 'cadence', :unit => 'rpm'
     field 5, 'uint32', 'distance', :scale => 100, :unit => 'm'
     field 6, 'uint16', 'speed', :scale => 1000, :unit => 'm/s'
+    field 7, 'uint16', 'power', :unit => 'watts'
+    field 13, 'sint8', 'temperature', :unit => 'C'
     field 39, 'uint16', 'vertical_oscillation', :scale => 10, :unit => 'mm'
     field 40, 'uint16', 'stance_time_percent', :scale => 100, :unit => 'percent'
     field 41, 'uint16', 'stance_time', :scale => 10, :unit => 'ms'
