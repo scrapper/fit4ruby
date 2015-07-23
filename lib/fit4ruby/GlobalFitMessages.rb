@@ -25,6 +25,7 @@ module Fit4Ruby
     field 3, 'uint32z', 'serial_number'
     field 4, 'uint32', 'time_created', :type => 'date_time'
     field 5, 'uint16', 'number'
+    field 6, 'uint16', 'undocumented_field_6'
 
     message 12, 'sport'
     field 0, 'enum', 'sport', :dict => 'sport'
@@ -270,7 +271,7 @@ module Fit4Ruby
     field 3, 'uint32z', 'serial_number'
     alt_field 4, 'manufacturer' do
       field :default, 'uint16', 'product'
-      field 'garmin', 'uint16', 'garmin_product', :dict => 'garmin_product'
+      field [ 'garmin', 'dynastream', 'dynastream_oem' ], 'uint16', 'garmin_product', :dict => 'garmin_product'
     end
     field 5, 'uint16', 'software_version', :scale => 100
     field 6, 'uint8', 'hardware_version'
@@ -313,6 +314,29 @@ module Fit4Ruby
     field 0, 'uint16', 'software_version'
     field 1, 'uint8', 'hardware_version'
 
+    message 55, 'monitoring'
+    field 0, 'enum', 'device_index'
+    field 1, 'uint16', 'calories', :unit => 'kcal'
+    field 2, 'uint32', 'distance', :scale => 100, :unit => 'm'
+    field 5, 'enum', 'activity_type'
+    alt_field 3, 'activity_type' do
+      field :default, 'uint32', 'cycles', :scale => 2, :unit => 'cycles'
+      field [ 'walking', 'running' ], 'uint32', :unit => 'steps'
+      field [ 'cycling', 'swimming' ], 'uint32', :scale => 2, :unit => 'strokes'
+    end
+    field 4, 'uint32', 'active_time', :scale => 1000, :unit => 's'
+    field 6, 'enum', 'activity_sub_type'
+    field 7, 'enum', 'activity_level'
+    field 8, 'uint16', 'distance_16', :scale => 0.1, :unit => 'km'
+    field 9, 'uint16', 'cycles_16', :scale => 0.5, :unit => 'cycles'
+    field 10, 'uint16', 'active_time_16', :unit => 's'
+    field 11, 'uint16', 'local_timestamp'
+    field 19, 'uint16', 'active_calories', :unit => 'kcal'
+    field 24, 'byte', 'current_activity_type_intensity'
+    field 26, 'uint16', 'timestamp16', :unit => 's'
+    field 29, 'uint16', 'duration_min', :unit => 'min'
+    field 253, 'uint32', 'timestamp', :type => 'date_time'
+
     message 72, 'training_file'
     field 0, 'enum', 'type'
     field 1, 'uint16', 'manufacturer', :dict => 'manufacturer'
@@ -339,6 +363,15 @@ module Fit4Ruby
     field 7, 'sint8', 'undocumented_field_7' # seems to be always 1
     field 8, 'uint16', 'recovery_time', :scale => 60, :unit => 'hours'
     field 9, 'uint16', 'undocumented_field_9' # maybe activity measurement
+    field 253, 'uint32', 'timestamp', :type => 'date_time'
+
+    message 103, 'monitoring_info'
+    field 0, 'uint32', 'local_time', :type => 'date_time'
+    field 1, 'enum', 'activity_type', :dict => 'activity_type'
+    field 3, 'uint16', 'cycles_to_distance', :array => true
+    field 4, 'uint16', 'cycle_to_calories', :array => true, :scale => 50, :unit => 'm/cycle'
+    field 5, 'uint16', 'resting_metabolic_rate', :unit => 'kcal/day'
+    field 7, 'uint32', 'undocumented_field_7'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     # Not part of the official ANT SDK doc
