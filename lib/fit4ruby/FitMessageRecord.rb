@@ -72,7 +72,7 @@ module Fit4Ruby
         end
 
         field_name, field_def = get_field_name_and_global_def(field, obj)
-        obj.set(field_name, field.to_machine(value)) if obj
+        obj.set(field_name, v = (field_def || field).to_machine(value)) if obj
 
         if filter && fields_dump &&
            (filter.field_names.nil? ||
