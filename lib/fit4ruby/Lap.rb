@@ -63,7 +63,7 @@ module Fit4Ruby
 
     # Compute the average stride length for this Session.
     def avg_stride_length
-      return nil unless @total_strides
+      return nil unless @total_distance && @total_strides
 
       @total_distance / (@total_strides * 2.0)
     end
