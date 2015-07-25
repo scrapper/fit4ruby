@@ -3,7 +3,7 @@
 #
 # = FitFile_spec.rb -- Fit4Ruby - FIT file processing library for Ruby
 #
-# Copyright (c) 2014 by Chris Schlaeger <cs@taskjuggler.org>
+# Copyright (c) 2014, 2015 by Chris Schlaeger <cs@taskjuggler.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of version 2 of the GNU General Public License as
@@ -22,8 +22,8 @@ describe Fit4Ruby do
                          :max_hr => 178 })
 
     a.new_event({ :event => 'timer', :event_type => 'start_time' })
-    a.new_device_info({ :device_index => 0, :manufacturer => 'garmin' })
-    a.new_device_info({ :device_index => 1, :manufacturer => 'garmin',
+    a.new_device_info({ :device_index => 0, :manufacturer => 'development' })
+    a.new_device_info({ :device_index => 1, :manufacturer => 'development',
                         :battery_status => 'ok' })
     ts = Time.now
     0.upto(a.total_timer_time / 60) do |mins|
@@ -58,9 +58,9 @@ describe Fit4Ruby do
     a.new_event({ :timestamp => ts, :event => 'timer',
                   :event_type => 'stop_all' })
     a.new_device_info({ :timestamp => ts, :device_index => 0,
-                        :manufacturer => 'garmin' })
+                        :manufacturer => 'development' })
     ts += 1
-    a.new_device_info({ :timestamp => ts, :manufacturer => 'garmin',
+    a.new_device_info({ :timestamp => ts, :manufacturer => 'development',
                         :device_index => 1, :battery_status => 'low' })
     ts += 120
     a.new_event({ :timestamp => ts, :event => 'recovery_hr',
@@ -71,7 +71,7 @@ describe Fit4Ruby do
     @activity = a
   end
 
-  it 'should write a simple FIT file and read it back' do
+  it 'should write an Activity FIT file and read it back' do
     fit_file = 'test.fit'
 
     File.delete(fit_file) if File.exists?(fit_file)

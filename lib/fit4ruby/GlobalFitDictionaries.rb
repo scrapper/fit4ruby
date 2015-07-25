@@ -295,6 +295,11 @@ module Fit4Ruby
     entry 255, 'development'
     entry 5759, 'actigraphcorp'
 
+    dict 'message_index'
+    entry 0x0FFF, 'mask'
+    entry 0x7000, 'reserved'
+    entry 0x8000, 'selected'
+
     dict 'session_trigger'
     entry 0, 'activity_end'
     entry 1, 'manual'

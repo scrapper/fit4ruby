@@ -11,6 +11,7 @@
 #
 
 require 'fit4ruby/Activity'
+require 'fit4ruby/Monitoring_B'
 
 module Fit4Ruby
 
@@ -43,6 +44,9 @@ module Fit4Ruby
       when 4, 'activity'
         @top_level_record = Activity.new
         @type = 'activity'
+      when 32, 'monitoring_b'
+        @top_level_record = Monitoring_B.new
+        @type = 'monitoring_b'
       else
         Log.error "Unsupported FIT file type #{type}"
         return nil

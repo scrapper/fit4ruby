@@ -310,9 +310,14 @@ module Fit4Ruby
     field 6, 'uint8', 'event_group'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
+    message 35, 'software'
+    field 3, 'uint16', 'version', :scale => 100
+    field 5, 'string', 'part_number'
+
     message 49, 'file_creator'
     field 0, 'uint16', 'software_version'
     field 1, 'uint8', 'hardware_version'
+    field 254, 'uint16', 'message_index', :dict => 'message_index'
 
     message 55, 'monitoring'
     field 0, 'enum', 'device_index'
@@ -321,8 +326,8 @@ module Fit4Ruby
     field 5, 'enum', 'activity_type'
     alt_field 3, 'activity_type' do
       field :default, 'uint32', 'cycles', :scale => 2, :unit => 'cycles'
-      field [ 'walking', 'running' ], 'uint32', :unit => 'steps'
-      field [ 'cycling', 'swimming' ], 'uint32', :scale => 2, :unit => 'strokes'
+      field [ 'walking', 'running' ], 'uint32', 'steps', :unit => 'steps'
+      field [ 'cycling', 'swimming' ], 'uint32', 'strokes', :scale => 2, :unit => 'strokes'
     end
     field 4, 'uint32', 'active_time', :scale => 1000, :unit => 's'
     field 6, 'enum', 'activity_sub_type'
