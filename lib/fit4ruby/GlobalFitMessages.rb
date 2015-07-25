@@ -35,6 +35,7 @@ module Fit4Ruby
     field 5, 'enum', 'undocumented_field_5'
     field 6, 'enum', 'undocumented_field_6'
     field 10, 'uint8', 'undocumented_field_10', :array => true
+    field 11, 'enum', 'undocumented_field_11'
 
     message 18, 'session'
     field 0, 'enum', 'event', :dict => 'event'
