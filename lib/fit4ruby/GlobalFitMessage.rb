@@ -75,6 +75,12 @@ module Fit4Ruby
           value = fit_time_to_time(value).strftime("%Y-%m-%d %H:%M:%S")
         when 'duration'
           value = secsToDHMS(value)
+        when 'activity_intensity'
+          # Activity monitoring data contains a byte value that consists of 5
+          # bit for the activity type and 3 bit for the intensity. Activty 0x8
+          # is resting. Instead if value + unit we return activity type +
+          # intensity here.
+          return [ value & 0x1F, (value >> 5) & 0x7 ]
         end
         [ value, @opts[:unit] ]
       end

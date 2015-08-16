@@ -338,7 +338,7 @@ module Fit4Ruby
     field 10, 'uint16', 'active_time_16', :unit => 's'
     field 11, 'uint16', 'local_timestamp'
     field 19, 'uint16', 'active_calories', :unit => 'kcal'
-    field 24, 'byte', 'current_activity_type_intensity'
+    field 24, 'byte', 'current_activity_type_intensity', :type => 'activity_intensity'
     field 26, 'uint16', 'timestamp16', :unit => 's'
     field 29, 'uint16', 'duration_min', :unit => 'min'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
