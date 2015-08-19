@@ -373,11 +373,12 @@ module Fit4Ruby
 
     message 103, 'monitoring_info'
     field 0, 'uint32', 'local_time', :type => 'date_time'
-    field 1, 'enum', 'activity_type', :dict => 'activity_type'
-    field 3, 'uint16', 'cycles_to_distance', :array => true
-    field 4, 'uint16', 'cycle_to_calories', :array => true, :scale => 50, :unit => 'm/cycle'
+    field 1, 'enum', 'activity_type', :array => true, :dict => 'activity_type'
+    field 3, 'uint16', 'cycles_to_distance', :array => true, :scale => 5000, :unit => 'm/cycle'
+    field 4, 'uint16', 'cycle_to_calories', :array => true, :scale => 5000, :unit => 'kcal/cycle'
     field 5, 'uint16', 'resting_metabolic_rate', :unit => 'kcal/day'
-    field 7, 'uint32', 'undocumented_field_7'
+    # Just a guess, not officially documented
+    field 7, 'uint32', 'goal_cycles', :array => true
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     # Not part of the official ANT SDK doc
