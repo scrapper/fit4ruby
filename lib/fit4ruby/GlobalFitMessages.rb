@@ -290,6 +290,18 @@ module Fit4Ruby
     field 25, 'enum', 'source_type', :dict => 'source_type'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
+    # Message 29 is just a guess. It's not officially documented.
+    # Found in LCTNS.FIT on Fenix 3
+    message 29, 'location'
+    field 0, 'string', 'name'
+    field 1, 'sint32', 'position_lat', :type => 'coordinate'
+    field 2, 'sint32', 'position_long', :type => 'coordinate'
+    field 3, 'uint16', 'undocumented_field_3'
+    field 4, 'uint16', 'altitude', :scale => 5, :offset => 500, :unit => 'm'
+    field 5, 'uint16', 'undocumented_field_5'
+    field 253, 'uint32', 'undocumented_field_253'
+    field 254, 'uint16', 'location_index'
+
     message 33, 'totals'
     field 0, 'uint32', 'timer_time', :unit => 's'
     field 1, 'uint32', 'distance', :unit => 'm'
