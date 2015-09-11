@@ -26,6 +26,7 @@ module Fit4Ruby
     field 4, 'uint32', 'time_created', :type => 'date_time'
     field 5, 'uint16', 'number'
     field 6, 'uint16', 'undocumented_field_6'
+    field 7, 'uint32', 'undocumented_field_7'
 
     message 12, 'sport'
     field 0, 'enum', 'sport', :dict => 'sport'
@@ -382,6 +383,24 @@ module Fit4Ruby
     field 8, 'uint16', 'recovery_time', :scale => 60, :unit => 'hours'
     field 9, 'uint16', 'undocumented_field_9' # maybe activity measurement
     field 253, 'uint32', 'timestamp', :type => 'date_time'
+
+    message 101, 'length'
+    field 0, 'enum', 'event', :dict => 'event'
+    field 1, 'enum', 'event_type', :dict => 'event_type'
+    field 2, 'uint32', 'date_time', :type => 'date_time'
+    field 3, 'uint32', 'total_elapsed_time', :scale => 1000, :unit => 's'
+    field 4, 'uint32', 'total_timer_time', :scale => 1000, :unit => 's'
+    field 5, 'uint16', 'total_strokes', :unit => 'strokes'
+    field 6, 'uint16', 'avg_speed', :scale => 1000, :unit => 'm/s'
+    field 7, 'enum', 'swim_stroke', :dict => 'swim_stroke'
+    field 9, 'uint8', 'avg_swimming_cadence', :unit => 'strokes/min'
+    field 10, 'uint8', 'event_group'
+    field 11, 'uint16', 'total_calories', :unit => 'kcal'
+    field 12, 'enum', 'length_type', :dict => 'length_type'
+    field 18, 'uint16', 'player_score'
+    field 19, 'uint16', 'opponent_score'
+    field 253, 'uint32', 'timestamp', :type => 'date_time'
+    field 254, 'uint16', 'message_index'
 
     message 103, 'monitoring_info'
     field 0, 'uint32', 'local_time', :type => 'date_time'

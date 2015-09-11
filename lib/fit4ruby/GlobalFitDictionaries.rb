@@ -208,6 +208,10 @@ module Fit4Ruby
     entry 0x3FFF, 'mask'
     entry 0x8000, 'right'
 
+    dict 'length_type'
+    entry 0, 'idle'
+    entry 1, 'active'
+
     dict 'manufacturer'
     entry 1, 'garmin'
     entry 2, 'garmin_fr405_antfs'
