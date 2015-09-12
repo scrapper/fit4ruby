@@ -59,7 +59,7 @@ module Fit4Ruby
     # Perform some basic logical checks on the object and all references sub
     # objects. Any errors will be reported via the Log object.
     def check
-      unless @timestamp && @timestamp >= Time.parse('1990-01-01')
+      unless @timestamp && @timestamp >= Time.parse('1990-01-01T00:00:00+00:00')
         Log.error "Activity has no valid timestamp"
       end
       unless @total_timer_time

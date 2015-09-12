@@ -68,11 +68,11 @@ module Fit4Ruby
     end
 
     def time_to_fit_time(t)
-      (t - Time.parse('1989-12-31')).to_i
+      (t - Time.parse('1989-12-31T00:00:00+00:00')).to_i
     end
 
     def fit_time_to_time(ft)
-      Time.parse('1989-12-31') + ft.to_i
+      Time.parse('1989-12-31T00:00:00+00:00') + ft.to_i
     end
 
   end
