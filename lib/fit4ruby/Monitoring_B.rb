@@ -45,6 +45,37 @@ module Fit4Ruby
     # Perform some basic logical checks on the object and all references sub
     # objects. Any errors will be reported via the Log object.
     def check
+      last_timestamp = ts_16_offset = nil
+
+      # The timestamp_16 is a 2 byte time stamp value that is used instead of
+      # the 4 byte timestamp field for monitoring records that have
+      # current_activity_type_intensity values with an activity type of 6. The
+      # value seems to be in seconds, but the 0 value reference does not seem
+      # to be included in the file. However, it can be approximated using the
+      # surrounding timestamp values.
+      @monitorings.each do |record|
+        if ts_16_offset
+          # We have already found the offset. Adjust all timestamps according
+          # to 'offset + timestamp_16'
+          if record.timestamp_16
+            record.timestamp = ts_16_offset + record.timestamp_16
+          end
+        else
+          # We are still looking for the offset.
+          if record.timestamp_16 && last_timestamp
+            # We have a previous timestamp and found the first record with a
+            # timestamp_16 value set. We assume that the timestamp of this
+            # record is one minute after the previously found timestamp.
+            # That's just a guess. Who knows what the Garmin engineers were
+            # thinking here?
+            ts_16_offset = last_timestamp + 60 - record.timestamp_16
+            record.timestamp = ts_16_offset + record.timestamp_16
+          else
+            # Just save the timestamp of the current record.
+            last_timestamp = record.timestamp
+          end
+        end
+      end
     end
 
     # Create a new FitDataRecord.
