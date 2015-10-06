@@ -67,6 +67,9 @@ module Fit4Ruby
     entry 5, 'critical'
 
     dict 'device_type'
+    entry 0, 'position' # Just a guess
+    entry 3, 'acceleration' # Just a guess
+    entry 4, 'barometric_pressure' # Just a guess
     entry 1, 'antfs'
     entry 11, 'bike_power'
     entry 12, 'environment_sensor_legacy'
@@ -159,8 +162,10 @@ module Fit4Ruby
     dict 'garmin_product'
     entry 8, 'hrm_run_single_byte_product_id'
     entry 1551, 'fenix'
+    entry 1620, 'gps' # just a guess
     entry 1623, 'fr620'
     entry 1632, 'fr220'
+    entry 1689, 'gps' # just a guess
     entry 1752, 'hrm_run'
     entry 1765, 'fr920xt'
     entry 1928, 'fr620_japan'

@@ -254,13 +254,14 @@ module Fit4Ruby
     field 4, 'uint8', 'event_group'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
-    # Possibly the status of the sensors; Not documented in FIT SDK
-    message 22, 'sensor_status'
-    field 0, 'uint8', 'undocumented_field_0' # 1 - 5 or no value seen
-    field 1, 'uint8', 'undocumented_field_1' # Always identical to field 0
-    field 2, 'uint8', 'undocumented_field_2' # 1 - 5 or no value seen
-    field 3, 'uint8', 'undocumented_field_3' # 1, 3, 5 or no value seen
-    field 4, 'uint8', 'undocumented_field_4' # 1 - 3 or no value seen
+    # Possibly which device is used as metering source.
+    # Not documented in FIT SDK
+    message 22, 'metering_devices'
+    field 0, 'uint8', 'distance'
+    field 1, 'uint8', 'speed'
+    field 2, 'uint8', 'cadence'
+    field 3, 'uint8', 'altitude'
+    field 4, 'uint8', 'heart_rate'
     field 5, 'enum', 'undocumented_field_5' # 0 or 3 seen
     field 6, 'uint8', 'undocumented_field_6' # First found in FR920XT
     field 14, 'uint8', 'undocumented_field_14' # First found in FR920XT
