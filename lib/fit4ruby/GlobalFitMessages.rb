@@ -255,10 +255,10 @@ module Fit4Ruby
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     # Possibly which device is used as metering source.
-    # Not documented in FIT SDK
+    # Not documented in FIT SDK, so these are all guesses right now.
     message 22, 'metering_devices'
-    field 0, 'uint8', 'distance'
-    field 1, 'uint8', 'speed'
+    field 0, 'uint8', 'speed'
+    field 1, 'uint8', 'distance'
     field 2, 'uint8', 'cadence'
     field 3, 'uint8', 'altitude'
     field 4, 'uint8', 'heart_rate'

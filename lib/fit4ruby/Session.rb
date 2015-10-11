@@ -13,6 +13,7 @@
 require 'fit4ruby/Converters'
 require 'fit4ruby/FitDataRecord'
 require 'fit4ruby/RecordAggregator'
+require 'fit4ruby/GeoMath'
 
 module Fit4Ruby
 

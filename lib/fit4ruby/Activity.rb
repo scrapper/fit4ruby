@@ -36,6 +36,7 @@ module Fit4Ruby
     #        certain fields of the FitDataRecord.
     def initialize(field_values = {})
       super('activity')
+      @meta_field_units['total_gps_distance'] = 'm'
       @num_sessions = 0
 
       @file_id = FileId.new
@@ -78,6 +79,48 @@ module Fit4Ruby
     def total_distance
       d = 0.0
       @sessions.each { |s| d += s.total_distance }
+      d
+    end
+
+    # Total distance convered by this activity purely computed by the GPS
+    # coordinates. This may differ from the distance computed by the device as
+    # it can be based on a purely calibrated footpod.
+    def total_gps_distance
+      timer_stops = []
+      # Generate a list of all timestamps where the timer was stopped.
+      @events.each do |e|
+        if e.event == 'timer' && e.event_type == 'stop_all'
+          timer_stops << e.timestamp
+        end
+      end
+
+      # The first record of a FIT file can already have a distance associated
+      # with it. The GPS location of the first record is not where the start
+      # button was pressed. This introduces a slight inaccurcy when computing
+      # the total distance purely on the GPS coordinates found in the records.
+      d = 0.0
+      last_lat = last_long = nil
+
+      # Iterate over all the records and accumlate the distances between the
+      # neiboring coordinates.
+      @records.each do |r|
+        if (lat = r.position_lat) && (long = r.position_long)
+          if last_lat && last_long
+            d += Fit4Ruby::GeoMath.distance(last_lat, last_long,
+                                            lat, long)
+          end
+          if timer_stops[0] == r.timestamp
+            # If a stop event was found for this record timestamp we clear the
+            # last_* values so that the distance covered while being stopped
+            # is not added to the total.
+            last_lat = last_long = nil
+            timer_stops.shift
+          else
+            last_lat = lat
+            last_long = long
+          end
+        end
+      end
       d
     end
 
