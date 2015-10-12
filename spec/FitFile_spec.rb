@@ -26,6 +26,7 @@ describe Fit4Ruby do
     a.new_device_info({ :device_index => 1, :manufacturer => 'development',
                         :battery_status => 'ok' })
     ts = Time.now
+    laps = 0
     0.upto(a.total_timer_time / 60) do |mins|
       ts += 60
       a.new_record({
@@ -46,7 +47,8 @@ describe Fit4Ruby do
 
       if mins > 0 && mins % 5 == 0
         a.new_lap({ :timestamp => ts, :sport => 'running',
-                    :total_cycles => 195 })
+                    :message_index => laps, :total_cycles => 195 })
+        laps += 1
       end
     end
     a.new_session({ :timestamp => ts, :sport => 'running' })

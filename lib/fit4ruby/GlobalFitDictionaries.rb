@@ -162,10 +162,15 @@ module Fit4Ruby
     dict 'garmin_product'
     entry 8, 'hrm_run_single_byte_product_id'
     entry 1551, 'fenix'
-    entry 1620, 'gps' # just a guess
+    # The Fenix3 is rumored to have a Mediatek MT3333 GPS chipset. Not sure if
+    # that would be a beter name.
+    entry 1620, 'fenix3_gps' # Just a guess
     entry 1623, 'fr620'
     entry 1632, 'fr220'
-    entry 1689, 'gps' # just a guess
+    # The FR620 is rumored to have a MediaTek MT3339 GPS chipset while the
+    # FR920XT is rumored to have a MT3333. Not sure why they have the same ID
+    # in the FIT file for the GPS device.
+    entry 1689, 'fr620_fr920xt_gps' # Just a guess
     entry 1752, 'hrm_run'
     entry 1765, 'fr920xt'
     entry 1928, 'fr620_japan'

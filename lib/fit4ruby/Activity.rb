@@ -72,6 +72,12 @@ module Fit4Ruby
                   "FIT file."
       end
       @sessions.each { |s| s.check(self) }
+      # Laps must have a consecutively growing message index.
+      @laps.each.with_index do |lap, index|
+        unless lap.message_index == index
+          Log.error "Lap #{index} has wrong message_index #{lap.message_index}"
+        end
+      end
     end
 
     # Convenience method that aggregates all the distances from the included
