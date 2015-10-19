@@ -66,18 +66,20 @@ module Fit4Ruby
       unless @total_timer_time
         Log.error "Activity has no valid total_timer_time"
       end
+      unless @device_infos.length > 0
+        Log.error "Activity must have at least one device_info section"
+      end
+      @device_infos.each.with_index { |d, index| d.check(index) }
       unless @num_sessions == @sessions.count
         Log.error "Activity record requires #{@num_sessions}, but "
                   "#{@sessions.length} session records were found in the "
                   "FIT file."
       end
-      @sessions.each { |s| s.check(self) }
       # Laps must have a consecutively growing message index.
       @laps.each.with_index do |lap, index|
-        unless lap.message_index == index
-          Log.error "Lap #{index} has wrong message_index #{lap.message_index}"
-        end
+        lap.check(index)
       end
+      @sessions.each { |s| s.check(self) }
     end
 
     # Convenience method that aggregates all the distances from the included
