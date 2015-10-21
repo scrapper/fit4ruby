@@ -32,7 +32,7 @@ module Fit4Ruby
 
     # Pass all calls to unknown methods to the @@logger object.
     def method_missing(method, *args, &block)
-      @@logger.send(method, args, &block)
+      @@logger.send(method, *args, &block)
     end
 
     # Make it properly introspectable.
