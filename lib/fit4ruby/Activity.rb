@@ -318,8 +318,13 @@ module Fit4Ruby
         @events << (record = Event.new(field_values))
       when 'session'
         unless @cur_lap_records.empty?
+          # Copy selected fields from section to lap.
+          lap_field_values = {}
+          [ :timestamp, :sport ].each do |f|
+            lap_field_values[f] = field_values[f] if field_values.include?(f)
+          end
           # Ensure that all previous records have been assigned to a lap.
-          record = create_new_lap(field_values)
+          record = create_new_lap(lap_field_values)
         end
         @num_sessions += 1
         @sessions << (record = Session.new(@cur_session_laps, @lap_counter,
@@ -343,6 +348,7 @@ module Fit4Ruby
 
     def create_new_lap(field_values)
       lap = Lap.new(@cur_lap_records, @laps.last, field_values)
+      lap.message_index = @lap_counter - 1
       @lap_counter += 1
       @cur_session_laps << lap
       @laps << lap
