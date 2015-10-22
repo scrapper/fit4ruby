@@ -54,17 +54,17 @@ module Fit4Ruby
     # are reported via the Log object.
     def check(activity)
       unless @first_lap_index
-        Log.critical 'first_lap_index is not set'
+        Log.fatal 'first_lap_index is not set'
       end
       unless @num_laps
-        Log.critical 'num_laps is not set'
+        Log.fatal 'num_laps is not set'
       end
       @first_lap_index.upto(@first_lap_index - @num_laps) do |i|
         if (lap = activity.lap[i])
           @laps << lap
         else
-          Log.critical "Session references lap #{i} which is not contained in "
-                       "the FIT file."
+          Log.fatal "Session references lap #{i} which is not contained in "
+                    "the FIT file."
         end
       end
     end

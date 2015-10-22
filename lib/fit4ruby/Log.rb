@@ -40,19 +40,11 @@ module Fit4Ruby
       @@logger.respond_to?(method)
     end
 
-    # Print an error message via the Logger and exit the program with exit
+    # Print an error message via the Logger and raise and Fit4Ruby::Error.
     # code 1.
     def fatal(msg)
       @@logger.error(msg)
-      exit 1
-    end
-
-    def critical(msg, exception = nil)
-      if exception
-        raise Error, "#{msg}: #{exception.message}", exception.backtrace
-      else
-        raise Error, msg
-      end
+      raise Error, msg
     end
 
   end

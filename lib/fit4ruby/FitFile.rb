@@ -33,7 +33,7 @@ module Fit4Ruby
       begin
         io = ::File.open(file_name, 'rb')
       rescue StandardError => e
-        Log.critical("Cannot open FIT file '#{file_name}'", e)
+        Log.fatal "Cannot open FIT file '#{file_name}': #{e.message}"
       end
       header = FitHeader.read(io)
       header.check
@@ -66,7 +66,7 @@ module Fit4Ruby
       begin
         io = ::File.open(file_name, 'wb+')
       rescue StandardError => e
-        Log.critical("Cannot open FIT file '#{file_name}'", e)
+        Log.fatal "Cannot open FIT file '#{file_name}': #{e.message}"
       end
 
       # Create a header object, but don't yet write it into the file.
@@ -104,8 +104,8 @@ module Fit4Ruby
       io.seek(start_pos)
 
       unless crc == crc_ref
-        Log.critical "Checksum error in file '#{@file_name}'. " +
-                     "Computed #{"%04X" % crc} instead of #{"%04X" % crc_ref}."
+        Log.fatal "Checksum error in file '#{@file_name}'. " +
+                  "Computed #{"%04X" % crc} instead of #{"%04X" % crc_ref}."
       end
     end
 

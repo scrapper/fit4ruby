@@ -45,18 +45,18 @@ module Fit4Ruby
 
     def check(index)
       unless @message_index == index
-        Log.critical "message_index must be #{index}, not #{@message_index}"
+        Log.fatal "message_index must be #{index}, not #{@message_index}"
       end
       ts = Time.parse('1989-12-31')
       distance = nil
       @records.each do |r|
-        Log.critical "Record has no timestamp" unless r.timestamp
+        Log.fatal "Record has no timestamp" unless r.timestamp
         if r.timestamp < ts
-          Log.critical "Record has earlier timestamp than previous record"
+          Log.fatal "Record has earlier timestamp than previous record"
         end
         if r.distance
           if distance && r.distance < distance
-            Log.critical "Record has smaller distance than previous record"
+            Log.fatal "Record has smaller distance than previous record"
           end
           distance = r.distance
         end

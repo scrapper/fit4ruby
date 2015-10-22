@@ -61,17 +61,17 @@ module Fit4Ruby
     # objects. Any errors will be reported via the Log object.
     def check
       unless @timestamp && @timestamp >= Time.parse('1990-01-01T00:00:00+00:00')
-        Log.error "Activity has no valid timestamp"
+        Log.fatal "Activity has no valid timestamp"
       end
       unless @total_timer_time
-        Log.error "Activity has no valid total_timer_time"
+        Log.fatal "Activity has no valid total_timer_time"
       end
       unless @device_infos.length > 0
-        Log.error "Activity must have at least one device_info section"
+        Log.fatal "Activity must have at least one device_info section"
       end
       @device_infos.each.with_index { |d, index| d.check(index) }
       unless @num_sessions == @sessions.count
-        Log.error "Activity record requires #{@num_sessions}, but "
+        Log.fatal "Activity record requires #{@num_sessions}, but "
                   "#{@sessions.length} session records were found in the "
                   "FIT file."
       end

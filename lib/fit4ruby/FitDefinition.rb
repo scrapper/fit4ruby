@@ -41,7 +41,7 @@ module Fit4Ruby
 
     def check
       if architecture.snapshot > 1
-        Log.error "Illegal architecture value #{architecture.snapshot}"
+        Log.fatal "Illegal architecture value #{architecture.snapshot}"
       end
       fields.each { |f| f.check }
     end
