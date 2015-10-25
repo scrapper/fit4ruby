@@ -3,7 +3,7 @@
 #
 # = FitDataRecord.rb -- Fit4Ruby - FIT file processing library for Ruby
 #
-# Copyright (c) 2014 by Chris Schlaeger <cs@taskjuggler.org>
+# Copyright (c) 2014, 2015 by Chris Schlaeger <cs@taskjuggler.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of version 2 of the GNU General Public License as
@@ -18,6 +18,11 @@ module Fit4Ruby
   class FitDataRecord
 
     include Converters
+
+    RecordOrder = [ 'user_profiles', 'device_info', 'data_sources', 'event',
+                    'record', 'lap', 'session', 'personal_records' ]
+
+    attr_reader :message
 
     def initialize(record_id)
       @message = GlobalFitMessages.find_by_name(record_id)
@@ -91,7 +96,10 @@ module Fit4Ruby
     end
 
     def <=>(fdr)
-      @timestamp <=> fdr.timestamp
+      @timestamp == fdr.timestamp ?
+        RecordOrder.index(@message.name) <=>
+        RecordOrder.index(fdr.message.name) :
+        @timestamp <=> fdr.timestamp
     end
 
     def write(io, id_mapper)

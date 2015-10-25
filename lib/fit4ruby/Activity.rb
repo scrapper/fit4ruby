@@ -3,7 +3,7 @@
 #
 # = Activity.rb -- Fit4Ruby - FIT file processing library for Ruby
 #
-# Copyright (c) 2014 by Chris Schlaeger <cs@taskjuggler.org>
+# Copyright (c) 2014, 2015 by Chris Schlaeger <cs@taskjuggler.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of version 2 of the GNU General Public License as
@@ -14,6 +14,7 @@ require 'fit4ruby/FitDataRecord'
 require 'fit4ruby/FileId'
 require 'fit4ruby/FileCreator'
 require 'fit4ruby/DeviceInfo'
+require 'fit4ruby/DataSources'
 require 'fit4ruby/UserProfile'
 require 'fit4ruby/Session'
 require 'fit4ruby/Lap'
@@ -28,8 +29,9 @@ module Fit4Ruby
   # equivalents of the message record structures used in the FIT file.
   class Activity < FitDataRecord
 
-    attr_accessor :file_id, :file_creator, :device_infos, :user_profiles,
-                  :sessions, :laps, :records, :events, :personal_records
+    attr_accessor :file_id, :file_creator, :device_infos, :data_sources,
+                  :user_profiles, :sessions, :laps, :records,
+                  :events, :personal_records
 
     # Create a new Activity object.
     # @param field_values [Hash] A Hash that provides initial values for
@@ -42,6 +44,7 @@ module Fit4Ruby
       @file_id = FileId.new
       @file_creator = FileCreator.new
       @device_infos = []
+      @data_sources = []
       @user_profiles = []
       @events = []
       @sessions = []
@@ -198,8 +201,8 @@ module Fit4Ruby
       @file_id.write(io, id_mapper)
       @file_creator.write(io, id_mapper)
 
-      (@device_infos + @user_profiles + @events + @sessions + @laps +
-       @records + @personal_records).sort.each do |s|
+      (@device_infos + @data_sources + @user_profiles + @events +
+       @sessions + @laps + @records + @personal_records).sort.each do |s|
         s.write(io, id_mapper)
       end
       super
@@ -229,6 +232,14 @@ module Fit4Ruby
     # @return [DeviceInfo]
     def new_device_info(field_values = {})
       new_fit_data_record('device_info', field_values)
+    end
+
+    # Add a new SourceData to the Activity.
+    # @param field_values [Hash] A Hash that provides initial values for
+    #        certain fields of the FitDataRecord.
+    # @return [SourceData]
+    def new_data_sources(field_values = {})
+      new_fit_data_record('data_sources', field_values)
     end
 
     # Add a new UserProfile to the Activity.
@@ -293,7 +304,9 @@ module Fit4Ruby
     def ==(a)
       super(a) && @file_id == a.file_id &&
         @file_creator == a.file_creator &&
-        @device_infos == a.device_infos && @user_profiles == a.user_profiles &&
+        @device_infos == a.device_infos &&
+        @data_sources == a.data_sources &&
+        @user_profiles == a.user_profiles &&
         @events == a.events &&
         @sessions == a.sessions && personal_records == a.personal_records
     end
@@ -312,6 +325,8 @@ module Fit4Ruby
         @file_creator = (record = FileCreator.new(field_values))
       when 'device_info'
         @device_infos << (record = DeviceInfo.new(field_values))
+      when 'data_sources'
+        @data_sources << (record = DataSources.new(field_values))
       when 'user_profile'
         @user_profiles << (record = UserProfile.new(field_values))
       when 'event'
