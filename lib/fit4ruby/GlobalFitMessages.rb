@@ -256,15 +256,15 @@ module Fit4Ruby
 
     # Possibly which device is used as metering source.
     # Not documented in FIT SDK, so the field names are all guesses right now.
-    message 22, 'metering_devices'
+    message 22, 'data_sources'
     field 0, 'uint8', 'speed'
     field 1, 'uint8', 'distance'
     field 2, 'uint8', 'cadence'
-    field 3, 'uint8', 'altitude'
+    field 3, 'uint8', 'elevation'
     field 4, 'uint8', 'heart_rate'
-    field 5, 'enum', 'undocumented_field_5' # 0 or 3 seen
-    field 6, 'uint8', 'undocumented_field_6' # First found in FR920XT
-    field 14, 'uint8', 'undocumented_field_14' # First found in FR920XT
+    field 5, 'enum', 'gps' # 0 or 3 seen
+    field 6, 'uint8', 'power' # First found in FR920XT
+    field 14, 'uint8', 'calories' # First found in FR920XT
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     message 23, 'device_info'
