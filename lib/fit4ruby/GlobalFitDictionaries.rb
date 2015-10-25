@@ -67,7 +67,7 @@ module Fit4Ruby
     entry 5, 'critical'
 
     dict 'device_type'
-    entry 0, 'position' # Just a guess
+    entry 0, 'gps' # Just a guess
     entry 3, 'acceleration' # Just a guess
     entry 4, 'barometric_pressure' # Just a guess
     entry 1, 'antfs'

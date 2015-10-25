@@ -262,7 +262,7 @@ module Fit4Ruby
     field 2, 'uint8', 'cadence'
     field 3, 'uint8', 'elevation'
     field 4, 'uint8', 'heart_rate'
-    field 5, 'enum', 'gps' # 0 or 3 seen
+    field 5, 'enum', 'mode' # 0 or 3 seen, unknown meaning
     field 6, 'uint8', 'power' # First found in FR920XT
     field 14, 'uint8', 'calories' # First found in FR920XT
     field 253, 'uint32', 'timestamp', :type => 'date_time'
