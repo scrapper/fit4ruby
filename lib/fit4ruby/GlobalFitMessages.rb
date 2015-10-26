@@ -257,8 +257,8 @@ module Fit4Ruby
     # Possibly which device is used as metering source.
     # Not documented in FIT SDK, so the field names are all guesses right now.
     message 22, 'data_sources'
-    field 0, 'uint8', 'speed'
-    field 1, 'uint8', 'distance'
+    field 0, 'uint8', 'distance'
+    field 1, 'uint8', 'speed'
     field 2, 'uint8', 'cadence'
     field 3, 'uint8', 'elevation'
     field 4, 'uint8', 'heart_rate'
