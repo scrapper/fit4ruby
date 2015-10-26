@@ -19,7 +19,7 @@ module Fit4Ruby
 
     include Converters
 
-    RecordOrder = [ 'user_profiles', 'device_info', 'data_sources', 'event',
+    RecordOrder = [ 'user_profile', 'device_info', 'data_sources', 'event',
                     'record', 'lap', 'session', 'personal_records' ]
 
     attr_reader :message
