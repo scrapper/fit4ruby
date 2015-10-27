@@ -425,6 +425,15 @@ module Fit4Ruby
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     # Not part of the official ANT SDK doc
+    # It shows up in swimming activities.
+    message 125, 'undocumented_125'
+    field 1, 'uint8', 'undocumented_field_1', :array => true
+    field 2, 'uint16', 'undocumented_field_2', :array => true
+    field 3, 'uint16', 'undocumented_field_3'
+    field 4, 'uint8', 'undocumented_field_4'
+    field 253, 'uint32', 'timestamp', :type => 'date_time'
+
+    # Not part of the official ANT SDK doc
     # The values in this message seem to be related to the activity history.
     # If no HRM is used, most of them are 0. Fields 4, 7, 9 and 10 always have
     # non-zero values.
