@@ -66,6 +66,13 @@ module Fit4Ruby
     entry 4, 'low'
     entry 5, 'critical'
 
+    dict 'comm_timeout_type'
+    entry 0, 'wildcard_paring_timeout'
+    entry 1, 'pairing_timeout'
+    entry 2, 'connection_lost'
+    entry 3, 'connection_timeout'
+
+
     dict 'device_type'
     entry 0, 'gps' # Just a guess
     entry 3, 'acceleration' # Just a guess
@@ -129,6 +136,10 @@ module Fit4Ruby
     entry 39, 'recovery_info' # guess (in minutes, < 24 good, > 24h poor)
     entry 42, 'front_gear_change'
     entry 43, 'rear_gear_change'
+    entry 44, 'rider_position_change'
+    entry 45, 'elev_high_alert'
+    entry 46, 'elev_low_alert'
+    entry 47, 'comm_timeout'
 
     dict 'event_type'
     entry 0, 'start_time'
@@ -158,6 +169,12 @@ module Fit4Ruby
     entry 20, 'activity_summary'
     entry 28, 'monitoring_daily'
     entry 32, 'monitoring_b'
+
+    dict 'fitness_equipment_state'
+    entry 0, 'ready'
+    entry 1, 'in_use'
+    entry 2, 'paused'
+    entry 3, 'unknown'
 
     dict 'garmin_product'
     entry 8, 'hrm_run_single_byte_product_id'
@@ -313,6 +330,10 @@ module Fit4Ruby
     entry 0x0FFF, 'mask'
     entry 0x7000, 'reserved'
     entry 0x8000, 'selected'
+
+    dict 'rider_position_type'
+    entry 0, 'seated'
+    entry 1, 'standing'
 
     dict 'session_trigger'
     entry 0, 'activity_end'

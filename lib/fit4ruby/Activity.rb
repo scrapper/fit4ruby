@@ -111,24 +111,31 @@ module Fit4Ruby
       # the total distance purely on the GPS coordinates found in the records.
       d = 0.0
       last_lat = last_long = nil
+      last_timestamp = nil
 
       # Iterate over all the records and accumlate the distances between the
       # neiboring coordinates.
       @records.each do |r|
         if (lat = r.position_lat) && (long = r.position_long)
           if last_lat && last_long
-            d += Fit4Ruby::GeoMath.distance(last_lat, last_long,
-                                            lat, long)
+            distance = Fit4Ruby::GeoMath.distance(last_lat, last_long,
+                                                  lat, long)
+            d += distance
+          end
+          if last_timestamp
+            speed = distance / (r.timestamp - last_timestamp)
           end
           if timer_stops[0] == r.timestamp
             # If a stop event was found for this record timestamp we clear the
             # last_* values so that the distance covered while being stopped
             # is not added to the total.
             last_lat = last_long = nil
+            last_timestamp = nil
             timer_stops.shift
           else
             last_lat = lat
             last_long = long
+            last_timestamp = r.timestamp
           end
         end
       end
