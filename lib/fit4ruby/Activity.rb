@@ -170,6 +170,16 @@ module Fit4Ruby
       nil
     end
 
+    # Returns the remaining recovery time at the start of the activity.
+    # @return remaining recovery time in seconds.
+    def recovery_info
+      @events.each do |e|
+        return e.recovery_info if e.event == 'recovery_info'
+      end
+
+      nil
+    end
+
     # Returns the predicted recovery time needed after this activity.
     # @return recovery time in seconds.
     def recovery_time
