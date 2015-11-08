@@ -39,7 +39,9 @@ module Fit4Ruby
 
     def speedToPace(speed, distance = 1000.0)
       if speed && speed > 0.01
-        pace = distance / (speed * 60.0)
+        # We only show 2 fractional digits, so make sure we round accordingly
+        # before we crack it up.
+        pace = (distance.to_f / (speed * 60.0)).round(2)
         int, dec = pace.divmod 1
         "#{int}:#{'%02d' % (dec * 60)}"
       else
