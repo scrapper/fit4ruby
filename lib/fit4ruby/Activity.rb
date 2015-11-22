@@ -19,6 +19,7 @@ require 'fit4ruby/UserProfile'
 require 'fit4ruby/Session'
 require 'fit4ruby/Lap'
 require 'fit4ruby/Record'
+require 'fit4ruby/HRV'
 require 'fit4ruby/Event'
 require 'fit4ruby/PersonalRecords'
 
@@ -30,7 +31,7 @@ module Fit4Ruby
   class Activity < FitDataRecord
 
     attr_accessor :file_id, :file_creator, :device_infos, :data_sources,
-                  :user_profiles, :sessions, :laps, :records,
+                  :user_profiles, :sessions, :laps, :records, :hrv,
                   :events, :personal_records
 
     # Create a new Activity object.
@@ -50,6 +51,7 @@ module Fit4Ruby
       @sessions = []
       @laps = []
       @records = []
+      @hrv = []
       @personal_records = []
 
       @cur_session_laps = []
@@ -367,6 +369,8 @@ module Fit4Ruby
       when 'record'
         @cur_lap_records << (record = Record.new(field_values))
         @records << record
+      when 'hrv'
+        @hrv << (record = HRV.new(field_values))
       when 'personal_records'
         @personal_records << (record = PersonalRecords.new(field_values))
       else
