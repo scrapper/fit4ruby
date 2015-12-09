@@ -3,7 +3,7 @@
 #
 # = Log.rb -- Fit4Ruby - FIT file processing library for Ruby
 #
-# Copyright (c) 2014 by Chris Schlaeger <cs@taskjuggler.org>
+# Copyright (c) 2015 by Chris Schlaeger <cs@taskjuggler.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of version 2 of the GNU General Public License as
@@ -30,6 +30,17 @@ module Fit4Ruby
 
     @@logger = Logger.new(STDOUT)
 
+    # Redirect all log messages to the given IO.
+    # @param io [IO] Output file descriptor
+    def open(io)
+      begin
+        @@logger = Logger.new(io)
+      rescue => e
+        @@logger = Logger.new(STDERR)
+        Log.fatal "Cannot open log file: #{e.message}"
+      end
+    end
+
     # Pass all calls to unknown methods to the @@logger object.
     def method_missing(method, *args, &block)
       @@logger.send(method, *args, &block)
@@ -42,8 +53,8 @@ module Fit4Ruby
 
     # Print an error message via the Logger and raise and Fit4Ruby::Error.
     # code 1.
-    def fatal(msg)
-      @@logger.error(msg)
+    def fatal(msg, &block)
+      @@logger.error(msg, &block)
       raise Error, msg
     end
 
