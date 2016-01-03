@@ -11,6 +11,7 @@
 #
 
 require 'fit4ruby/Log'
+require 'fit4ruby/FileNameCoder'
 require 'fit4ruby/FitHeader'
 require 'fit4ruby/FitFileEntity'
 require 'fit4ruby/FitRecord'
