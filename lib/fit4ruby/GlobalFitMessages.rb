@@ -131,6 +131,9 @@ module Fit4Ruby
     field 121, 'uint16', 'max_power_position', :array => true, :unit => 'watts'
     field 122, 'uint8', 'avg_cadence_position', :array => true, :unit => 'rpm'
     field 123, 'uint8', 'max_cadence_position', :array => true, :unit => 'rpm'
+    field 132, 'uint16', 'vertical_ratio', :scale => 100, :unit => '%' # guessed
+    field 133, 'uint16', 'avg_gct_balance', :scale => 100, :unit => '%' # guessed
+    field 134, 'uint16', 'avg_stride_length', :scale => 10000, :unit => 'm' # guessed
     field 253, 'uint32', 'timestamp', :type => 'date_time'
     field 254, 'uint16', 'message_index'
 
@@ -216,6 +219,9 @@ module Fit4Ruby
     field 107, 'uint16', 'max_power_position', :array => true, :unit => 'watts'
     field 108, 'uint8', 'avg_cadence_position', :array => true, :unit => 'rpm'
     field 109, 'uint8', 'max_cadence_position', :array => true, :unit => 'rpm'
+    field 118, 'uint16', 'vertical_ratio', :scale => 100, :unit => '%' # guessed
+    field 119, 'uint16', 'avg_gct_balance', :scale => 100, :unit => '%' # guessed
+    field 120, 'uint16', 'avg_stride_length', :scale => 10000, :unit => 'm' # guessed
     field 253, 'uint32', 'timestamp', :type => 'date_time'
     field 254, 'uint16', 'message_index'
 
@@ -236,6 +242,9 @@ module Fit4Ruby
     field 53, 'uint8', 'fractional_cadence', :scale => 128
     field 61, 'uint16', 'undefined_value_61'
     field 66, 'sint16', 'undefined_value_66'
+    field 83, 'uint16', 'vertical_ratio', :scale => 100, :unit => '%' # guessed
+    field 84, 'uint16', 'gct_balance', :scale => 100, :unit => '%' # guessed
+    field 85, 'uint16', 'stride_length', :scale => 10000, :unit => 'm' # guessed
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     message 21, 'event'
@@ -397,6 +406,11 @@ module Fit4Ruby
     field 7, 'sint8', 'undocumented_field_7' # seems to be always 1
     field 8, 'uint16', 'recovery_time', :scale => 60, :unit => 'hours'
     field 9, 'uint16', 'undocumented_field_9' # maybe activity measurement
+    field 10, 'uint8', 'undocumented_field_10'
+    field 11, 'uint16', 'undocumented_field_11'
+    field 12, 'uint16', 'undocumented_field_12'
+    field 13, 'uint16', 'undocumented_field_13'
+    field 14, 'uint8', 'undocumented_field_14'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     message 101, 'length'
@@ -465,6 +479,13 @@ module Fit4Ruby
     field 10, 'uint16', 'undocumented_field_10' # always seems to be 340
     field 11, 'enum', 'undocumented_field_11'
     field 12, 'enum', 'undocumented_field_12'
+    field 13, 'uint8', 'undocumented_field_13'
+    field 14, 'uint16', 'undocumented_field_14'
+    field 15, 'uint16', 'undocumented_field_15'
+    field 16, 'uint16', 'undocumented_field_16'
+    field 17, 'sint8', 'undocumented_field_17'
+    field 18, 'uint8', 'undocumented_field_18'
+    field 19, 'uint8', 'undocumented_field_19'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     # Not part of the official ANT SDK doc
