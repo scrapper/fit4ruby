@@ -378,6 +378,10 @@ module Fit4Ruby
     field 24, 'byte', 'current_activity_type_intensity', :type => 'activity_intensity'
     field 26, 'uint16', 'timestamp_16', :unit => 's'
     field 29, 'uint16', 'duration_min', :unit => 'min'
+    field 31, 'uint32', 'undocumented_field_31'
+    field 32, 'uint32', 'undocumented_field_32'
+    field 35, 'uint32', 'undocumented_field_35'
+    field 36, 'uint32', 'undocumented_field_36'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     message 72, 'training_file'
