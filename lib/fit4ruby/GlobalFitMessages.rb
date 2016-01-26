@@ -400,7 +400,7 @@ module Fit4Ruby
 
     # Not part of the official ANT SDK doc
     message 79, 'user_profile'
-    field 0, 'uint16', 'undocumented_field_0' # seems to strongly correlate with vo2max
+    field 0, 'uint16', 'metmax', :scale => 1000, :unit => 'MET' # VO2max / 3.5
     field 1, 'uint8', 'age', :unit => 'years'
     field 2, 'uint8', 'height', :scale => 100, :unit => 'm'
     field 3, 'uint16', 'weight', :scale => 10, :unit => 'kg'

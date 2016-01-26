@@ -195,8 +195,14 @@ module Fit4Ruby
     # Returns the computed VO2max value. This value is computed by the device
     # based on multiple previous activities.
     def vo2max
+      # First check the event log for a vo2max reporting event.
       @events.each do |e|
         return e.vo2max if e.event == 'vo2max'
+      end
+      # Then check the user_profile entries for a metmax entry. METmax * 3.5
+      # is same value as VO2max.
+      @user_profiles.each do |u|
+        return u.metmax * 3.5 if u.metmax
       end
 
       nil
