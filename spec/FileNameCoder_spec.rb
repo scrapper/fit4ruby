@@ -10,6 +10,9 @@
 # published by the Free Software Foundation.
 #
 
+$:.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+
+require 'time'
 require 'fit4ruby/FileNameCoder'
 
 describe Fit4Ruby::FileNameCoder do
@@ -25,35 +28,35 @@ describe Fit4Ruby::FileNameCoder do
 
   it 'should convert a time stamps to a file names' do
     @data.each do |t|
-      Fit4Ruby::FileNameCoder.encode(Time.parse(t[0])).should == t[1]
+      expect(Fit4Ruby::FileNameCoder.encode(Time.parse(t[0]))).to eq(t[1])
     end
   end
 
   it 'should convert file names to time stamps' do
     @data.each do |t|
-      Fit4Ruby::FileNameCoder.decode(t[1]).should == Time.parse(t[0]).utc
+      expect(Fit4Ruby::FileNameCoder.decode(t[1])).to eq(Time.parse(t[0]).utc)
     end
   end
 
   it 'should fail to encode dates before 2010' do
-    lambda {
+    expect {
       Fit4Ruby::FileNameCoder.encode(Time.parse('2009-12-31T00:00'))
-    }.should raise_error
+    }.to raise_error(ArgumentError)
   end
 
   it 'should fail to encode dates after 2033' do
-    lambda {
+    expect {
       Fit4Ruby::FileNameCoder.encode(Time.parse('2034-01-01T00:00+00:00'))
-    }.should raise_error
+    }.to raise_error(ArgumentError)
   end
 
   it 'should fail to decode illegal file names' do
     [ 'A.FIT', '0123ABCD', '5ZNJ1800.FIT',
       '44063106.FIT', '44W63106.FIT',
       '557O1650.FIT', '557G6050.FIT', '557G1660.FIT' ].each do |name|
-      lambda {
+      expect {
         Fit4Ruby::FileNameCoder.decode(name)
-      }.should raise_error
+      }.to raise_error(ArgumentError)
     end
   end
 

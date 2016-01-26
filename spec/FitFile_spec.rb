@@ -10,6 +10,8 @@
 # published by the Free Software Foundation.
 #
 
+$:.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+
 require 'fit4ruby'
 
 describe Fit4Ruby do
@@ -104,10 +106,10 @@ describe Fit4Ruby do
 
     File.delete(fit_file) if File.exists?(fit_file)
     Fit4Ruby.write(fit_file, @activity)
-    File.exists?(fit_file).should be_true
+    expect(File.exists?(fit_file)).to be true
 
     b = Fit4Ruby.read(fit_file)
-    b.should == @activity
+    expect(b).to eq(@activity)
     File.delete(fit_file)
   end
 

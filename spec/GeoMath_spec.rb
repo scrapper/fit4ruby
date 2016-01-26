@@ -10,6 +10,8 @@
 # published by the Free Software Foundation.
 #
 
+$:.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+
 require 'fit4ruby/GeoMath'
 
 describe Fit4Ruby::GeoMath do
@@ -25,8 +27,8 @@ describe Fit4Ruby::GeoMath do
       [ 48.17970883101225, 11.611351054161787, 100.225 ]
     ]
     points.each do |p|
-      Fit4Ruby::GeoMath.distance(p0_lat, p0_lon,
-                                 p[0], p[1]).should be_within(0.001).of(p[2])
+      expect(Fit4Ruby::GeoMath.distance(
+        p0_lat, p0_lon, p[0], p[1])).to be_within(0.001).of(p[2])
     end
   end
 
