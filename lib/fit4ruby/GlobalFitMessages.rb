@@ -245,6 +245,7 @@ module Fit4Ruby
     field 83, 'uint16', 'vertical_ratio', :scale => 100, :unit => '%' # guessed
     field 84, 'uint16', 'gct_balance', :scale => 100, :unit => '%' # guessed
     field 85, 'uint16', 'stride_length', :scale => 10000, :unit => 'm' # guessed
+    field 87, 'uint16', 'undefined_value_87' # first seen on F3 FW6.80
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     message 21, 'event'
