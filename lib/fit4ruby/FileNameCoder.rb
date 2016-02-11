@@ -38,8 +38,8 @@ module Fit4Ruby
     end
 
     # Convert a FIT file name into the corresponding Time value.
-    # @param [String] FIT file name. This can be a full path name but must end
-    #        with a '.FIT' extension.
+    # @param file_name [String] FIT file name. This can be a full path name
+    #        but must end with a '.FIT' extension.
     # @return [Time] corresponding Time value
     def FileNameCoder::decode(file_name)
       base = File.basename(file_name.upcase)
