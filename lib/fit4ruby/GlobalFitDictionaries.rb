@@ -231,6 +231,10 @@ module Fit4Ruby
     entry 7, 'session_end'
     entry 8, 'fitness_equipment'
 
+    dict 'left_right_balance'
+    entry 0x7F, 'mask'
+    entry 0x80, 'right'
+
     dict 'left_right_balance_100'
     entry 0x3FFF, 'mask'
     entry 0x8000, 'right'

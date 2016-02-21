@@ -56,7 +56,8 @@ module Fit4Ruby
         end
         if r.distance
           if distance && r.distance < distance
-            Log.fatal "Record has smaller distance than previous record"
+            Log.fatal "Record #{r.timestamp} has smaller distance " +
+                      "(#{r.distance}) than an earlier record (#{distance})"
           end
           distance = r.distance
         end

@@ -234,14 +234,31 @@ module Fit4Ruby
     field 5, 'uint32', 'distance', :scale => 100, :unit => 'm'
     field 6, 'uint16', 'speed', :scale => 1000, :unit => 'm/s'
     field 7, 'uint16', 'power', :unit => 'watts'
+    field 11, 'sint32', 'time_from_course', :scale => 1000, :unit => 's'
     field 13, 'sint8', 'temperature', :unit => 'C'
+    field 29, 'uint32', 'accumulated_power', :unit => 'watts'
+    field 30, 'uint8', 'left_right_balance', :dict => 'left_right_balance'
     field 39, 'uint16', 'vertical_oscillation', :scale => 10, :unit => 'mm'
     field 40, 'uint16', 'stance_time_percent', :scale => 100, :unit => 'percent'
     field 41, 'uint16', 'stance_time', :scale => 10, :unit => 'ms'
     field 42, 'enum', 'activity_type', :dict => 'activity_type'
+    field 43, 'uint8', 'left_torque_effectiveness', :scale => 2, :unit => '%'
+    field 44, 'uint8', 'right_torque_effectiveness', :scale => 2, :unit => '%'
+    field 45, 'uint8', 'left_pedal_smoothness', :scale => 2, :unit => '%'
+    field 46, 'uint8', 'right_pedal_smoothness', :scale => 2, :unit => '%'
+    field 47, 'uint8', 'combined_pedal_smoothness', :scale => 2, :unit => '%'
     field 53, 'uint8', 'fractional_cadence', :scale => 128
     field 61, 'uint16', 'undefined_value_61'
+    field 63, 'uint16', 'undefined_value_63'
+    field 64, 'uint16', 'undefined_value_64'
+    field 65, 'uint16', 'undefined_value_65'
     field 66, 'sint16', 'undefined_value_66'
+    field 67, 'sint8', 'left_pco', :unit => 'mm'
+    field 68, 'sint8', 'right_pco', :unit => 'mm'
+    field 69, 'uint8', 'left_power_phase', :scale => 0.7111111, :unit => 'degrees', :array => true
+    field 70, 'uint8', 'left_power_phase_peak', :scale => 0.7111111, :unit => 'degrees', :array => true
+    field 71, 'uint8', 'right_power_phase', :scale => 0.7111111, :unit => 'degrees', :array => true
+    field 72, 'uint8', 'right_power_phase_peak', :scale => 0.7111111, :unit => 'degrees', :array => true
     field 83, 'uint16', 'vertical_ratio', :scale => 100, :unit => '%' # guessed
     field 84, 'uint16', 'gct_balance', :scale => 100, :unit => '%' # guessed
     field 85, 'uint16', 'stride_length', :scale => 10000, :unit => 'm' # guessed
