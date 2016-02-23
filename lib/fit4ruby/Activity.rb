@@ -80,6 +80,25 @@ module Fit4Ruby
                   "#{@sessions.length} session records were found in the "
                   "FIT file."
       end
+
+      # Records must have consecutively growing timestamps and distances.
+      ts = Time.parse('1989-12-31')
+      distance = nil
+      @records.each do |r|
+        Log.fatal "Record has no timestamp" unless r.timestamp
+        if r.timestamp < ts
+          Log.fatal "Record has earlier timestamp than previous record"
+        end
+        if r.distance
+          if distance && r.distance < distance
+            Log.fatal "Record #{r.timestamp} has smaller distance " +
+                      "(#{r.distance}) than an earlier record (#{distance})"
+          end
+          distance = r.distance
+        end
+        ts = r.timestamp
+      end
+
       # Laps must have a consecutively growing message index.
       @laps.each.with_index do |lap, index|
         lap.check(index)

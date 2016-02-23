@@ -47,22 +47,6 @@ module Fit4Ruby
       unless @message_index == index
         Log.fatal "message_index must be #{index}, not #{@message_index}"
       end
-      ts = Time.parse('1989-12-31')
-      distance = nil
-      @records.each do |r|
-        Log.fatal "Record has no timestamp" unless r.timestamp
-        if r.timestamp < ts
-          Log.fatal "Record has earlier timestamp than previous record"
-        end
-        if r.distance
-          if distance && r.distance < distance
-            Log.fatal "Record #{r.timestamp} has smaller distance " +
-                      "(#{r.distance}) than an earlier record (#{distance})"
-          end
-          distance = r.distance
-        end
-        ts = r.timestamp
-      end
     end
 
     # Compute the average stride length for this Session.

@@ -395,11 +395,17 @@ module Fit4Ruby
     field 19, 'uint16', 'active_calories', :unit => 'kcal'
     field 24, 'byte', 'current_activity_type_intensity', :type => 'activity_intensity'
     field 26, 'uint16', 'timestamp_16', :unit => 's'
+    field 27, 'uint8', 'heart_rate', :unit => 'bpm'
     field 29, 'uint16', 'duration_min', :unit => 'min'
-    field 31, 'uint32', 'undocumented_field_31'
-    field 32, 'uint32', 'undocumented_field_32'
+    field 30, 'uint32', 'duration', :unit => 's'
+    field 31, 'uint32', 'ascent', :scale => 1000, :unit => 'm'
+    field 32, 'uint32', 'descent', :scale => 1000, :unit => 'm'
+    field 33, 'uint16', 'moderate_activity_minutes', :unit => 'minutes'
+    field 34, 'uint16', 'vigorous_activity_minutes', :unit => 'minutes'
     field 35, 'uint32', 'undocumented_field_35'
     field 36, 'uint32', 'undocumented_field_36'
+    field 37, 'uint16', 'weekly_moderate_activity_minutes', :unit => 'minutes' # just a guess
+    field 38, 'uint16', 'weekly_vigorous_activity_minutes', :unit => 'minutes' # just a guess
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     message 72, 'training_file'
