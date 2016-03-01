@@ -12,10 +12,10 @@ task :changelog do
       @author = author
       @time = time
       @message = message
-      if (m = /New: (.*)/.match(@message))
+      if (m = /New: (.*)/i.match(@message))
         @type = :feature
         @message = m[1]
-      elsif (m = /Fix: (.*)/.match(@message))
+      elsif (m = /Fix: (.*)/i.match(@message))
         @type = :bugfix
         @message = m[1]
       else
