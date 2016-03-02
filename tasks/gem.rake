@@ -10,8 +10,6 @@ task :gem => [:clobber] do
   Rake::Task[:changelog].invoke
   Rake::Task[:permissions].invoke
 
-  load 'fit4ruby.gemspec';
-
   # Build the gem file according to the loaded spec.
   if RUBY_VERSION >= "2.0.0"
     Gem::Package.build(GEM_SPEC)

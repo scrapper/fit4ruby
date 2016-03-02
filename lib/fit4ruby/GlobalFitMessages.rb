@@ -60,7 +60,7 @@ module Fit4Ruby
     field 16, 'uint8', 'avg_heart_rate', :unit => 'bpm'
     field 17, 'uint8', 'max_heart_rate', :unit => 'bpm'
     alt_field 18, 'sport' do
-      field :default, 'uint8', 'avg_candence', :unit => 'rpm'
+      field :default, 'uint8', 'avg_cadence', :unit => 'rpm'
       field 'running', 'uint8', 'avg_running_cadence', :unit => 'strides/min'
     end
     alt_field 19, 'sport' do
@@ -160,7 +160,7 @@ module Fit4Ruby
     field 15, 'uint8', 'avg_heart_rate', :unit => 'bpm'
     field 16, 'uint8', 'max_heart_rate', :unit => 'bpm'
     alt_field 17, 'sport' do
-      field :default, 'uint8', 'avg_candence', :unit => 'rpm'
+      field :default, 'uint8', 'avg_cadence', :unit => 'rpm'
       field 'running', 'uint8', 'avg_running_cadence', :unit => 'strides/min'
     end
     alt_field 18, 'sport' do
