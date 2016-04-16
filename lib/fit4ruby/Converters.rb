@@ -49,6 +49,15 @@ module Fit4Ruby
       end
     end
 
+    def secsToHM(secs)
+      secs = secs.to_i
+      s = secs % 60
+      mins = secs / 60
+      m = mins % 60
+      h = mins / 60
+      "#{h}:#{'%02d' % m}"
+    end
+
     def secsToHMS(secs)
       secs = secs.to_i
       s = secs % 60
