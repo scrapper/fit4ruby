@@ -68,7 +68,7 @@ module Fit4Ruby
         # file, but we have to discard all bytes from the first null byte
         # onwards.
         if value.is_a?(String) && (null_byte = value.index("\0"))
-          value = value[0..(null_byte - 1)]
+          value = null_byte == 0 ? '' : value[0..(null_byte - 1)]
         end
 
         field_name, field_def = get_field_name_and_global_def(field, obj)
