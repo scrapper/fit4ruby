@@ -326,6 +326,7 @@ module Fit4Ruby
     field 11, 'uint8', 'battery_status', :dict => 'battery_status'
     field 15, 'uint32', 'rx_packets_ok' # just a guess
     field 16, 'uint32', 'rx_packets_err' # just a guess
+    field 17, 'string', 'undocumented_field_17'
     field 20, 'uint8z', 'ant_transmission_type'
     field 21, 'uint16z', 'ant_device_number'
     field 22, 'enum', 'ant_network', :dict => 'ant_network'
