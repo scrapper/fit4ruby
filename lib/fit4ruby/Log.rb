@@ -20,6 +20,10 @@ module Fit4Ruby
   # errors.
   class Error < StandardError ; end
 
+  # This is the Exception type that will be thrown for all program errors that
+  # are caused by user error rather than program logic errors.
+  class Abort < StandardError ; end
+
   # The ILogger class is a singleton that provides a common logging mechanism
   # to all objects. It exposes essentially the same interface as the Logger
   # class, just as a singleton and with some additional methods like 'fatal'
@@ -51,8 +55,16 @@ module Fit4Ruby
       @@logger.respond_to?(method)
     end
 
-    # Print an error message via the Logger and raise and Fit4Ruby::Error.
-    # code 1.
+    # Print an error message via the Logger and raise a Fit4Ruby::Abort.
+    # This method should be used to abort the program in case of user errors.
+    def abort(msg, &block)
+      @@logger.error(msg, &block)
+      raise Abort, msg
+    end
+
+    # Print an error message via the Logger and raise a Fit4Ruby::Error.
+    # This method should be used to abort the program in case of program logic
+    # errors.
     def fatal(msg, &block)
       @@logger.error(msg, &block)
       raise Error, msg
