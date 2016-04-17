@@ -78,6 +78,7 @@ module Fit4Ruby
     entry 3, 'acceleration' # Just a guess
     entry 4, 'barometric_pressure' # Just a guess
     entry 1, 'antfs'
+    entry 10, 'optical_heart_rate' # Just a guess
     entry 11, 'bike_power'
     entry 12, 'environment_sensor_legacy'
     entry 13, 'multi_sport_speed_distance'
