@@ -12,6 +12,7 @@
 
 require 'fit4ruby/FitDataRecord'
 require 'fit4ruby/FileId'
+require 'fit4ruby/EPO_Data'
 require 'fit4ruby/FileCreator'
 require 'fit4ruby/DeviceInfo'
 require 'fit4ruby/DataSources'
@@ -30,7 +31,8 @@ module Fit4Ruby
   # equivalents of the message record structures used in the FIT file.
   class Activity < FitDataRecord
 
-    attr_accessor :file_id, :file_creator, :device_infos, :data_sources,
+    attr_accessor :file_id, :epo_data,
+                  :file_creator, :device_infos, :data_sources,
                   :user_profiles, :sessions, :laps, :records, :hrv,
                   :events, :personal_records
 
@@ -43,6 +45,7 @@ module Fit4Ruby
       @num_sessions = 0
 
       @file_id = FileId.new
+      @epo_data = nil
       @file_creator = FileCreator.new
       @device_infos = []
       @data_sources = []
@@ -365,6 +368,8 @@ module Fit4Ruby
       case record_type
       when 'file_id'
         @file_id = (record = FileId.new(field_values))
+      when 'epo_data'
+        @epo_data = (record = EPO_Data.new(field_values))
       when 'file_creator'
         @file_creator = (record = FileCreator.new(field_values))
       when 'device_info'

@@ -517,8 +517,9 @@ module Fit4Ruby
     field 19, 'uint8', 'undocumented_field_19'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
-    # Not part of the official ANT SDK doc
-    message 141, 'gps_ephemeris'
+    # Not part of the official ANT SDK doc. The message name is guessed and
+    # may change in the future.
+    message 141, 'epo_data'
     field 0, 'enum', 'valid' # 0 if no data cached, 1 else
     field 1, 'uint32', 'interval_start', :type => 'date_time'
     field 2, 'uint32', 'interval_end', :type => 'date_time'
