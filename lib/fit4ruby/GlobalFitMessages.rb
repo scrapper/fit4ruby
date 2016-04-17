@@ -527,6 +527,10 @@ module Fit4Ruby
     field 5, 'sint32', 'undocumented_field_5'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
+    message 211, 'undocumented_211'
+    field 0, 'uint8', 'undocumented_field_0'
+    field 253, 'uint32', 'timestamp', :type => 'date_time'
+
   end
 
 end

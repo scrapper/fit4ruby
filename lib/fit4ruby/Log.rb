@@ -32,7 +32,7 @@ module Fit4Ruby
 
     include Singleton
 
-    @@logger = Logger.new(STDOUT)
+    @@logger = Logger.new($stdout)
 
     # Redirect all log messages to the given IO.
     # @param io [IO] Output file descriptor
@@ -40,7 +40,7 @@ module Fit4Ruby
       begin
         @@logger = Logger.new(io)
       rescue => e
-        @@logger = Logger.new(STDERR)
+        @@logger = Logger.new($stderr)
         Log.fatal "Cannot open log file: #{e.message}"
       end
     end
