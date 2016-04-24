@@ -46,6 +46,7 @@ module Fit4Ruby
     # objects. Any errors will be reported via the Log object.
     def check
       last_timestamp = ts_16_offset = nil
+      last_ts_16 = nil
 
       # The timestamp_16 is a 2 byte time stamp value that is used instead of
       # the 4 byte timestamp field for monitoring records that have
@@ -54,11 +55,18 @@ module Fit4Ruby
       # to be included in the file. However, it can be approximated using the
       # surrounding timestamp values.
       @monitorings.each do |record|
+        if last_ts_16 && ts_16_offset && record.timestamp_16 &&
+           record.timestamp_16 < last_ts_16
+          # Detect timestamp_16 wrap-arounds. timestamp_16 is a 16 bit value.
+          # In case of a wrap-around we adjust the ts_16_offset accordingly.
+          ts_16_offset += 2 ** 16
+        end
         if ts_16_offset
           # We have already found the offset. Adjust all timestamps according
           # to 'offset + timestamp_16'
           if record.timestamp_16
             record.timestamp = ts_16_offset + record.timestamp_16
+            last_ts_16 = record.timestamp_16
           end
         else
           # We are still looking for the offset.
@@ -70,6 +78,7 @@ module Fit4Ruby
             # thinking here?
             ts_16_offset = last_timestamp + 60 - record.timestamp_16
             record.timestamp = ts_16_offset + record.timestamp_16
+            last_ts_16 = record.timestamp_16
           else
             # Just save the timestamp of the current record.
             last_timestamp = record.timestamp
