@@ -334,6 +334,12 @@ module Fit4Ruby
     field 25, 'enum', 'source_type', :dict => 'source_type'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
+    # This message was first seen on the Fenix3HR with firmware 3.0.
+    message 24, 'undocumented_24'
+    # The Array contains 16 bytes. Bytes 2(lsb) and 3(msb) seem to be a
+    # counter.
+    field 2, 'byte', 'undocumented_field_2', :array => true
+
     # Message 29 is just a guess. It's not officially documented.
     # Found in LCTNS.FIT on Fenix 3
     message 29, 'location'
