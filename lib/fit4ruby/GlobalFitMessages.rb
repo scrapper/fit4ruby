@@ -409,8 +409,8 @@ module Fit4Ruby
     field 32, 'uint32', 'descent', :scale => 1000, :unit => 'm'
     field 33, 'uint16', 'moderate_activity_minutes', :unit => 'minutes'
     field 34, 'uint16', 'vigorous_activity_minutes', :unit => 'minutes'
-    field 35, 'uint32', 'undocumented_field_35'
-    field 36, 'uint32', 'undocumented_field_36'
+    field 35, 'uint32', 'floors_climbed', :scale => 1000, :unit => 'm' # just a guess, around 3.048m (10ft) per floor
+    field 36, 'uint32', 'floors_descended', :scale => 1000, :unit => 'm' # just a guess
     field 37, 'uint16', 'weekly_moderate_activity_minutes', :unit => 'minutes' # just a guess
     field 38, 'uint16', 'weekly_vigorous_activity_minutes', :unit => 'minutes' # just a guess
     field 253, 'uint32', 'timestamp', :type => 'date_time'
