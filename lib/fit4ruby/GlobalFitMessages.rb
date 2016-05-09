@@ -470,7 +470,7 @@ module Fit4Ruby
     field 0, 'uint32', 'local_time', :type => 'date_time'
     field 1, 'enum', 'activity_type', :array => true, :dict => 'activity_type'
     field 3, 'uint16', 'cycles_to_distance', :array => true, :scale => 5000, :unit => 'm/cycle'
-    field 4, 'uint16', 'cycle_to_calories', :array => true, :scale => 5000, :unit => 'kcal/cycle'
+    field 4, 'uint16', 'cycles_to_calories', :array => true, :scale => 5000, :unit => 'kcal/cycle'
     field 5, 'uint16', 'resting_metabolic_rate', :unit => 'kcal/day'
     # Just a guess, not officially documented
     field 7, 'uint32', 'goal_cycles', :array => true
