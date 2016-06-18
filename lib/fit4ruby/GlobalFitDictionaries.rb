@@ -141,6 +141,8 @@ module Fit4Ruby
     entry 45, 'elev_high_alert'
     entry 46, 'elev_low_alert'
     entry 47, 'comm_timeout'
+    entry 49, 'lactate_threshold_heart_rate' # guess (in BPM)
+    entry 50, 'lactate_threshold_speed' # guess (in m/s)
 
     dict 'event_type'
     entry 0, 'start_time'

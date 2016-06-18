@@ -291,6 +291,8 @@ module Fit4Ruby
       field 'recovery_time', 'uint32', 'recovery_time', :unit => 'min'
       field 'recovery_info', 'uint32', 'recovery_info', :unit => 'min'
       field 'vo2max', 'uint32', 'vo2max'
+      field 'lactate_threshold_heart_rate', 'uint32', 'lactate_threshold_heart_rate', :unit => 'bpm'
+      field 'lactate_threshold_speed', 'uint32', 'lactate_threshold_speed', :scale => 1000, :unit => 'm/s'
     end
     field 4, 'uint8', 'event_group'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
