@@ -444,7 +444,7 @@ module Fit4Ruby
     field 8, 'uint16', 'recovery_time', :scale => 60, :unit => 'hours'
     field 9, 'uint16', 'undocumented_field_9' # maybe activity measurement
     field 10, 'uint8', 'undocumented_field_10'
-    field 11, 'uint16', 'undocumented_field_11'
+    field 11, 'uint16', 'running_lactate_threshold_heart_rate', :unit => 'bpm'
     field 12, 'uint16', 'undocumented_field_12'
     field 13, 'uint16', 'undocumented_field_13'
     field 14, 'uint8', 'undocumented_field_14'
