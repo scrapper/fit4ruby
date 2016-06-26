@@ -517,9 +517,9 @@ module Fit4Ruby
     field 11, 'enum', 'undocumented_field_11'
     field 12, 'enum', 'undocumented_field_12'
     field 13, 'uint8', 'undocumented_field_13'
-    field 14, 'uint16', 'undocumented_field_14'
-    field 15, 'uint16', 'undocumented_field_15'
-    field 16, 'uint16', 'undocumented_field_16'
+    field 14, 'uint16', 'running_lactate_threshold_heart_rate', :unit => 'bpm'
+    field 15, 'uint16', 'running_lactate_threshold_speed', :scale => 100, :unit => 'm/s'
+    field 16, 'uint16', 'undocumented_field_16' # very correlated to 14 and 15
     field 17, 'sint8', 'undocumented_field_17'
     field 18, 'uint8', 'undocumented_field_18'
     field 19, 'uint8', 'undocumented_field_19'
