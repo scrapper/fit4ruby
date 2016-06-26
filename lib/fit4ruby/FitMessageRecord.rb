@@ -14,6 +14,7 @@ require 'bindata'
 require 'fit4ruby/Log'
 require 'fit4ruby/GlobalFitMessage'
 require 'fit4ruby/FitFileEntity'
+require 'fit4ruby/DumpedField'
 
 module Fit4Ruby
 
@@ -78,8 +79,12 @@ module Fit4Ruby
            (filter.field_names.nil? ||
             filter.field_names.include?(field_name)) &&
            (value != field.undefined_value || !filter.ignore_undef)
-          fields_dump << [ field.type(true), field_name,
-                           (field_def ? field_def : field).to_s(value) ]
+          fields_dump << DumpedField.new(
+            @global_message_number,
+            field.field_definition_number.snapshot,
+            field_name,
+            field.type(true),
+            (field_def ? field_def : field).to_s(value))
         end
       end
     end

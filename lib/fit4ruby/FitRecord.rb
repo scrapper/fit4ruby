@@ -16,6 +16,7 @@ require 'fit4ruby/FitDefinition'
 require 'fit4ruby/FitMessageRecord'
 require 'fit4ruby/FitFilter'
 require 'fit4ruby/FitFileEntity'
+require 'fit4ruby/DumpedField'
 
 module Fit4Ruby
 
@@ -24,6 +25,8 @@ module Fit4Ruby
   # FIT data. A FIT record always starts with a header that describes what
   # kind of record this is.
   class FitRecord
+
+    attr_reader :number
 
     def initialize(definitions)
       @definitions = definitions
@@ -72,13 +75,13 @@ module Fit4Ruby
       self
     end
 
-    def dump
+    def dump(index)
       return unless @fields
 
       begin
         puts "Message #{@number}: #{@name}" unless @fields.empty?
-        @fields.each do |type, name, value|
-          puts " [#{"%-7s" % type}] #{name}: " + "#{value}"
+        @fields.sort.each do |field|
+          puts field.to_s(index)
         end
       rescue Errno::EPIPE
         # Avoid ugly error message when aborting a less/more pipe.

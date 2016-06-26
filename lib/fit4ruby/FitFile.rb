@@ -144,8 +144,14 @@ module Fit4Ruby
     end
 
     def dump_records(records)
+      # For each message number we keep a count for how often we already had
+      # this kind of message.
+      message_counters = Hash.new(0)
+
       records.each do |record|
-        record.dump
+        record.dump(message_counters[record.number])
+        # Increase the counter for this message number.
+        message_counters[record.number] += 1
       end
     end
 
