@@ -10,8 +10,9 @@ GEM_SPEC = Gem::Specification.new do |spec|
   spec.summary      = 'Library to read GARMIN FIT files.'
   spec.description  = <<EOT
 This library can read and write FIT files and convert them into a Ruby data
-structure for easy processing. This library was written for the Garmin FR620.
-Fit files from other devices may or may not work.
+structure for easy processing. This library was written for Garmin devices
+like the FR620, Fenix 3 and Fenix 3 HR. Fit files from other devices may work
+as well but have not been tested.
 EOT
   spec.authors      = [ 'Chris Schlaeger' ]
   spec.email        = 'chris@linux.com'
