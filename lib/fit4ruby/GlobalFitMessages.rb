@@ -538,6 +538,7 @@ module Fit4Ruby
 
     message 211, 'undocumented_211'
     field 0, 'uint8', 'undocumented_field_0'
+    field 1, 'uint8', 'undocumented_field_1'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
   end
