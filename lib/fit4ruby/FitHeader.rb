@@ -31,7 +31,7 @@ module Fit4Ruby
         Log.fatal { "Unsupported header size #{@header.header_size}" }
       end
       unless data_type == '.FIT'
-        Log.fata { "Unknown file type #{@header.data_type}" }
+        Log.fatal { "Unknown file type #{@header.data_type}" }
       end
     end
 
