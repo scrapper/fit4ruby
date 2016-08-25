@@ -236,6 +236,8 @@ module Fit4Ruby
     field 7, 'uint16', 'power', :unit => 'watts'
     field 11, 'sint32', 'time_from_course', :scale => 1000, :unit => 's'
     field 13, 'sint8', 'temperature', :unit => 'C'
+    field 14, 'uint32', 'undefined_field_14'
+    field 15, 'uint32', 'undefined_field_15'
     field 29, 'uint32', 'accumulated_power', :unit => 'watts'
     field 30, 'uint8', 'left_right_balance', :dict => 'left_right_balance'
     field 39, 'uint16', 'vertical_oscillation', :scale => 10, :unit => 'mm'
