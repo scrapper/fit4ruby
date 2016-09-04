@@ -39,7 +39,7 @@ module Fit4Ruby
       header = FitHeader.read(io)
       header.check
 
-      check_crc(io, header.end_pos)
+      check_crc(io, io.size - 2)
 
       entity = FitFileEntity.new
       # This Array holds the raw data of the records that may be needed to
@@ -106,7 +106,7 @@ module Fit4Ruby
 
       unless crc == crc_ref
         Log.fatal "Checksum error in file '#{@file_name}'. " +
-                  "Computed #{"%04X" % crc} instead of #{"%04X" % crc_ref}."
+                  "Computed 0x#{"%04X" % crc} instead of 0x#{"%04X" % crc_ref}."
       end
     end
 
