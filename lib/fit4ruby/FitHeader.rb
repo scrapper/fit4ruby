@@ -28,10 +28,10 @@ module Fit4Ruby
 
     def check
       unless header_size == 14
-        Log.fatal { "Unsupported header size #{@header.header_size}" }
+        Log.fatal "Unsupported header size #{header_size}"
       end
       unless data_type == '.FIT'
-        Log.fatal { "Unknown file type #{@header.data_type}" }
+        Log.fatal "Unknown file type #{data_type}"
       end
     end
 

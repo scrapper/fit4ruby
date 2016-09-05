@@ -36,31 +36,41 @@ module Fit4Ruby
       rescue StandardError => e
         Log.fatal "Cannot open FIT file '#{file_name}': #{e.message}"
       end
-      header = FitHeader.read(io)
-      header.check
 
-      check_crc(io, io.size - 2)
+      entities = []
+      while !io.eof?
+        offset = io.pos
 
-      entity = FitFileEntity.new
-      # This Array holds the raw data of the records that may be needed to
-      # dump a human readable form of the FIT file.
-      records = []
-      # This hash will hold a counter for each record type. The counter is
-      # incremented each time the corresponding record type is found.
-      record_counters = Hash.new { 0 }
-      while io.pos < header.end_pos
-        record = FitRecord.new(definitions)
-        record.read(io, entity, filter, record_counters)
-        records << record if filter
+        header = FitHeader.read(io)
+        header.check
+
+        check_crc(io, io.pos, offset + header.end_pos)
+
+        entity = FitFileEntity.new
+        # This Array holds the raw data of the records that may be needed to
+        # dump a human readable form of the FIT file.
+        records = []
+        # This hash will hold a counter for each record type. The counter is
+        # incremented each time the corresponding record type is found.
+        record_counters = Hash.new { 0 }
+        while io.pos < offset + header.end_pos
+          record = FitRecord.new(definitions)
+          record.read(io, entity, filter, record_counters)
+          records << record if filter
+        end
+        # Skip the 2 CRC bytes
+        io.seek(2, :CUR)
+
+        header.dump if filter && filter.record_numbers.nil?
+        dump_records(records) if filter
+
+        entity.check
+        entities << entity
       end
 
       io.close
 
-      header.dump if filter && filter.record_numbers.nil?
-      dump_records(records) if filter
-
-      entity.check
-      entity.top_level_record
+      entities[0].top_level_record
     end
 
     def write(file_name, top_level_record)
@@ -93,14 +103,11 @@ module Fit4Ruby
 
     private
 
-    def check_crc(io, end_pos)
-      # Save the current file IO position
-      start_pos = io.pos
-
+    def check_crc(io, start_pos, end_pos)
       crc = compute_crc(io, start_pos, end_pos)
 
       # Read the 2 CRC bytes from the end of the file
-      io.seek(-2, IO::SEEK_END)
+      io.seek(end_pos)
       crc_ref = io.readbyte.to_i | (io.readbyte.to_i << 8)
       io.seek(start_pos)
 
