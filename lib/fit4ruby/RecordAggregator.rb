@@ -162,9 +162,10 @@ module Fit4Ruby
         end
       end
 
-      @avg_stance_time = total_stance_time / stance_time_count
-      @avg_stance_time_percent = total_stance_time_percent /
-        stance_time_percent_count
+      @avg_stance_time = stance_time_count > 0 ?
+        total_stance_time / stance_time_count : 0
+      @avg_stance_time_percent = stance_time_percent_count > 0 ?
+        total_stance_time_percent / stance_time_percent_count : 0
     end
 
   end
