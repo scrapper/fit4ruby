@@ -85,6 +85,8 @@ module Fit4Ruby
     field 35, 'uint16', 'training_stress_score', :scale => 10, :unit => 'tss'
     field 36, 'uint16', 'intensity_factor', :scale => 1000, :unit => 'if'
     field 37, 'uint16', 'left_right_balance', :dict => 'left_right_balance_100'
+    field 38, 'sint32', 'undocumented_field_38' # Seen in Garmin Connect APIs sample file multi-sport-with-heartrate.fit
+    field 39, 'sint32', 'undocumented_field_39' # Seen in Garmin Connect APIs sample file multi-sport-with-heartrate.fit
     field 41, 'uint32', 'avg_stroke_count', :scale => 10, :unit => 'strokes/lap'
     field 42, 'uint16', 'avg_stroke_distance', :scale => 100, :unit => 'm'
     field 43, 'enum', 'swim_stroke', :dict => 'swim_stroke'
@@ -309,6 +311,8 @@ module Fit4Ruby
     field 4, 'uint8', 'heart_rate'
     field 5, 'enum', 'mode' # 0 or 3 seen, unknown meaning
     field 6, 'uint8', 'power' # First found in FR920XT
+    field 7, 'uint8', 'undefined_value_7' # Seen in Garmin Connect APIs sample file multi-sport-with-heartrate.fit
+    field 8, 'uint8', 'undefined_value_8' # Seen in Garmin Connect APIs sample file multi-sport-with-heartrate.fit
     field 14, 'uint8', 'calories' # First found in FR920XT
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
@@ -344,6 +348,23 @@ module Fit4Ruby
     # counter.
     field 2, 'byte', 'undocumented_field_2', :array => true
 
+    # Seen in the ANT FIT SDK sample file WorkoutCustomTargetValues.fit
+    message 26, 'undocumented_24'
+    field 6, 'uint16', 'undocumented_field_6'
+    field 8, 'string', 'undocumented_field_8'
+        
+    # Seen in the ANT FIT SDK sample file WorkoutCustomTargetValues.fit
+    message 27, 'undocumented_24'
+    field 0, 'string', 'undocumented_field_0'
+    field 1, 'enum', 'undocumented_field_1'
+    field 2, 'uint32', 'undocumented_field_2'
+    field 3, 'enum', 'undocumented_field_3'
+    field 4, 'uint32', 'undocumented_field_4'
+    field 5, 'uint32', 'undocumented_field_5'
+    field 6, 'uint32', 'undocumented_field_6'
+    field 7, 'enum', 'undocumented_field_7'
+    field 254, 'uint16', 'undocumented_field_254'
+    
     # Message 29 is just a guess. It's not officially documented.
     # Found in LCTNS.FIT on Fenix 3
     message 29, 'location'
@@ -479,6 +500,16 @@ module Fit4Ruby
     # Just a guess, not officially documented
     field 7, 'uint32', 'goal_cycles', :array => true
     field 253, 'uint32', 'timestamp', :type => 'date_time'
+    
+    # Seen in Garmin Connect APIs sample file multi-sport-with-heartrate.fit
+    message 104, 'undocumented_104'
+    field 0, 'uint16', 'undocumented_field_0'
+    field 1, 'sint16', 'undocumented_field_1'
+    field 2, 'uint8', 'undocumented_field_2'
+    field 3, 'sint8', 'undocumented_field_3'
+    field 38, 'uint8', 'undocumented_field_39'
+    field 39, 'uint8', 'undocumented_field_38'
+    field 253, 'uint32', 'undocumented_field_253'
 
     # Not part of the official ANT SDK doc
     message 113, 'personal_records'
