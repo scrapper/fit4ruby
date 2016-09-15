@@ -27,11 +27,11 @@ module Fit4Ruby
     uint16 :crc, :initial_value => 0
 
     def check
-      unless header_size == 14
-        Log.fatal { "Unsupported header size #{@header.header_size}" }
+      unless header_size == 14 || header_size == 12
+        Log.fatal "Unsupported header size #{header_size}"
       end
       unless data_type == '.FIT'
-        Log.fatal { "Unknown file type #{@header.data_type}" }
+        Log.fatal "Unknown file type #{data_type}"
       end
     end
 
@@ -47,6 +47,14 @@ EOT
 
     def end_pos
       header_size + data_size
+    end
+    
+    def crc
+      crc
+    end
+    
+    def header_size
+      header_size
     end
 
   end
