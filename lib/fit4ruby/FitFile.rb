@@ -36,41 +36,55 @@ module Fit4Ruby
       rescue StandardError => e
         Log.fatal "Cannot open FIT file '#{file_name}': #{e.message}"
       end
-      header = FitHeader.read(io)
-      header.check
-  
-      has_header_crc = header.header_size == 14 && header.crc != 0
-      if has_header_crc
-        computed_head_crc = compute_crc(io, 0, 12)
-        unless header.crc == computed_head_crc
-          Log.fatal "Header checksum error in file '#{@file_name}'. " +
-                    "Computed #{"%04X" % computed_head_crc} instead of #{"%04X" % header.crc}."
-        end
-      end
-      
-      io.seek(header.header_size, :SET) # set the file pointer to start of data for file 
-      check_file_crc(io, has_header_crc, header.end_pos)
 
-      entity = FitFileEntity.new
-      # This Array holds the raw data of the records that may be needed to
-      # dump a human readable form of the FIT file.
-      records = []
-      # This hash will hold a counter for each record type. The counter is
-      # incremented each time the corresponding record type is found.
-      record_counters = Hash.new { 0 }
-      while io.pos < header.end_pos
-        record = FitRecord.new(definitions)
-        record.read(io, entity, filter, record_counters)
-        records << record if filter
+      entities = []
+      while !io.eof?
+        offset = io.pos
+
+        header = FitHeader.read(io)
+        header.check
+        
+        has_header_crc = header.header_size == 14 && header.crc != 0
+        if has_header_crc
+          computed_head_crc = compute_crc(io, offset, offset + 12)
+          unless header.crc == computed_head_crc
+            Log.fatal "Header checksum error in file '#{@file_name}'. " +
+                      "Computed #{"%04X" % computed_head_crc} instead of #{"%04X" % header.crc}."
+          end
+        end
+        
+        if has_header_crc
+          check_crc(io, offset + header.header_size, offset + header.end_pos)
+        else
+          check_crc(io, offset, offset + header.end_pos)
+          io.seek(header.header_size, :CUR) # skip the header
+        end
+
+        entity = FitFileEntity.new
+        # This Array holds the raw data of the records that may be needed to
+        # dump a human readable form of the FIT file.
+        records = []
+        # This hash will hold a counter for each record type. The counter is
+        # incremented each time the corresponding record type is found.
+        record_counters = Hash.new { 0 }
+        while io.pos < offset + header.end_pos
+          record = FitRecord.new(definitions)
+          record.read(io, entity, filter, record_counters)
+          records << record if filter
+        end
+        # Skip the 2 CRC bytes
+        io.seek(2, :CUR)
+
+        header.dump if filter && filter.record_numbers.nil?
+        dump_records(records) if filter
+
+        entity.check
+        entities << entity
       end
 
       io.close
 
-      header.dump if filter && filter.record_numbers.nil?
-      dump_records(records) if filter
-
-      entity.check
-      entity.top_level_record
+      entities[0].top_level_record
     end
 
     def write(file_name, top_level_record)
@@ -106,21 +120,16 @@ module Fit4Ruby
 
     private
 
-    def check_file_crc(io, has_header_crc, end_pos)
-      # Save the current file IO position
-      current_pos = io.pos
-
-      start_pos = has_header_crc ? current_pos : 0
+    def check_crc(io, start_pos, end_pos)
       crc = compute_crc(io, start_pos, end_pos)
 
       # Read the 2 CRC bytes from the end of the file
-      io.seek(-2, IO::SEEK_END)
       crc_ref = io.readbyte.to_i | (io.readbyte.to_i << 8)
-      io.seek(current_pos)
+      io.seek(start_pos)
 
       unless crc == crc_ref
         Log.fatal "Checksum error in file '#{@file_name}'. " +
-                  "Computed #{"%04X" % crc} instead of #{"%04X" % crc_ref}."
+                  "Computed 0x#{"%04X" % crc} instead of 0x#{"%04X" % crc_ref}."
       end
     end
 

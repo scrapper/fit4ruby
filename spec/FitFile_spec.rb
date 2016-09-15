@@ -11,7 +11,7 @@
 #
 require 'spec_helper'
 class Fit4Ruby::FitFile
-  public :check_file_crc, :compute_crc
+  public :check_crc, :compute_crc
 end
 
 describe 'FitFile' do
@@ -92,7 +92,7 @@ describe 'FitFile' do
     end
   end
   
-  describe '#check_file_crc' do
+  describe '#check_crc' do
     describe 'using FIT file with 12 bytes header' do
       let(:filename) {'spec/examples/Activity.fit'}
       subject { File.open(filename, 'rb') }
@@ -101,10 +101,10 @@ describe 'FitFile' do
         expect(File).to exist(filename), "Download the FIT SDK from https://www.thisisant.com/resources/fit and put the .fit files from the examples/ folder into spec/examples/ folder"
       end
       
-      it 'checks file crc' do
+      it 'checks crc' do
         expect {
           fit_file = Fit4Ruby::FitFile.new
-          crc = fit_file.check_file_crc(subject, false, subject.size-2)
+          crc = fit_file.check_crc(subject, 0, subject.size-2)
         }.to_not raise_error # error is raised it faulty crc
       end
     end
