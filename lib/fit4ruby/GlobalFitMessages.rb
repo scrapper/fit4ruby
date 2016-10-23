@@ -479,6 +479,8 @@ module Fit4Ruby
     field 5, 'uint16', 'resting_metabolic_rate', :unit => 'kcal/day'
     # Just a guess, not officially documented
     field 7, 'uint32', 'goal_cycles', :array => true
+    # Showed up in Fenix3HR firmware 3.84. Haven't seen a value yet.
+    field 8, 'enum', 'undocumented_field_8', :array => true
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     # Not part of the official ANT SDK doc
