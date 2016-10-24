@@ -43,8 +43,22 @@ module Fit4Ruby
 
         header = FitHeader.read(io)
         header.check
-
-        check_crc(io, io.pos, offset + header.end_pos)
+        
+        has_header_crc = header.header_size == 14 && header.crc != 0
+        if has_header_crc
+          computed_head_crc = compute_crc(io, offset, offset + 12)
+          unless header.crc == computed_head_crc
+            Log.fatal "Header checksum error in file '#{@file_name}'. " +
+                      "Computed #{"%04X" % computed_head_crc} instead of #{"%04X" % header.crc}."
+          end
+        end
+        
+        if has_header_crc
+          check_crc(io, offset + header.header_size, offset + header.end_pos)
+        else
+          check_crc(io, offset, offset + header.end_pos)
+          io.seek(header.header_size, :CUR) # skip the header
+        end
 
         entity = FitFileEntity.new
         # This Array holds the raw data of the records that may be needed to
@@ -89,12 +103,15 @@ module Fit4Ruby
       top_level_record.write(io, id_mapper)
       end_pos = io.pos
 
-      crc = write_crc(io, start_pos, end_pos)
+      write_crc(io, start_pos, end_pos)
 
       # Complete the data of the header section and write it at the start of
       # the file.
       header.data_size = end_pos - start_pos
-      header.crc = crc
+      io.seek(0)
+      # Write all of header to be able to calculate header crc and then write that
+      header.write(io) 
+      header.crc = compute_crc(io, 0, 12)
       io.seek(0)
       header.write(io)
 
@@ -107,7 +124,6 @@ module Fit4Ruby
       crc = compute_crc(io, start_pos, end_pos)
 
       # Read the 2 CRC bytes from the end of the file
-      io.seek(end_pos)
       crc_ref = io.readbyte.to_i | (io.readbyte.to_i << 8)
       io.seek(start_pos)
 
