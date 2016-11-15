@@ -136,8 +136,8 @@ module Fit4Ruby
     field 132, 'uint16', 'vertical_ratio', :scale => 100, :unit => '%' # guessed
     field 133, 'uint16', 'avg_gct_balance', :scale => 100, :unit => '%' # guessed
     field 134, 'uint16', 'avg_stride_length', :scale => 10000, :unit => 'm' # guessed
-    field 253, 'uint32', 'timestamp', :type => 'date_time'
-    field 254, 'uint16', 'message_index'
+    field 253, 'uint32', 'timestamp', :type => 'date_time' # Common Field, see section 4.7 FIT protocol documentation
+    field 254, 'uint16', 'message_index' # Common Field, see section 4.7 FIT protocol documentation
 
     message 19, 'lap'
     field 0, 'enum', 'event', :dict => 'event'
@@ -224,8 +224,8 @@ module Fit4Ruby
     field 118, 'uint16', 'vertical_ratio', :scale => 100, :unit => '%' # guessed
     field 119, 'uint16', 'avg_gct_balance', :scale => 100, :unit => '%' # guessed
     field 120, 'uint16', 'avg_stride_length', :scale => 10000, :unit => 'm' # guessed
-    field 253, 'uint32', 'timestamp', :type => 'date_time'
-    field 254, 'uint16', 'message_index'
+    field 253, 'uint32', 'timestamp', :type => 'date_time' # Common Field, see section 4.7 FIT protocol documentation
+    field 254, 'uint16', 'message_index' # Common Field, see section 4.7 FIT protocol documentation
 
     message 20, 'record'
     field 0, 'sint32', 'position_lat', :type => 'coordinate'
@@ -268,7 +268,7 @@ module Fit4Ruby
     field 85, 'uint16', 'stride_length', :scale => 10000, :unit => 'm' # guessed
     field 87, 'uint16', 'undefined_value_87' # first seen on F3 FW6.80
     field 88, 'uint16', 'undefined_value_88' # first seen on F3HR FW3.60
-    field 253, 'uint32', 'timestamp', :type => 'date_time'
+    field 253, 'uint32', 'timestamp', :type => 'date_time' # Common Field, see section 4.7 FIT protocol documentation
 
     message 21, 'event'
     field 0, 'enum', 'event', :dict => 'event'
@@ -300,7 +300,7 @@ module Fit4Ruby
       field 'lactate_threshold_speed', 'uint32', 'lactate_threshold_speed', :scale => 1000, :unit => 'm/s'
     end
     field 4, 'uint8', 'event_group'
-    field 253, 'uint32', 'timestamp', :type => 'date_time'
+    field 253, 'uint32', 'timestamp', :type => 'date_time' # Common Field, see section 4.7 FIT protocol documentation
 
     # Possibly which device is used as metering source.
     # Not documented in FIT SDK, so the field names are all guesses right now.
@@ -315,7 +315,7 @@ module Fit4Ruby
     field 7, 'uint8', 'undefined_value_7' # Seen in Garmin Connect APIs sample file multi-sport-with-heartrate.fit
     field 8, 'uint8', 'undefined_value_8' # Seen in Garmin Connect APIs sample file multi-sport-with-heartrate.fit
     field 14, 'uint8', 'calories' # First found in FR920XT
-    field 253, 'uint32', 'timestamp', :type => 'date_time'
+    field 253, 'uint32', 'timestamp', :type => 'date_time' # Common Field, see section 4.7 FIT protocol documentation
 
     message 23, 'device_info'
     field 0, 'uint8', 'device_index'
@@ -341,7 +341,7 @@ module Fit4Ruby
     field 22, 'enum', 'ant_network', :dict => 'ant_network'
     field 23, 'uint8', 'undocumented_field_23'
     field 25, 'enum', 'source_type', :dict => 'source_type'
-    field 253, 'uint32', 'timestamp', :type => 'date_time'
+    field 253, 'uint32', 'timestamp', :type => 'date_time' # Common Field, see section 4.7 FIT protocol documentation
 
     # This message was first seen on the Fenix3HR with firmware 3.0.
     message 24, 'undocumented_24'
@@ -364,7 +364,7 @@ module Fit4Ruby
     field 5, 'uint32', 'undocumented_field_5'
     field 6, 'uint32', 'undocumented_field_6'
     field 7, 'enum', 'undocumented_field_7'
-    field 254, 'uint16', 'undocumented_field_254'
+    field 254, 'uint16', 'message_index' # Common Field, see section 4.7 FIT protocol documentation
     
     # Message 29 is just a guess. It's not officially documented.
     # Found in LCTNS.FIT on Fenix 3
@@ -375,8 +375,8 @@ module Fit4Ruby
     field 3, 'uint16', 'undocumented_field_3'
     field 4, 'uint16', 'altitude', :scale => 5, :offset => 500, :unit => 'm'
     field 5, 'uint16', 'undocumented_field_5'
-    field 253, 'uint32', 'undocumented_field_253'
-    field 254, 'uint16', 'location_index'
+    field 253, 'uint32', 'timestamp', :type => 'date_time' # Common Field, see section 4.7 FIT protocol documentation
+    field 254, 'uint16', 'message_index' # Common Field, see section 4.7 FIT protocol documentation
 
     message 33, 'totals'
     field 0, 'uint32', 'timer_time', :unit => 's'
@@ -386,8 +386,8 @@ module Fit4Ruby
     field 4, 'uint32', 'elapsed_time', :unit => 's'
     field 5, 'uint16', 'sessions'
     field 6, 'uint32', 'active_time', :unit => 's'
-    field 253, 'uint32', 'timestamp', :type => 'date_time'
-    field 254, 'uint16', 'message_index'
+    field 253, 'uint32', 'timestamp', :type => 'date_time' # Common Field, see section 4.7 FIT protocol documentation
+    field 254, 'uint16', 'message_index' # Common Field, see section 4.7 FIT protocol documentation
 
     message 34, 'activity'
     field 0, 'uint32', 'total_timer_time', :type => 'duration',  :scale => 1000
@@ -397,7 +397,7 @@ module Fit4Ruby
     field 4, 'enum', 'event_type', :dict => 'event_type'
     field 5, 'uint32', 'local_timestamp', :type => 'date_time'
     field 6, 'uint8', 'event_group'
-    field 253, 'uint32', 'timestamp', :type => 'date_time'
+    field 253, 'uint32', 'timestamp', :type => 'date_time' # Common Field, see section 4.7 FIT protocol documentation
 
     message 35, 'software'
     field 3, 'uint16', 'version', :scale => 100
@@ -406,7 +406,7 @@ module Fit4Ruby
     message 49, 'file_creator'
     field 0, 'uint16', 'software_version'
     field 1, 'uint8', 'hardware_version'
-    field 254, 'uint16', 'message_index', :dict => 'message_index'
+    field 254, 'uint16', 'message_index', :dict => 'message_index' # Common Field, see section 4.7 FIT protocol documentation
 
     message 55, 'monitoring'
     field 0, 'enum', 'device_index'
@@ -439,7 +439,7 @@ module Fit4Ruby
     field 36, 'uint32', 'floors_descended', :scale => 1000, :unit => 'm' # just a guess
     field 37, 'uint16', 'weekly_moderate_activity_minutes', :unit => 'minutes' # just a guess
     field 38, 'uint16', 'weekly_vigorous_activity_minutes', :unit => 'minutes' # just a guess
-    field 253, 'uint32', 'timestamp', :type => 'date_time'
+    field 253, 'uint32', 'timestamp', :type => 'date_time' # Common Field, see section 4.7 FIT protocol documentation
 
     message 72, 'training_file'
     field 0, 'enum', 'type'
@@ -450,7 +450,7 @@ module Fit4Ruby
     end
     field 3, 'uint32z', 'serial_number'
     field 4, 'uint32', 'time_created', :type => 'date_time'
-    field 253, 'uint32', 'timestamp', :type => 'date_time'
+    field 253, 'uint32', 'timestamp', :type => 'date_time' # Common Field, see section 4.7 FIT protocol documentation
 
     message 78, 'hrv'
     field 0, 'uint16', 'time', :array => true, :scale => 1000, :unit => 's'
@@ -472,7 +472,7 @@ module Fit4Ruby
     field 12, 'uint16', 'undocumented_field_12'
     field 13, 'uint16', 'undocumented_field_13'
     field 14, 'uint8', 'undocumented_field_14'
-    field 253, 'uint32', 'timestamp', :type => 'date_time'
+    field 253, 'uint32', 'timestamp', :type => 'date_time' # Common Field, see section 4.7 FIT protocol documentation
 
     message 101, 'length'
     field 0, 'enum', 'event', :dict => 'event'
@@ -489,8 +489,8 @@ module Fit4Ruby
     field 12, 'enum', 'length_type', :dict => 'length_type'
     field 18, 'uint16', 'player_score'
     field 19, 'uint16', 'opponent_score'
-    field 253, 'uint32', 'timestamp', :type => 'date_time'
-    field 254, 'uint16', 'message_index'
+    field 253, 'uint32', 'timestamp', :type => 'date_time' # Common Field, see section 4.7 FIT protocol documentation
+    field 254, 'uint16', 'message_index' # Common Field, see section 4.7 FIT protocol documentation
 
     message 103, 'monitoring_info'
     field 0, 'uint32', 'local_time', :type => 'date_time'
@@ -500,7 +500,7 @@ module Fit4Ruby
     field 5, 'uint16', 'resting_metabolic_rate', :unit => 'kcal/day'
     # Just a guess, not officially documented
     field 7, 'uint32', 'goal_cycles', :array => true
-    field 253, 'uint32', 'timestamp', :type => 'date_time'
+    field 253, 'uint32', 'timestamp', :type => 'date_time' # Common Field, see section 4.7 FIT protocol documentation
     
     # Seen in Garmin Connect APIs sample file multi-sport-with-heartrate.fit
     message 104, 'undocumented_104'
@@ -510,7 +510,7 @@ module Fit4Ruby
     field 3, 'sint8', 'undocumented_field_3'
     field 38, 'uint8', 'undocumented_field_39'
     field 39, 'uint8', 'undocumented_field_38'
-    field 253, 'uint32', 'undocumented_field_253'
+    field 253, 'uint32', 'timestamp', :type => 'date_time' # Common Field, see section 4.7 FIT protocol documentation
 
     # Not part of the official ANT SDK doc
     message 113, 'personal_records'
@@ -521,7 +521,7 @@ module Fit4Ruby
     field 3, 'uint32', 'duration', :scale => 1000, :type => 'duration'
     field 4, 'uint32', 'start_time', :type => 'date_time'
     field 5, 'enum', 'new_record'
-    field 253, 'uint32', 'timestamp', :type => 'date_time'
+    field 253, 'uint32', 'timestamp', :type => 'date_time' # Common Field, see section 4.7 FIT protocol documentation
 
     # Not part of the official ANT SDK doc
     # It shows up in swimming activities.
@@ -530,7 +530,7 @@ module Fit4Ruby
     field 2, 'uint16', 'undocumented_field_2', :array => true
     field 3, 'uint16', 'undocumented_field_3'
     field 4, 'uint8', 'undocumented_field_4'
-    field 253, 'uint32', 'timestamp', :type => 'date_time'
+    field 253, 'uint32', 'timestamp', :type => 'date_time' # Common Field, see section 4.7 FIT protocol documentation
 
     # Not part of the official ANT SDK doc
     # The values in this message seem to be related to the activity history.
@@ -557,7 +557,7 @@ module Fit4Ruby
     field 17, 'sint8', 'undocumented_field_17'
     field 18, 'uint8', 'undocumented_field_18'
     field 19, 'uint8', 'undocumented_field_19'
-    field 253, 'uint32', 'timestamp', :type => 'date_time'
+    field 253, 'uint32', 'timestamp', :type => 'date_time' # Common Field, see section 4.7 FIT protocol documentation
 
     # Not part of the official ANT SDK doc. The message name is guessed and
     # may change in the future.
@@ -568,12 +568,12 @@ module Fit4Ruby
     field 3, 'uint32', 'undocumented_field_3'
     field 4, 'sint32', 'undocumented_field_4'
     field 5, 'sint32', 'undocumented_field_5'
-    field 253, 'uint32', 'timestamp', :type => 'date_time'
+    field 253, 'uint32', 'timestamp', :type => 'date_time' # Common Field, see section 4.7 FIT protocol documentation
 
     message 211, 'undocumented_211'
     field 0, 'uint8', 'undocumented_field_0'
     field 1, 'uint8', 'undocumented_field_1'
-    field 253, 'uint32', 'timestamp', :type => 'date_time'
+    field 253, 'uint32', 'timestamp', :type => 'date_time' # Common Field, see section 4.7 FIT protocol documentation
 
   end
 
