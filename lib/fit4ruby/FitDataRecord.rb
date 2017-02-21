@@ -86,10 +86,7 @@ module Fit4Ruby
         v2 = field.fit_to_native(field.native_to_fit(
           fdr.instance_variable_get(ivar_name)))
 
-        unless v1 == v2
-          Log.error "#{name}: #{v1} != #{v2}"
-          return false
-        end
+        return false unless v1 == v2
       end
 
       true

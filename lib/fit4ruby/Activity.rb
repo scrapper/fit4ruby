@@ -87,19 +87,42 @@ module Fit4Ruby
       # Records must have consecutively growing timestamps and distances.
       ts = Time.parse('1989-12-31')
       distance = nil
-      @records.each do |r|
+      invalid_records = []
+      @records.each_with_index do |r, idx|
         Log.fatal "Record has no timestamp" unless r.timestamp
         if r.timestamp < ts
           Log.fatal "Record has earlier timestamp than previous record"
         end
         if r.distance
           if distance && r.distance < distance
-            Log.fatal "Record #{r.timestamp} has smaller distance " +
-                      "(#{r.distance}) than an earlier record (#{distance})"
+            # Normally this should be a fatal error as the FIT file is clearly
+            # broken. Unfortunately, the Skiing/Boarding app in the Fenix3
+            # produces such broken FIT files. So we just warn about this
+            # problem and discard the earlier records.
+            Log.error "Record #{r.timestamp} has smaller distance " +
+                      "(#{r.distance}) than an earlier record (#{distance})."
+            # Index of the list record to be discarded.
+            (idx - 1).downto(0) do |i|
+              if (ri = @records[i]).distance > r.distance
+                # This is just an approximation. It looks like the app adds
+                # records to the FIT file for runs that it meant to discard.
+                # Maybe the two successive time start events are a better
+                # criteria. But this workaround works for now.
+                invalid_records << ri
+              else
+                # All broken records have been found.
+                break
+              end
+            end
           end
           distance = r.distance
         end
         ts = r.timestamp
+      end
+      unless invalid_records.empty?
+        # Delete all the broken records from the @records Array.
+        Log.warn "Discarding #{invalid_records.length} earlier records"
+        @records.delete_if { |r| invalid_records.include?(r) }
       end
 
       # Laps must have a consecutively growing message index.
