@@ -317,7 +317,7 @@ module Fit4Ruby
     #        certain fields of the FitDataRecord.
     # @return [UserProfile]
     def new_user_profile(field_values = {})
-      new_fit_data_record('user_profile', field_values)
+      new_fit_data_record('old_user_profile', field_values)
     end
 
     # Add a new Event to the Activity.
@@ -399,7 +399,7 @@ module Fit4Ruby
         @device_infos << (record = DeviceInfo.new(field_values))
       when 'data_sources'
         @data_sources << (record = DataSources.new(field_values))
-      when 'user_profile'
+      when 'old_user_profile'
         @user_profiles << (record = UserProfile.new(field_values))
       when 'event'
         @events << (record = Event.new(field_values))

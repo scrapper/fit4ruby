@@ -14,14 +14,14 @@ require 'fit4ruby/FitDataRecord'
 
 module Fit4Ruby
 
-  # This class corresponds to the user_profile FIT message.
+  # This class corresponds to the old_user_profile FIT message.
   class UserProfile < FitDataRecord
 
     # Create a new UserProfile object.
     # @param field_values [Hash] Hash that provides initial values for certain
     #        fields.
     def initialize(field_values = {})
-      super('user_profile')
+      super('old_user_profile')
       set_field_values(field_values)
     end
 
