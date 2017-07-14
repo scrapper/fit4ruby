@@ -209,6 +209,7 @@ module Fit4Ruby
     entry 2188, 'fenix3_china'
     entry 2189, 'fenix3_twn'
     entry 2413, 'fenix3_hr'
+    entry 2432, 'fenix5'
     entry 10007, 'sdm4'
     entry 20119, 'training_center'
     entry 65532, 'android_antplus_plugin'
