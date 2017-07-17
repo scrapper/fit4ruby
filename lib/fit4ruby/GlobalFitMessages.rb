@@ -61,6 +61,7 @@ module Fit4Ruby
     field 51, 'enum', 'undocumented_field_51'
     field 52, 'enum', 'undocumented_field_52'
     field 53, 'enum', 'undocumented_field_53'
+    field 54, 'enum', 'undocumented_field_54'
     field 56, 'enum', 'mounting_side'
     field 58, 'uint16', 'autosync_min_steps'
     field 59, 'uint16', 'autosync_min_time'
@@ -72,6 +73,7 @@ module Fit4Ruby
     field 67, 'enum', 'undocumented_field_67'
     field 68, 'enum', 'undocumented_field_68'
     field 69, 'enum', 'undocumented_field_69'
+    field 75, 'enum', 'undocumented_field_75'
     field 80, 'enum', 'lactate_threshold_autodetect_enabled'
     field 81, 'enum', 'undocumented_field_81'
     field 82, 'enum', 'undocumented_field_82'
@@ -79,10 +81,28 @@ module Fit4Ruby
     field 84, 'enum', 'undocumented_field_84'
     field 85, 'enum', 'undocumented_field_85'
     field 87, 'enum', 'undocumented_field_87'
+    field 90, 'uint32', 'auto_activity_detect'
     field 94, 'uint8', 'number_of_screens'
+    field 97, 'uint8z', 'undocumented_field_97'
+    field 101, 'enum', 'undocumented_field_101'
+    field 104, 'enum', 'undocumented_field_104'
+    field 107, 'enum', 'undocumented_field_107'
+    field 108, 'enum', 'undocumented_field_108'
+    field 109, 'enum', 'undocumented_field_109'
+    field 110, 'enum', 'undocumented_field_110'
+    field 111, 'enum', 'undocumented_field_111'
+    field 112, 'enum', 'undocumented_field_112'
+    field 124, 'uint8', 'undocumented_field_124'
+    field 125, 'uint8', 'undocumented_field_125'
+    field 126, 'enum', 'undocumented_field_126'
+    field 127, 'enum', 'undocumented_field_127'
+    field 128, 'enum', 'undocumented_field_128'
+    field 133, 'enum', 'undocumented_field_133'
 
     message 3, 'user_profile'
+    field 0, 'string', 'friendly_name'
     field 1, 'enum', 'gender', :dict => 'gender'
+    field 2, 'uint8', 'age'
     field 3, 'uint8', 'height'
     field 4, 'uint16', 'weight'
     field 5, 'enum', 'language'
@@ -111,6 +131,7 @@ module Fit4Ruby
     field 40, 'float32', 'undocumented_field_40'
     field 41, 'uint32', 'undocumented_field_41'
     field 42, 'uint32', 'undocumented_field_42'
+    field 43, 'enum', 'undocumented_field_43'
 
     message 7, 'zones_target'
     field 1, 'uint8', 'max_heart_rate'
@@ -134,6 +155,8 @@ module Fit4Ruby
     field 6, 'enum', 'undocumented_field_6'
     field 10, 'uint8', 'undocumented_field_10', :array => true
     field 11, 'enum', 'undocumented_field_11'
+    field 12, 'uint8', 'undocumented_field_12'
+    field 13, 'enum', 'undocumented_field_13'
 
     # Not part of the official ANT SDK doc.
     message 13, 'undocumented_13'
@@ -172,6 +195,10 @@ module Fit4Ruby
     field 41, 'sint32', 'undocumented_field_41'
     field 42, 'uint8', 'undocumented_field_42'
     field 46, 'enum', 'undocumented_field_46'
+    field 53, 'enum', 'undocumented_field_53'
+    field 54, 'uint32', 'undocumented_field_54'
+    field 55, 'enum', 'undocumented_field_55'
+    field 57, 'enum', 'undocumented_field_57'
     field 254, 'uint16', 'message_index'
 
     message 18, 'session'
@@ -221,6 +248,8 @@ module Fit4Ruby
     field 35, 'uint16', 'training_stress_score', :scale => 10, :unit => 'tss'
     field 36, 'uint16', 'intensity_factor', :scale => 1000, :unit => 'if'
     field 37, 'uint16', 'left_right_balance', :dict => 'left_right_balance_100'
+    field 38, 'sint32', 'undocumented_field_38'
+    field 39, 'sint32', 'undocumented_field_39'
     field 41, 'uint32', 'avg_stroke_count', :scale => 10, :unit => 'strokes/lap'
     field 42, 'uint16', 'avg_stroke_distance', :scale => 100, :unit => 'm'
     field 43, 'enum', 'swim_stroke', :dict => 'swim_stroke'
@@ -251,6 +280,7 @@ module Fit4Ruby
     field 103, 'uint8', 'avg_left_pedal_smoothness', :scale => 2, :unit => 'percent'
     field 104, 'uint8', 'avg_right_pedal_smoothness', :scale => 2, :unit => 'percent'
     field 105, 'uint8', 'avg_combined_pedal_smoothness', :scale => 2, :unit => 'percent'
+    field 106, 'uint16', 'undocumented_field_106'
     field 107, 'uint16', 'undefined_value_107'
     field 108, 'uint16', 'undefined_value_108'
     field 109, 'uint8', 'undefined_value_109'
@@ -270,6 +300,8 @@ module Fit4Ruby
     field 132, 'uint16', 'vertical_ratio', :scale => 100, :unit => '%' # guessed
     field 133, 'uint16', 'avg_gct_balance', :scale => 100, :unit => '%' # guessed
     field 134, 'uint16', 'avg_stride_length', :scale => 10000, :unit => 'm' # guessed
+    field 137, 'uint8', 'g_effect', :scale => 10
+    field 138, 'uint8', 'undocumented_field_138'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
     field 254, 'uint16', 'message_index'
 
@@ -434,6 +466,7 @@ module Fit4Ruby
       field 'lactate_threshold_speed', 'uint32', 'lactate_threshold_speed', :scale => 1000, :unit => 'm/s'
     end
     field 4, 'uint8', 'event_group'
+    field 15, 'uint32', 'undocumented_field_15'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     # Possibly which device is used as metering source.
@@ -447,6 +480,7 @@ module Fit4Ruby
     field 5, 'enum', 'mode' # 0 or 3 seen, unknown meaning
     field 6, 'uint8', 'power' # First found in FR920XT
     field 14, 'uint8', 'calories' # First found in FR920XT
+    field 15, 'uint8', 'undocumented_field_15'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     message 23, 'device_info'
@@ -465,15 +499,19 @@ module Fit4Ruby
     field 9, 'uint8', 'undocumented_field_9'
     field 10, 'uint16', 'battery_voltage', :scale => 256, :unit => 'V'
     field 11, 'uint8', 'battery_status', :dict => 'battery_status'
+    field 13, 'uint16', 'undocumented_field_13'
     field 15, 'uint32', 'rx_packets_ok' # just a guess
     field 16, 'uint32', 'rx_packets_err' # just a guess
     field 17, 'string', 'undocumented_field_17'
+    field 18, 'enum', 'sendor_position', :dict => 'body_location'
     field 20, 'uint8z', 'ant_transmission_type'
     field 21, 'uint16z', 'ant_device_number'
     field 22, 'enum', 'ant_network', :dict => 'ant_network'
     field 23, 'uint8', 'undocumented_field_23'
     field 24, 'uint32z', 'undocumented_field_24'
     field 25, 'enum', 'source_type', :dict => 'source_type'
+    field 29, 'uint8', 'undocumented_field_29'
+    field 30, 'uint8', 'undocumented_field_30'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     # This message was first seen on the Fenix3HR with firmware 3.0.
@@ -620,6 +658,13 @@ module Fit4Ruby
     field 8, 'enum', 'undocumented_field_8', :array => true
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
+    message 104, 'undocumented_104'
+    field 0, 'uint16', 'undocumented_field_0'
+    field 1, 'sint16', 'undocumented_field_1'
+    field 2, 'uint8', 'undocumented_field_2'
+    field 3, 'sint8', 'undocumented_field_3'
+    field 253, 'uint32', 'undocumented_field_253'
+
     # Not part of the official ANT SDK doc
     message 113, 'personal_records'
     field 0, 'uint16', 'longest_distance'
@@ -653,7 +698,7 @@ module Fit4Ruby
     field 5, 'sint32', 'undocumented_field_5'
     field 6, 'sint32', 'undocumented_field_6'
     field 7, 'sint32', 'undocumented_field_7'
-    field 8, 'uint8', 'undocumented_field_8'
+    field 8, 'sint8', 'undocumented_field_8'
     field 9, 'uint16', 'recovery_time', :scale => 60, :unit => 'hours'
     field 10, 'uint16', 'undocumented_field_10' # always seems to be 340
     field 11, 'enum', 'undocumented_field_11'
@@ -665,6 +710,11 @@ module Fit4Ruby
     field 17, 'sint8', 'undocumented_field_17'
     field 18, 'uint8', 'undocumented_field_18'
     field 19, 'uint8', 'undocumented_field_19'
+    field 20, 'uint8', 'undocumented_field_20'
+    field 21, 'sint32', 'undocumented_field_21'
+    field 22, 'uint8', 'undocumented_field_22'
+    field 23, 'uint8', 'undocumented_field_23'
+    field 24, 'sint32', 'undocumented_field_24'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     # Not part of the official ANT SDK doc. The message name is guessed and
@@ -720,6 +770,14 @@ module Fit4Ruby
     field 45, 'enum', 'undocumented_field_45'
     field 46, 'enum', 'undocumented_field_46'
     field 47, 'enum', 'undocumented_field_47'
+    field 50, 'uint8', 'undocumented_field_50'
+    field 51, 'enum', 'undocumented_field_51'
+    field 52, 'uint8', 'undocumented_field_52'
+    field 53, 'uint8', 'undocumented_field_53'
+    field 55, 'uint16', 'undocumented_field_55'
+    field 56, 'uint16', 'undocumented_field_56'
+    field 57, 'uint16', 'undocumented_field_57'
+    field 58, 'enum', 'undocumented_field_58'
     field 254, 'uint16', 'message_index'
 
     # Not part of the official ANT SDK doc.
@@ -743,6 +801,10 @@ module Fit4Ruby
     field 14, 'enum', 'undocumented_field_14'
     field 15, 'uint16', 'undocumented_field_15'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
+
+    # Not part of the official ANT SDK doc.
+    message 233, 'undocumented_233'
+    field 2, 'byte', 'undocumented_field_2'
 
   end
 
