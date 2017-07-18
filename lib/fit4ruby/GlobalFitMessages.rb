@@ -466,7 +466,9 @@ module Fit4Ruby
       field 'lactate_threshold_speed', 'uint32', 'lactate_threshold_speed', :scale => 1000, :unit => 'm/s'
     end
     field 4, 'uint8', 'event_group'
+    field 14, 'enum', 'undocumented_field_14'
     field 15, 'uint32', 'undocumented_field_15'
+    field 16, 'enum', 'undocumented_field_16'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     # Possibly which device is used as metering source.
