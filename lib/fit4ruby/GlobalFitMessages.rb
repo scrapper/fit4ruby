@@ -34,12 +34,12 @@ module Fit4Ruby
     field 2, 'uint32', 'time_offset', :array => true
     field 3, 'enum', 'undocumented_field_3'
     field 4, 'enum', 'time_mode', :array => true
-    field 5, 'sint8', 'time_zone_offset', :array => true
+    field 5, 'sint8', 'time_zone_offset', :array => true, :scale => 4
     field 8, 'uint16', 'undocumented_field_8'
     field 9, 'enum', 'undocumented_field_9'
     field 10, 'enum', 'undocumented_field_10'
     field 11, 'enum', 'undocumented_field_11'
-    field 12, 'enum', 'backlight_mode'
+    field 12, 'enum', 'backlight_mode', :dict => 'backlight_mode'
     field 13, 'uint8', 'undocumented_field_13'
     field 14, 'uint8', 'undocumented_field_14'
     field 15, 'uint8', 'undocumented_field_15'
@@ -103,15 +103,15 @@ module Fit4Ruby
     field 0, 'string', 'friendly_name'
     field 1, 'enum', 'gender', :dict => 'gender'
     field 2, 'uint8', 'age'
-    field 3, 'uint8', 'height'
-    field 4, 'uint16', 'weight'
+    field 3, 'uint8', 'height', :scale => 100, :unit => 'm'
+    field 4, 'uint16', 'weight', :scale => 10, :unit => 'kg'
     field 5, 'enum', 'language'
     field 6, 'enum', 'elev_setting'
     field 7, 'enum', 'weight_setting'
-    field 8, 'uint8', 'resting_heart_rate'
-    field 12, 'enum', 'hr_setting'
-    field 13, 'enum', 'speed_setting'
-    field 14, 'enum', 'dist_setting'
+    field 8, 'uint8', 'resting_heart_rate', :unit => 'bpm'
+    field 12, 'enum', 'hr_setting', :dict => 'display_heart'
+    field 13, 'enum', 'speed_setting', :dict => 'display_measure'
+    field 14, 'enum', 'dist_setting', :dict => 'display_measure'
     field 17, 'enum', 'activity_class'
     field 18, 'enum', 'position_setting'
     field 21, 'enum', 'temperature_setting'
@@ -137,8 +137,8 @@ module Fit4Ruby
     field 1, 'uint8', 'max_heart_rate'
     field 2, 'uint8', 'threshold_heart_rate'
     field 3, 'uint16', 'functional_threshold_power'
-    field 5, 'enum', 'hr_zone_calc'
-    field 7, 'enum', 'pwr_zone_calc'
+    field 5, 'enum', 'hr_zone_calc', :dict => 'hr_zone_calc'
+    field 7, 'enum', 'pwr_zone_calc', :dict => 'pwr_zone_calc'
     field 8, 'uint16', 'undocumented_field_8'
     field 9, 'enum', 'undocumented_field_9'
     field 10, 'enum', 'undocumented_field_10'
@@ -434,6 +434,7 @@ module Fit4Ruby
     field 85, 'uint16', 'stride_length', :scale => 10000, :unit => 'm' # guessed
     field 87, 'uint16', 'undefined_value_87' # first seen on F3 FW6.80
     field 88, 'uint16', 'undefined_value_88' # first seen on F3HR FW3.60
+    field 90, 'sint8', 'performance_condition' # guessed
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     message 21, 'event'
@@ -789,16 +790,16 @@ module Fit4Ruby
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     # Not part of the official ANT SDK doc.
-    message 216, 'undocumented_216'
-    field 0, 'uint16', 'undocumented_field_0'
-    field 1, 'uint16', 'undocumented_field_1'
-    field 2, 'uint32', 'undocumented_field_2'
+    message 216, 'heart_rate_zones'
+    field 0, 'uint16', 'type' # 19 for laps, 18 for sessions
+    field 1, 'uint16', 'lap_index'
+    field 2, 'uint32', 'time_in_hr_zone', :array => true, :scale => 1000, :unit => 's'
     field 5, 'uint32', 'undocumented_field_5'
-    field 6, 'uint8', 'undocumented_field_6'
+    field 6, 'uint8', 'heart_rate_zones', :array => true
     field 9, 'uint16', 'undocumented_field_9'
     field 10, 'enum', 'undocumented_field_10'
-    field 11, 'uint8', 'undocumented_field_11'
-    field 12, 'uint8', 'undocumented_field_12'
+    field 11, 'uint8', 'max_heart_rate'
+    field 12, 'uint8', 'resting_heart_rate'
     field 13, 'uint8', 'undocumented_field_13'
     field 14, 'enum', 'undocumented_field_14'
     field 15, 'uint16', 'undocumented_field_15'

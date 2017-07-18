@@ -59,6 +59,15 @@ module Fit4Ruby
     entry 2, 'antfs'
     entry 3, 'private'
 
+    dict 'backlight_mode'
+    entry 0, 'off'
+    entry 1, 'manual'
+    entry 2, 'key_and_messages'
+    entry 3, 'auto_brightness'
+    entry 4, 'smart_notifications'
+    entry 5, 'key_and_messages_night'
+    entry 6, 'key_and_messages_and_smart_notifications'
+
     dict 'battery_status'
     entry 1, 'new'
     entry 2, 'good'
@@ -114,7 +123,6 @@ module Fit4Ruby
     entry 2, 'connection_lost'
     entry 3, 'connection_timeout'
 
-
     dict 'device_type'
     entry 0, 'gps' # Just a guess
     entry 3, 'acceleration' # Just a guess
@@ -139,9 +147,19 @@ module Fit4Ruby
     entry 123, 'bike_speed'
     entry 124, 'stride_speed_distance'
 
+    dict 'display_heart'
+    entry 0, 'bpm'
+    entry 1, 'max'
+    entry 2, 'reserve'
+
     dict 'display_measure'
     entry 0, 'metric'
     entry 1, 'statute'
+    entry 2, 'nautical'
+
+    dict 'display_power'
+    entry 0, 'watts'
+    entry 1, 'percent_ftp'
 
     dict 'event'
     entry 0, 'timer'
@@ -227,12 +245,14 @@ module Fit4Ruby
     # The Fenix3 is rumored to have a Mediatek MT3333 GPS chipset. Not sure if
     # that would be a beter name.
     entry 1620, 'fenix3_gps' # Just a guess
+    entry 1621, 'fenix5_gps' # Just a guess
     entry 1623, 'fr620'
     entry 1632, 'fr220'
     # The FR620 is rumored to have a MediaTek MT3339 GPS chipset while the
     # FR920XT is rumored to have a MT3333. Not sure why they have the same ID
     # in the FIT file for the GPS device.
     entry 1689, 'fr620_fr920xt_gps' # Just a guess
+    entry 1743, 'hrm_tri'
     entry 1752, 'hrm_run'
     entry 1765, 'fr920xt'
     entry 1928, 'fr620_japan'
@@ -273,6 +293,11 @@ module Fit4Ruby
     entry 1, 'rest'
     entry 2, 'warmup'
     entry 3, 'cooldown'
+
+    dict 'hr_zone_calc'
+    entry 0, 'custom'
+    entry 1, 'percent_max_hr'
+    entry 2, 'percent_hrr'
 
     dict 'lap_trigger'
     entry 0, 'manual'
@@ -388,6 +413,10 @@ module Fit4Ruby
     entry 0x0FFF, 'mask'
     entry 0x7000, 'reserved'
     entry 0x8000, 'selected'
+
+    dict 'pwr_zone_calc'
+    entry 0, 'custom'
+    entry 1, 'percent_ftp'
 
     dict 'rider_position_type'
     entry 0, 'seated'
