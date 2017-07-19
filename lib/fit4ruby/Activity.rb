@@ -21,6 +21,7 @@ require 'fit4ruby/Session'
 require 'fit4ruby/Lap'
 require 'fit4ruby/Record'
 require 'fit4ruby/HRV'
+require 'fit4ruby/HeartRateZones'
 require 'fit4ruby/Event'
 require 'fit4ruby/PersonalRecords'
 
@@ -34,7 +35,7 @@ module Fit4Ruby
     attr_accessor :file_id, :epo_data,
                   :file_creator, :device_infos, :data_sources,
                   :user_profiles, :sessions, :laps, :records, :hrv,
-                  :events, :personal_records
+                  :heart_rate_zones, :events, :personal_records
 
     # Create a new Activity object.
     # @param field_values [Hash] A Hash that provides initial values for
@@ -55,6 +56,7 @@ module Fit4Ruby
       @laps = []
       @records = []
       @hrv = []
+      @heart_rate_zones = []
       @personal_records = []
 
       @cur_session_laps = []
@@ -128,6 +130,9 @@ module Fit4Ruby
       # Laps must have a consecutively growing message index.
       @laps.each.with_index do |lap, index|
         lap.check(index)
+        # If we have heart rate zone records, there should be one for each
+        # lap
+        @heart_rate_zones[index].check(index) if @heart_rate_zones[index]
       end
       @sessions.each { |s| s.check(self) }
     end
@@ -272,7 +277,8 @@ module Fit4Ruby
       @file_creator.write(io, id_mapper)
 
       (@device_infos + @data_sources + @user_profiles + @events +
-       @sessions + @laps + @records + @personal_records).sort.each do |s|
+       @sessions + @laps + @records + @heart_rate_zones +
+       @personal_records).sort.each do |s|
         s.write(io, id_mapper)
       end
       super
@@ -351,6 +357,14 @@ module Fit4Ruby
       new_fit_data_record('lap', field_values)
     end
 
+    # Add a new HeartRateZones record to the Activity.
+    # @param field_values [Heash] A Hash that provides initial values for
+    #        certain fields of the FitDataRecord.
+    # @return [HeartRateZones]
+    def new_heart_rate_zones(field_values = {})
+      new_fit_data_record('heart_rate_zones', field_values)
+    end
+
     # Add a new PersonalRecord to the Activity.
     # @param field_values [Hash] A Hash that provides initial values for
     #        certain fields of the FitDataRecord.
@@ -377,6 +391,7 @@ module Fit4Ruby
         @device_infos == a.device_infos &&
         @data_sources == a.data_sources &&
         @user_profiles == a.user_profiles &&
+        @heart_rate_zones == a.heart_rate_zones &&
         @events == a.events &&
         @sessions == a.sessions && personal_records == a.personal_records
     end
@@ -424,6 +439,8 @@ module Fit4Ruby
         @records << record
       when 'hrv'
         @hrv << (record = HRV.new(field_values))
+      when 'heart_rate_zones'
+        @heart_rate_zones << (record = HeartRateZones.new(field_values))
       when 'personal_records'
         @personal_records << (record = PersonalRecords.new(field_values))
       else
