@@ -28,7 +28,48 @@ module Fit4Ruby
       @header = nil
     end
 
-    def read(file_name, filter = nil)
+    def read_from_file(file, filter = nil)
+      @file_name = file.path
+      io = file.open
+      definitions = {}
+
+      entities = []
+      while !io.eof?
+        offset = io.pos
+
+        header = FitHeader.read(io)
+        header.check
+
+        check_crc(io, io.pos, offset + header.end_pos)
+
+        entity = FitFileEntity.new
+        # This Array holds the raw data of the records that may be needed to
+        # dump a human readable form of the FIT file.
+        records = []
+        # This hash will hold a counter for each record type. The counter is
+        # incremented each time the corresponding record type is found.
+        record_counters = Hash.new { 0 }
+        while io.pos < offset + header.end_pos
+          record = FitRecord.new(definitions)
+          record.read(io, entity, filter, record_counters)
+          records << record if filter
+        end
+        # Skip the 2 CRC bytes
+        io.seek(2, :CUR)
+
+        header.dump if filter && filter.record_numbers.nil?
+        dump_records(records) if filter
+
+        entity.check
+        entities << entity
+      end
+
+      io.close
+
+      entities[0].top_level_record
+    end
+
+    def read(file_name, filter = nil, file)
       @file_name = file_name
       definitions = {}
       begin
