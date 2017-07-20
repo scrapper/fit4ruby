@@ -18,9 +18,12 @@ module Fit4Ruby
     FitFile.new.read(file, filter)
   end
 
+  def self.read_from_file(file, filter = nil)
+    FitFile.new.read_from_file(file, filter)
+  end
+
   def self.write(file, top_level_record)
     FitFile.new.write(file, top_level_record)
   end
 
 end
-
