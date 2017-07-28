@@ -713,7 +713,7 @@ module Fit4Ruby
     field 17, 'sint8', 'undocumented_field_17'
     field 18, 'uint8', 'undocumented_field_18'
     field 19, 'uint8', 'undocumented_field_19'
-    field 20, 'uint8', 'undocumented_field_20'
+    field 20, 'uint8', 'anaerobic_training_effect', :scale => 10
     field 21, 'sint32', 'undocumented_field_21'
     field 22, 'uint8', 'undocumented_field_22'
     field 23, 'uint8', 'undocumented_field_23'
