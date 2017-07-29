@@ -700,16 +700,22 @@ module Fit4Ruby
     field 5, 'sint32', 'undocumented_field_5'
     field 6, 'sint32', 'undocumented_field_6'
     field 7, 'sint32', 'undocumented_field_7'
-    field 8, 'sint8', 'undocumented_field_8'
+    # Field 8 used to be uint8 but recent devices use sint8. We model this
+    # with an alt_field. The switch field is randomly picked as we have no
+    # details why the type has been changed.
+    alt_field 8, 'undocumented_field_1' do
+      field :default, 'sint8', 'undocumented_field_8s'
+      field 255, 'uint8', 'undocumented_field_8u'
+    end
     field 9, 'uint16', 'recovery_time', :scale => 60, :unit => 'hours'
-    field 10, 'uint16', 'undocumented_field_10' # always seems to be 340
+    field 10, 'uint16', 'undocumented_field_10'
     field 11, 'enum', 'undocumented_field_11'
     field 12, 'enum', 'undocumented_field_12'
     field 13, 'uint8', 'undocumented_field_13'
     field 14, 'uint16', 'running_lactate_threshold_heart_rate', :unit => 'bpm'
     field 15, 'uint16', 'running_lactate_threshold_speed', :scale => 100, :unit => 'm/s'
     field 16, 'uint16', 'undocumented_field_16' # very correlated to 14 and 15
-    field 17, 'sint8', 'undocumented_field_17'
+    field 17, 'sint8', 'performance_condition'
     field 18, 'uint8', 'undocumented_field_18'
     field 19, 'uint8', 'undocumented_field_19'
     field 20, 'uint8', 'anaerobic_training_effect', :scale => 10
