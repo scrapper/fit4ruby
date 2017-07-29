@@ -66,6 +66,8 @@ module Fit4Ruby
     def get_as(name, to_unit)
       value = respond_to?(name) ? send(name) : get(name)
       return nil if value.nil?
+      # If the requested unit is empty we return the value as is.
+      return value if to_unit.nil? || to_unit.empty?
 
       if @meta_field_units.include?(name)
         unit = @meta_field_units[name]
