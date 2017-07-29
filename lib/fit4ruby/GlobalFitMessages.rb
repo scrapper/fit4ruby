@@ -689,15 +689,14 @@ module Fit4Ruby
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     # Not part of the official ANT SDK doc
-    # The values in this message seem to be related to the activity history.
-    # If no HRM is used, most of them are 0. Fields 4, 7, 9 and 10 always have
-    # non-zero values.
-    message 140, 'undocumented_140'
+    # All known fields so far seem to be physiological values. We'll use the
+    # name physiological_metrics for now.
+    message 140, 'physiological_metrics'
     field 0, 'uint8', 'max_heart_rate', :unit => 'bpm'
     field 1, 'uint8', 'undocumented_field_1'
     field 2, 'sint32', 'undocumented_field_2'
     field 3, 'sint32', 'undocumented_field_3'
-    field 4, 'uint8', 'total_training_effect', :scale => 10
+    field 4, 'uint8', 'aerobic_training_effect', :scale => 10
     field 5, 'sint32', 'undocumented_field_5'
     field 6, 'sint32', 'undocumented_field_6'
     field 7, 'sint32', 'undocumented_field_7'

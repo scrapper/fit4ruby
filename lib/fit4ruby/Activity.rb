@@ -17,6 +17,7 @@ require 'fit4ruby/FileCreator'
 require 'fit4ruby/DeviceInfo'
 require 'fit4ruby/DataSources'
 require 'fit4ruby/UserProfile'
+require 'fit4ruby/PhysiologicalMetrics'
 require 'fit4ruby/Session'
 require 'fit4ruby/Lap'
 require 'fit4ruby/Record'
@@ -34,7 +35,8 @@ module Fit4Ruby
 
     attr_accessor :file_id, :epo_data,
                   :file_creator, :device_infos, :data_sources,
-                  :user_profiles, :sessions, :laps, :records, :hrv,
+                  :user_profiles, :physiological_metrics,
+                  :sessions, :laps, :records, :hrv,
                   :heart_rate_zones, :events, :personal_records
 
     # Create a new Activity object.
@@ -51,6 +53,7 @@ module Fit4Ruby
       @device_infos = []
       @data_sources = []
       @user_profiles = []
+      @physiological_metrics = []
       @events = []
       @sessions = []
       @laps = []
@@ -276,7 +279,8 @@ module Fit4Ruby
       @file_id.write(io, id_mapper)
       @file_creator.write(io, id_mapper)
 
-      (@device_infos + @data_sources + @user_profiles + @events +
+      (@device_infos + @data_sources + @user_profiles +
+       @physiological_metrics + @events +
        @sessions + @laps + @records + @heart_rate_zones +
        @personal_records).sort.each do |s|
         s.write(io, id_mapper)
@@ -324,6 +328,14 @@ module Fit4Ruby
     # @return [UserProfile]
     def new_user_profile(field_values = {})
       new_fit_data_record('old_user_profile', field_values)
+    end
+
+    # Add a new PhysiologicalMetrics to the Activity.
+    # @param field_values [Hash] A Hash that provides initial values for
+    #        certain fields of the FitDataRecord.
+    # @return [PhysiologicalMetrics]
+    def new_user_profile(field_values = {})
+      new_fit_data_record('physiological_metrics', field_values)
     end
 
     # Add a new Event to the Activity.
@@ -390,6 +402,7 @@ module Fit4Ruby
         @file_creator == a.file_creator &&
         @device_infos == a.device_infos &&
         @data_sources == a.data_sources &&
+        @physiological_metrics == a.physiological_metrics &&
         @user_profiles == a.user_profiles &&
         @heart_rate_zones == a.heart_rate_zones &&
         @events == a.events &&
@@ -416,6 +429,9 @@ module Fit4Ruby
         @data_sources << (record = DataSources.new(field_values))
       when 'old_user_profile'
         @user_profiles << (record = UserProfile.new(field_values))
+      when 'physiological_metrics'
+        @physiological_metrics <<
+          (record = PhysiologicalMetrics.new(field_values))
       when 'event'
         @events << (record = Event.new(field_values))
       when 'session'
