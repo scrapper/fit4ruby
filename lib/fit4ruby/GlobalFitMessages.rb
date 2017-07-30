@@ -511,7 +511,7 @@ module Fit4Ruby
     field 21, 'uint16z', 'ant_device_number'
     field 22, 'enum', 'ant_network', :dict => 'ant_network'
     field 23, 'uint8', 'undocumented_field_23'
-    field 24, 'uint32z', 'undocumented_field_24'
+    field 24, 'uint32z', 'ant_id' # just a guess
     field 25, 'enum', 'source_type', :dict => 'source_type'
     field 29, 'uint8', 'undocumented_field_29'
     field 30, 'uint8', 'undocumented_field_30'
@@ -737,10 +737,10 @@ module Fit4Ruby
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     # Not part of the official ANT SDK doc.
-    message 147, 'undocumented_147'
-    field 0, 'uint32z', 'undocumented_field_0'
+    message 147, 'ant_device_settings'
+    field 0, 'uint32z', 'ant_id'
     field 1, 'uint8', 'undocumented_field_1'
-    field 2, 'string', 'undocumented_field_2'
+    field 2, 'string', 'name'
     field 3, 'enum', 'undocumented_field_3'
     field 4, 'enum', 'undocumented_field_4'
     field 5, 'enum', 'undocumented_field_5'
@@ -749,7 +749,7 @@ module Fit4Ruby
     field 8, 'uint8', 'undocumented_field_8'
     field 9, 'uint8', 'undocumented_field_9'
     field 10, 'uint16', 'undocumented_field_10'
-    field 11, 'uint16', 'undocumented_field_11'
+    field 11, 'uint16', 'calibration_factor', :scale => 10
     field 12, 'uint8', 'undocumented_field_12'
     field 13, 'uint32', 'undocumented_field_13'
     field 14, 'uint8', 'undocumented_field_14'
