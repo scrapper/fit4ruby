@@ -78,7 +78,9 @@ module Fit4Ruby
         if filter && fields_dump &&
            (filter.field_names.nil? ||
             filter.field_names.include?(field_name)) &&
-           (value != field.undefined_value || !filter.ignore_undef)
+           !(((value.respond_to?('count') &&
+               (value.count(field.undefined_value) == value.length)) ||
+              value == field.undefined_value) && filter.ignore_undef)
           fields_dump << DumpedField.new(
             @global_message_number,
             field.field_definition_number.snapshot,
