@@ -334,7 +334,7 @@ module Fit4Ruby
     # @param field_values [Hash] A Hash that provides initial values for
     #        certain fields of the FitDataRecord.
     # @return [PhysiologicalMetrics]
-    def new_user_profile(field_values = {})
+    def new_physiological_metrics(field_values = {})
       new_fit_data_record('physiological_metrics', field_values)
     end
 
