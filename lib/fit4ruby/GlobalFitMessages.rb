@@ -661,12 +661,13 @@ module Fit4Ruby
     field 8, 'enum', 'undocumented_field_8', :array => true
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
-    message 104, 'undocumented_104'
-    field 0, 'uint16', 'undocumented_field_0'
+    # Not part of the official ANT SDK doc
+    message 104, 'battery'
+    field 0, 'uint16', 'unit_voltage', :unit => 'V', :scale => 1000
     field 1, 'sint16', 'undocumented_field_1'
-    field 2, 'uint8', 'undocumented_field_2'
-    field 3, 'sint8', 'undocumented_field_3'
-    field 253, 'uint32', 'undocumented_field_253'
+    field 2, 'uint8', 'percent', :unit => '%'
+    field 3, 'sint8', 'current', :unit => 'mA' # just a wild guess
+    field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     # Not part of the official ANT SDK doc
     message 113, 'personal_records'
