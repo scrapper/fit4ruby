@@ -71,6 +71,9 @@ module Fit4Ruby
       io.close
 
       entities[0].top_level_record
+    ensure
+      io.close
+      io.unlink
     end
 
     def write(file_name, top_level_record)
