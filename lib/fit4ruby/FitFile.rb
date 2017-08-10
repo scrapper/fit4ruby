@@ -68,9 +68,10 @@ module Fit4Ruby
         entities << entity
       end
 
-      io.close
-
       entities[0].top_level_record
+    ensure
+      io.close
+      io.unlink if io.respond_to?(:unlink)
     end
 
     def write(file_name, top_level_record)
@@ -97,8 +98,9 @@ module Fit4Ruby
       header.crc = crc
       io.seek(0)
       header.write(io)
-
+    ensure
       io.close
+      io.unlink if io.respond_to?(:unlink)
     end
 
     private
