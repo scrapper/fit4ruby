@@ -68,8 +68,6 @@ module Fit4Ruby
         entities << entity
       end
 
-      io.close
-
       entities[0].top_level_record
     ensure
       io.close
