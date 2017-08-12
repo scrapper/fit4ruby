@@ -38,37 +38,39 @@ module Fit4Ruby
       end
 
       entities = []
-      while !io.eof?
-        offset = io.pos
+      begin
+        while !io.eof?
+          offset = io.pos
 
-        header = FitHeader.read(io)
-        header.check
+          header = FitHeader.read(io)
+          header.check
 
-        check_crc(io, io.pos, offset + header.end_pos)
+          check_crc(io, io.pos, offset + header.end_pos)
 
-        entity = FitFileEntity.new
-        # This Array holds the raw data of the records that may be needed to
-        # dump a human readable form of the FIT file.
-        records = []
-        # This hash will hold a counter for each record type. The counter is
-        # incremented each time the corresponding record type is found.
-        record_counters = Hash.new { 0 }
-        while io.pos < offset + header.end_pos
-          record = FitRecord.new(definitions)
-          record.read(io, entity, filter, record_counters)
-          records << record if filter
+          entity = FitFileEntity.new
+          # This Array holds the raw data of the records that may be needed to
+          # dump a human readable form of the FIT file.
+          records = []
+          # This hash will hold a counter for each record type. The counter is
+          # incremented each time the corresponding record type is found.
+          record_counters = Hash.new { 0 }
+          while io.pos < offset + header.end_pos
+            record = FitRecord.new(definitions)
+            record.read(io, entity, filter, record_counters)
+            records << record if filter
+          end
+          # Skip the 2 CRC bytes
+          io.seek(2, :CUR)
+
+          header.dump if filter && filter.record_numbers.nil?
+          dump_records(records) if filter
+
+          entity.check
+          entities << entity
         end
-        # Skip the 2 CRC bytes
-        io.seek(2, :CUR)
-
-        header.dump if filter && filter.record_numbers.nil?
-        dump_records(records) if filter
-
-        entity.check
-        entities << entity
+      ensure
+        io.close
       end
-
-      io.close
 
       entities[0].top_level_record
     end
@@ -80,25 +82,27 @@ module Fit4Ruby
         Log.fatal "Cannot open FIT file '#{file_name}': #{e.message}"
       end
 
-      # Create a header object, but don't yet write it into the file.
-      header = FitHeader.new
-      start_pos = header.header_size
-      # Move the pointer behind the header section.
-      io.seek(start_pos)
-      id_mapper = FitMessageIdMapper.new
-      top_level_record.write(io, id_mapper)
-      end_pos = io.pos
+      begin
+        # Create a header object, but don't yet write it into the file.
+        header = FitHeader.new
+        start_pos = header.header_size
+        # Move the pointer behind the header section.
+        io.seek(start_pos)
+        id_mapper = FitMessageIdMapper.new
+        top_level_record.write(io, id_mapper)
+        end_pos = io.pos
 
-      crc = write_crc(io, start_pos, end_pos)
+        crc = write_crc(io, start_pos, end_pos)
 
-      # Complete the data of the header section and write it at the start of
-      # the file.
-      header.data_size = end_pos - start_pos
-      header.crc = crc
-      io.seek(0)
-      header.write(io)
-
-      io.close
+        # Complete the data of the header section and write it at the start of
+        # the file.
+        header.data_size = end_pos - start_pos
+        header.crc = crc
+        io.seek(0)
+        header.write(io)
+      ensure
+        io.close
+      end
     end
 
     private
