@@ -15,6 +15,7 @@ require 'fit4ruby/FileId'
 require 'fit4ruby/EPO_Data'
 require 'fit4ruby/FileCreator'
 require 'fit4ruby/DeviceInfo'
+require 'fit4ruby/SensorSettings'
 require 'fit4ruby/DataSources'
 require 'fit4ruby/UserProfile'
 require 'fit4ruby/PhysiologicalMetrics'
@@ -34,7 +35,7 @@ module Fit4Ruby
   class Activity < FitDataRecord
 
     attr_accessor :file_id, :epo_data,
-                  :file_creator, :device_infos, :data_sources,
+                  :file_creator, :device_infos, :sensor_settings, :data_sources,
                   :user_profiles, :physiological_metrics,
                   :sessions, :laps, :records, :hrv,
                   :heart_rate_zones, :events, :personal_records
@@ -51,6 +52,7 @@ module Fit4Ruby
       @epo_data = nil
       @file_creator = FileCreator.new
       @device_infos = []
+      @sensor_settings = []
       @data_sources = []
       @user_profiles = []
       @physiological_metrics = []
@@ -83,6 +85,7 @@ module Fit4Ruby
         Log.fatal "Activity must have at least one device_info section"
       end
       @device_infos.each.with_index { |d, index| d.check(index) }
+      @sensor_settings.each.with_index { |s, index| s.check(index) }
       unless @num_sessions == @sessions.count
         Log.fatal "Activity record requires #{@num_sessions}, but "
                   "#{@sessions.length} session records were found in the "
@@ -279,7 +282,7 @@ module Fit4Ruby
       @file_id.write(io, id_mapper)
       @file_creator.write(io, id_mapper)
 
-      (@device_infos + @data_sources + @user_profiles +
+      (@device_infos + @sensor_settings + @data_sources + @user_profiles +
        @physiological_metrics + @events +
        @sessions + @laps + @records + @heart_rate_zones +
        @personal_records).sort.each do |s|
@@ -401,6 +404,7 @@ module Fit4Ruby
       super(a) && @file_id == a.file_id &&
         @file_creator == a.file_creator &&
         @device_infos == a.device_infos &&
+        @sensor_settings == a.sensor_settings &&
         @data_sources == a.data_sources &&
         @physiological_metrics == a.physiological_metrics &&
         @user_profiles == a.user_profiles &&
@@ -425,6 +429,8 @@ module Fit4Ruby
         @file_creator = (record = FileCreator.new(field_values))
       when 'device_info'
         @device_infos << (record = DeviceInfo.new(field_values))
+      when 'sensor_settings'
+        @sensor_settings << (record = SensorSettings.new(field_values))
       when 'data_sources'
         @data_sources << (record = DataSources.new(field_values))
       when 'old_user_profile'

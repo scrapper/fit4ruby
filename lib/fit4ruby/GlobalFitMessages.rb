@@ -738,7 +738,7 @@ module Fit4Ruby
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     # Not part of the official ANT SDK doc.
-    message 147, 'ant_device_settings'
+    message 147, 'sensor_settings'
     field 0, 'uint32z', 'ant_id'
     field 1, 'uint8', 'undocumented_field_1'
     field 2, 'string', 'name'
