@@ -12,6 +12,7 @@
 
 require 'bindata'
 require 'fit4ruby/FitDefinitionField'
+require 'fit4ruby/FitDeveloperDataFieldDefinition'
 
 module Fit4Ruby
 
@@ -24,6 +25,8 @@ module Fit4Ruby
   # required.
   class FitDefinition < BinData::Record
 
+    @@has_developer_data = false
+
     hide :reserved
 
     uint8 :reserved, :initial_value => 0
@@ -33,7 +36,14 @@ module Fit4Ruby
       uint16be :default
     end
     uint8 :field_count
-    array :fields, :type => FitDefinitionField, :initial_length => :field_count
+    array :data_fields, :type => FitDefinitionField,
+      :initial_length => :field_count
+
+    uint8 :developer_fields_count, :onlyif => :has_developer_data?
+    array :developer_fields,
+      :type => FitDeveloperDataFieldDefinition,
+      :initial_length => :developer_fields_count,
+      :onlyif => :has_developer_data?
 
     def endian
       architecture.snapshot == 0 ? :little : :big
@@ -43,7 +53,22 @@ module Fit4Ruby
       if architecture.snapshot > 1
         Log.fatal "Illegal architecture value #{architecture.snapshot}"
       end
-      fields.each { |f| f.check }
+      data_fields.each { |f| f.check }
+    end
+
+    def FitDefinition::read(io, entity, developer_data_flag)
+      @@has_developer_data = developer_data_flag != 0
+      super(io)
+    end
+
+    def FitDefinitionField::write(io)
+      # We don't support writing developer data fields yet.
+      @@has_developer_data = false
+      super(io)
+    end
+
+    def has_developer_data?
+      @@has_developer_data
     end
 
     def setup(fit_message_definition)
@@ -52,13 +77,12 @@ module Fit4Ruby
         fdf.field_definition_number = number
         fdf.set_type(f.type)
 
-        fields << fdf
+        data_fields << fdf
       end
-      self.field_count = fields.length
+      self.field_count = data_fields.length
     end
 
   end
-
 
 end
 

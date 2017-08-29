@@ -131,7 +131,7 @@ module Fit4Ruby
       # Create a BinData::Struct object to store the data record.
       fields = []
       global_fit_message.fields_by_number.each do |field_number, field|
-        bin_data_type = FitDefinitionField.fit_type_to_bin_data(field.type)
+        bin_data_type = FitDefinitionFieldBase.fit_type_to_bin_data(field.type)
         fields << [ bin_data_type, field.name ]
       end
       bd = BinData::Struct.new(:endian => :little, :fields => fields)
@@ -146,7 +146,7 @@ module Fit4Ruby
         else
           # If we don't have a corresponding variable or the variable is nil
           # we write the 'undefined' value instead.
-          value = FitDefinitionField.undefined_value(field.type)
+          value = FitDefinitionFieldBase.undefined_value(field.type)
         end
         bd[field.name] = value
       end

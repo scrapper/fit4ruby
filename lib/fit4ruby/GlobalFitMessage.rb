@@ -86,7 +86,7 @@ module Fit4Ruby
       end
 
       def fit_to_native(value)
-        return nil if value == FitDefinitionField.undefined_value(@type)
+        return nil if value == FitDefinitionFieldBase.undefined_value(@type)
 
         if @opts.include?(:dict) && (dict = GlobalFitDictionaries[@opts[:dict]])
           return dict.name(value) || "Undocumented value #{value}"
@@ -106,12 +106,12 @@ module Fit4Ruby
       end
 
       def native_to_fit(value)
-        return FitDefinitionField.undefined_value(@type) if value.nil?
+        return FitDefinitionFieldBase.undefined_value(@type) if value.nil?
 
         if @opts.include?(:dict) && (dict = GlobalFitDictionaries[@opts[:dict]])
           unless (dv = dict.value_by_name(value))
             Log.error "Unknown value '#{value}' assigned to field #{@name}"
-            return FitDefinitionField.undefined_value(@type)
+            return FitDefinitionFieldBase.undefined_value(@type)
           else
             return dv
           end

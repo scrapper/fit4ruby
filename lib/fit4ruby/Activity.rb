@@ -12,6 +12,8 @@
 
 require 'fit4ruby/FitDataRecord'
 require 'fit4ruby/FileId'
+require 'fit4ruby/FieldDescription'
+require 'fit4ruby/DeveloperDataId'
 require 'fit4ruby/EPO_Data'
 require 'fit4ruby/FileCreator'
 require 'fit4ruby/DeviceInfo'
@@ -34,7 +36,7 @@ module Fit4Ruby
   # equivalents of the message record structures used in the FIT file.
   class Activity < FitDataRecord
 
-    attr_accessor :file_id, :epo_data,
+    attr_accessor :file_id, :field_descriptions, :developer_data_ids, :epo_data,
                   :file_creator, :device_infos, :sensor_settings, :data_sources,
                   :user_profiles, :physiological_metrics,
                   :sessions, :laps, :records, :hrv,
@@ -49,6 +51,8 @@ module Fit4Ruby
       @num_sessions = 0
 
       @file_id = FileId.new
+      @field_descriptions = []
+      @developer_data_ids = []
       @epo_data = nil
       @file_creator = FileCreator.new
       @device_infos = []
@@ -282,7 +286,9 @@ module Fit4Ruby
       @file_id.write(io, id_mapper)
       @file_creator.write(io, id_mapper)
 
-      (@device_infos + @sensor_settings + @data_sources + @user_profiles +
+      (@field_descriptions + @developer_data_ids +
+       @device_infos + @sensor_settings +
+       @data_sources + @user_profiles +
        @physiological_metrics + @events +
        @sessions + @laps + @records + @heart_rate_zones +
        @personal_records).sort.each do |s|
@@ -298,6 +304,22 @@ module Fit4Ruby
     # @return [FileId]
     def new_file_id(field_values = {})
       new_fit_data_record('file_id', field_values)
+    end
+
+    # Add a new FieldDescription to the Activity.
+    # @param field_values [Hash] A Hash that provides initial values for
+    #        certain fields of the FitDataRecord.
+    # @return [FieldDescription]
+    def new_field_description(field_values = {})
+      new_fit_data_record('field_description', field_values)
+    end
+
+    # Add a new DeveloperDataId to the Activity.
+    # @param field_values [Hash] A Hash that provides initial values for
+    #        certain fields of the FitDataRecord.
+    # @return [DeveloperDataId]
+    def new_field_description(field_values = {})
+      new_fit_data_record('developer_data_id', field_values)
     end
 
     # Add a new FileCreator to the Activity. It will replace any previously
@@ -403,6 +425,8 @@ module Fit4Ruby
     def ==(a)
       super(a) && @file_id == a.file_id &&
         @file_creator == a.file_creator &&
+        @field_descriptions == a.field_descriptions &&
+        @developer_data_ids == a.developer_data_ids &&
         @device_infos == a.device_infos &&
         @sensor_settings == a.sensor_settings &&
         @data_sources == a.data_sources &&
@@ -423,6 +447,10 @@ module Fit4Ruby
       case record_type
       when 'file_id'
         @file_id = (record = FileId.new(field_values))
+      when 'field_description'
+        @field_descriptions << (record = FieldDescription.new(field_values))
+      when 'developer_data_id'
+        @developer_data_ids << (record = DeveloperDataId.new(field_values))
       when 'epo_data'
         @epo_data = (record = EPO_Data.new(field_values))
       when 'file_creator'

@@ -12,6 +12,7 @@
 
 require 'bindata'
 require 'time'
+require 'fit4ruby/FitDefinitionFieldBase'
 require 'fit4ruby/Log'
 require 'fit4ruby/GlobalFitMessage'
 
@@ -24,23 +25,7 @@ module Fit4Ruby
   # the exact size of the binary records.
   class FitDefinitionField < BinData::Record
 
-    @@TypeDefs = [
-      # FIT Type, BinData type, undefined value, bytes
-      [ 'enum', 'uint8', 0xFF, 1 ],
-      [ 'sint8', 'int8', 0x7F, 1 ],
-      [ 'uint8', 'uint8', 0xFF, 1 ],
-      [ 'sint16', 'int16', 0x7FFF, 2 ],
-      [ 'uint16', 'uint16', 0xFFFF, 2 ],
-      [ 'sint32', 'int32', 0x7FFFFFFF, 4 ],
-      [ 'uint32', 'uint32', 0xFFFFFFFF, 4 ],
-      [ 'string', 'string', '', 0 ],
-      [ 'float32', 'float', 0xFFFFFFFF, 4 ],
-      [ 'float63', 'double', 0xFFFFFFFF, 4 ],
-      [ 'uint8z', 'uint8', 0, 1 ],
-      [ 'uint16z', 'uint16', 0, 2 ],
-      [ 'uint32z', 'uint32', 0, 4 ],
-      [ 'byte', 'uint8', 0xFF, 1 ]
-    ]
+    include FitDefinitionFieldBase
 
     hide :reserved
 
@@ -49,18 +34,6 @@ module Fit4Ruby
     bit1 :endian_ability
     bit2 :reserved
     bit5 :base_type_number
-
-    def self.fit_type_to_bin_data(fit_type)
-      entry = @@TypeDefs.find { |e| e[0] == fit_type }
-      raise "Unknown fit type #{fit_type}" unless entry
-      entry[1]
-    end
-
-    def self.undefined_value(fit_type)
-      entry = @@TypeDefs.find { |e| e[0] == fit_type }
-      raise "Unknown fit type #{fit_type}" unless entry
-      entry[2]
-    end
 
     def init
       @global_message_number = parent.parent.global_message_number.snapshot
@@ -72,7 +45,8 @@ module Fit4Ruby
                                              "choice_#{field_number}"
          @type = field.respond_to?('type') ? field.type : nil
 
-         if @type && (td = @@TypeDefs[base_type_number]) && td[0] != @type
+         if @type && (td = @@TypeDefs[checked_base_type_number]) &&
+            td[0] != @type
            Log.warn "#{@global_message_number}:#{@name} must be of type " +
            "#{@type}, not #{td[0]}"
          end
@@ -126,51 +100,6 @@ module Fit4Ruby
         else
           "[#{value.to_s}]"
         end
-      end
-    end
-
-    def set_type(fit_type)
-      idx = @@TypeDefs.index { |x| x[0] == fit_type }
-      raise "Unknown type #{fit_type}" unless idx
-      self.base_type_number = idx
-      self.byte_count = @@TypeDefs[idx][3]
-    end
-
-    def type(fit_type = false)
-      check_fit_base_type
-      @@TypeDefs[base_type_number.snapshot][fit_type ? 0 : 1]
-    end
-
-    def is_array?
-      if total_bytes > base_type_bytes
-        if total_bytes % base_type_bytes != 0
-          Log.fatal "Total bytes (#{total_bytes}) must be multiple of " +
-                    "base type bytes (#{base_type_bytes})."
-        end
-        return true
-      end
-      false
-    end
-
-    def total_bytes
-      self.byte_count.snapshot
-    end
-
-    def base_type_bytes
-      check_fit_base_type
-      @@TypeDefs[base_type_number.snapshot][3]
-    end
-
-    def undefined_value
-      check_fit_base_type
-      @@TypeDefs[base_type_number.snapshot][2]
-    end
-
-    private
-
-    def check_fit_base_type
-      if @@TypeDefs.length <= base_type_number.snapshot
-        Log.fatal "Unknown FIT Base type #{base_type_number.snapshot}"
       end
     end
 

@@ -53,8 +53,8 @@ module Fit4Ruby
       obj = entity.new_fit_data_record(@name)
 
       # It's important to ensure that alternative fields processed after the
-      # regular fields so that the decision field is already set.
-      sorted_fields = @definition.fields.sort do |f1, f2|
+      # regular fields so that the decision field has already been already set.
+      sorted_fields = @definition.data_fields.sort do |f1, f2|
         f1alt = is_alt_field?(f1)
         f2alt = is_alt_field?(f2)
         f1alt == f2alt ?
@@ -89,6 +89,16 @@ module Fit4Ruby
             (field_def ? field_def : field).to_s(value))
         end
       end
+      #@definition.developer_fields.each do |field|
+      #  $stderr.puts "  ++ New Developer Field " +
+      #    "#{field.field_number.snapshot}  " +
+      #    "Bytes: #{field.size_in_bytes.snapshot}  " +
+      #    "Developer ID: #{field.developer_data_index.snapshot}"
+      #end
+
+      #if @name == 'field_description'
+      #  obj.create_global_definition
+      #end
     end
 
     private
@@ -131,7 +141,7 @@ module Fit4Ruby
 
     def produce(definition)
       fields = []
-      definition.fields.each do |field|
+      definition.data_fields.each do |field|
         field_def = [ field.type, field.name ]
         if field.type == 'string'
           # Strings need special handling. We need to also include the length
@@ -143,6 +153,11 @@ module Fit4Ruby
                           :initial_length => field.total_bytes /
                                              field.base_type_bytes } ]
         end
+        fields << field_def
+      end
+
+      definition.developer_fields.each do |field|
+        field_def = [ field.bindata_type, field.name ]
         fields << field_def
       end
 

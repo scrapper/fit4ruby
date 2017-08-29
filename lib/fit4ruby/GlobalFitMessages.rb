@@ -302,6 +302,8 @@ module Fit4Ruby
     field 134, 'uint16', 'avg_stride_length', :scale => 10000, :unit => 'm' # guessed
     field 137, 'uint8', 'g_effect', :scale => 10
     field 138, 'uint8', 'undocumented_field_138'
+    field 153, 'enum', 'undocumented_field_153'
+    field 154, 'enum', 'undocumented_field_154'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
     field 254, 'uint16', 'message_index'
 
@@ -515,6 +517,7 @@ module Fit4Ruby
     field 25, 'enum', 'source_type', :dict => 'source_type'
     field 29, 'uint8', 'undocumented_field_29'
     field 30, 'uint8', 'undocumented_field_30'
+    field 31, 'uint32', 'undocumented_field_31'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     # This message was first seen on the Fenix3HR with firmware 3.0.
@@ -787,7 +790,31 @@ module Fit4Ruby
     field 56, 'uint16', 'undocumented_field_56'
     field 57, 'uint16', 'undocumented_field_57'
     field 58, 'enum', 'undocumented_field_58'
+    field 59, 'uint8', 'undocumented_field_59'
     field 254, 'uint16', 'message_index'
+
+    message 206, 'field_description'
+    field 0, 'uint8', 'developer_data_index'
+    field 1, 'uint8', 'field_definition_number'
+    field 2, 'uint8', 'fit_base_type_id'
+    field 3, 'string', 'field_name', :array => true
+    field 4, 'uint8', 'array'
+    field 5, 'string', 'components'
+    field 6, 'uint8', 'scale'
+    field 7, 'sint8', 'offset'
+    field 8, 'string', 'units', :array => true
+    field 9, 'string', 'bits'
+    field 10, 'string', 'accumulate'
+    field 13, 'uint16', 'fit_base_unit_id'
+    field 14, 'uint16', 'native_mesg_num'
+    field 15, 'uint8', 'native_field_num'
+
+    message 207, 'developer_data_id'
+    field 0, 'byte', 'developer_id', :array => true
+    field 1, 'byte', 'application_id', :array => true
+    field 2, 'uint16', 'manufacturer_id'
+    field 3, 'uint8', 'developer_data_index'
+    field 4, 'uint32', 'application_version'
 
     # Not part of the official ANT SDK doc.
     message 211, 'undocumented_211'
@@ -810,6 +837,15 @@ module Fit4Ruby
     field 14, 'enum', 'undocumented_field_14'
     field 15, 'uint16', 'undocumented_field_15'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
+
+    message 1024, 'undocumented_1024'
+    field 0, 'enum', 'undocumented_field_0'
+    field 2, 'enum', 'undocumented_field_2'
+    field 15, 'uint16', 'undocumented_field_15'
+    field 40, 'enum', 'undocumented_field_40'
+    field 44, 'enum', 'undocumented_field_44'
+    field 247, 'enum', 'undocumented_field_247'
+    field 255, 'enum', 'undocumented_field_255'
 
     # Not part of the official ANT SDK doc.
     message 233, 'undocumented_233'
