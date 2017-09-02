@@ -115,7 +115,7 @@ module Fit4Ruby
     field 17, 'enum', 'activity_class'
     field 18, 'enum', 'position_setting', :dict => 'display_position'
     field 21, 'enum', 'temperature_setting', :dict => 'display_measure'
-    field 24, 'uint8', 'undocumented_field_24'
+    field 24, 'uint8', 'birth_year'
     field 28, 'uint32', 'wake_time', :type => 'duration'
     field 29, 'uint32', 'sleep_time', :type => 'duration'
     field 30, 'enum', 'height_setting', :dict => 'display_measure'
