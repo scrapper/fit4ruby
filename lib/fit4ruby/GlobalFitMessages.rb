@@ -838,6 +838,12 @@ module Fit4Ruby
     field 15, 'uint16', 'undocumented_field_15'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
+    # Not part of the official ANT SDK doc.
+    message 227, 'stress'
+    field 0, 'sint16', 'undocumented_0'
+    field 1, 'uint32', 'undocumented_1'
+    field 2, 'sint8', 'level'
+
     message 1024, 'undocumented_1024'
     field 0, 'enum', 'undocumented_field_0'
     field 2, 'enum', 'undocumented_field_2'
