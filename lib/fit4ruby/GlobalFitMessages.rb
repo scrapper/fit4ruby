@@ -63,6 +63,7 @@ module Fit4Ruby
     field 53, 'enum', 'undocumented_field_53'
     field 54, 'enum', 'undocumented_field_54'
     field 56, 'enum', 'mounting_side'
+    field 55, 'enum', 'undocumented_field_55'
     field 58, 'uint16', 'autosync_min_steps'
     field 59, 'uint16', 'autosync_min_time'
     field 62, 'enum', 'undocumented_field_62'
@@ -98,6 +99,7 @@ module Fit4Ruby
     field 127, 'enum', 'undocumented_field_127'
     field 128, 'enum', 'undocumented_field_128'
     field 133, 'enum', 'undocumented_field_133'
+    field 138, 'enum', 'undocumented_field_138'
 
     message 3, 'user_profile'
     field 0, 'string', 'friendly_name'
@@ -199,6 +201,7 @@ module Fit4Ruby
     field 54, 'uint32', 'undocumented_field_54'
     field 55, 'enum', 'undocumented_field_55'
     field 57, 'enum', 'undocumented_field_57'
+    field 60, 'enum', 'undocumented_field_60'
     field 254, 'uint16', 'message_index'
 
     message 18, 'session'
@@ -302,6 +305,10 @@ module Fit4Ruby
     field 134, 'uint16', 'avg_stride_length', :scale => 10000, :unit => 'm' # guessed
     field 137, 'uint8', 'g_effect', :scale => 10
     field 138, 'uint8', 'undocumented_field_138'
+    field 151, 'uint16', 'undocumented_field_151'
+    field 152, 'uint32', 'undocumented_field_152'
+    field 157, 'uint16', 'undocumented_field_157'
+    field 158, 'uint16', 'undocumented_field_158'
     field 153, 'enum', 'undocumented_field_153'
     field 154, 'enum', 'undocumented_field_154'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
@@ -392,6 +399,8 @@ module Fit4Ruby
     field 118, 'uint16', 'vertical_ratio', :scale => 100, :unit => '%' # guessed
     field 119, 'uint16', 'avg_gct_balance', :scale => 100, :unit => '%' # guessed
     field 120, 'uint16', 'avg_stride_length', :scale => 10000, :unit => 'm' # guessed
+    field 125, 'uint16', 'undocumented_field_125'
+    field 126, 'uint16', 'undocumented_field_126'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
     field 254, 'uint16', 'message_index'
 
