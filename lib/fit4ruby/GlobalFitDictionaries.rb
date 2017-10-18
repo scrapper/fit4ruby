@@ -469,6 +469,7 @@ module Fit4Ruby
     entry 84, 'magura'
     entry 85, 'woodway'
     entry 86, 'elite'
+    entry 95, 'stryd'
     entry 255, 'development'
     entry 5759, 'actigraphcorp'
 
