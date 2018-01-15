@@ -300,11 +300,12 @@ module Fit4Ruby
     field 121, 'uint16', 'max_power_position', :array => true, :unit => 'watts'
     field 122, 'uint8', 'avg_cadence_position', :array => true, :unit => 'rpm'
     field 123, 'uint8', 'max_cadence_position', :array => true, :unit => 'rpm'
-    field 132, 'uint16', 'vertical_ratio', :scale => 100, :unit => '%' # guessed
-    field 133, 'uint16', 'avg_gct_balance', :scale => 100, :unit => '%' # guessed
-    field 134, 'uint16', 'avg_stride_length', :scale => 10000, :unit => 'm' # guessed
+    field 132, 'uint16', 'avg_vertical_ratio', :scale => 100, :unit => '%'
+    field 133, 'uint16', 'avg_stance_time_balance', :scale => 100, :unit => '%'
+    field 134, 'uint16', 'avg_step_length', :scale => 100, :unit => 'mm'
     field 137, 'uint8', 'g_effect', :scale => 10
     field 138, 'uint8', 'undocumented_field_138'
+    field 150, 'sint8', 'min_temperature', :unit => 'C' # guessed
     field 151, 'uint16', 'undocumented_field_151'
     field 152, 'uint32', 'undocumented_field_152'
     field 157, 'uint16', 'undocumented_field_157'
@@ -363,7 +364,9 @@ module Fit4Ruby
     field 38, 'enum', 'swim_stroke', :dict => 'swim_stroke'
     field 39, 'enum', 'sub_sport', :dict => 'sub_sport'
     field 40, 'uint16', 'num_active_length', :unit => 'lengths'
-    field 41, 'uint32', 'total_work', :scale => 'J'
+    field 41, 'uint32', 'total_work', :unit => 'J'
+    field 50, 'sint8', 'avg_temperature', :unit => 'C'
+    field 51, 'sint8', 'max_temperature', :unit => 'C'
     field 57, 'uint32', 'time_in_hr_zone', :array => true, :scale => 1000, :unit => 's'
     field 60, 'uint32', 'avg_pos_vertical_speed', :scale => 1000, :unit => 'm/s'
     field 70, 'uint32', 'undefined_value_70'
@@ -399,6 +402,7 @@ module Fit4Ruby
     field 118, 'uint16', 'vertical_ratio', :scale => 100, :unit => '%' # guessed
     field 119, 'uint16', 'avg_gct_balance', :scale => 100, :unit => '%' # guessed
     field 120, 'uint16', 'avg_stride_length', :scale => 10000, :unit => 'm' # guessed
+    field 124, 'sint8', 'min_temperature', :unit => 'C' # guessed
     field 125, 'uint16', 'undocumented_field_125'
     field 126, 'uint16', 'undocumented_field_126'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
@@ -641,6 +645,7 @@ module Fit4Ruby
     field 12, 'uint16', 'undocumented_field_12'
     field 13, 'uint16', 'undocumented_field_13'
     field 14, 'uint8', 'undocumented_field_14'
+    field 15, 'uint8', 'undocumented_field_15'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     message 101, 'length'
@@ -736,6 +741,7 @@ module Fit4Ruby
     field 22, 'uint8', 'undocumented_field_22'
     field 23, 'uint8', 'undocumented_field_23'
     field 24, 'sint32', 'undocumented_field_24'
+    field 25, 'uint8', 'undocumented_field_25'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     # Not part of the official ANT SDK doc. The message name is guessed and
@@ -791,6 +797,7 @@ module Fit4Ruby
     field 45, 'enum', 'undocumented_field_45'
     field 46, 'enum', 'undocumented_field_46'
     field 47, 'enum', 'undocumented_field_47'
+    field 48, 'enum', 'undocumented_field_48'
     field 50, 'uint8', 'undocumented_field_50'
     field 51, 'enum', 'undocumented_field_51'
     field 52, 'uint8', 'undocumented_field_52'
