@@ -807,6 +807,7 @@ module Fit4Ruby
     field 57, 'uint16', 'undocumented_field_57'
     field 58, 'enum', 'undocumented_field_58'
     field 59, 'uint8', 'undocumented_field_59'
+    field 62, 'uint8', 'undocumented_field_62'
     field 254, 'uint16', 'message_index'
 
     message 206, 'field_description'
