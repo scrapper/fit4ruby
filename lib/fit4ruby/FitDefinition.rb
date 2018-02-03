@@ -56,8 +56,9 @@ module Fit4Ruby
       data_fields.each { |f| f.check }
     end
 
-    def FitDefinition::read(io, entity, developer_data_flag)
+    def FitDefinition::read(io, entity, developer_data_flag, fit_entity)
       @@has_developer_data = developer_data_flag != 0
+      @@fit_entity = fit_entity
       super(io)
     end
 
@@ -69,6 +70,10 @@ module Fit4Ruby
 
     def has_developer_data?
       @@has_developer_data
+    end
+
+    def fit_entity
+      @@fit_entity
     end
 
     def setup(fit_message_definition)

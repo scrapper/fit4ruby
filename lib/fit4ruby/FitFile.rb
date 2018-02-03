@@ -55,7 +55,7 @@ module Fit4Ruby
           # incremented each time the corresponding record type is found.
           record_counters = Hash.new { 0 }
           while io.pos < offset + header.end_pos
-            record = FitRecord.new(definitions)
+            record = FitRecord.new(definitions, entity)
             record.read(io, entity, filter, record_counters)
             records << record if filter
           end

@@ -28,13 +28,44 @@ module Fit4Ruby
         "#{field_number.snapshot}"
     end
 
-    def bindata_type
-      fit_definition = parent.parent
-      if (entry = @@TypeDefs.find { |e| e[3] == size_in_bytes.snapshot })
-        entry[1]
-      else
-        'uint8'
+    def type
+      @@TypeDefs[checked_base_type_number][1]
+    end
+
+    def base_type_bytes
+      @@TypeDefs[checked_base_type_number][3]
+    end
+
+    def byte_count
+      size_in_bytes
+    end
+
+    private
+
+    def find_field_definition
+      tlr = parent.parent.fit_entity.top_level_record
+      field = tlr.field_descriptions.find do |fd|
+        fd.field_definition_number == field_number.snapshot &&
+          fd.developer_data_index == developer_data_index.snapshot
       end
+      unless field
+        Log.error "Unknown developer field #{field_number.snapshot} " +
+          "for developer #{developer_data_index.snapshot}"
+      end
+
+      field
+    end
+
+    def checked_base_type_number
+      field = find_field_definition
+      base_type_number = field.fit_base_type_id & 0x7F
+      if @@TypeDefs.length <= base_type_number
+        Log.error "Unknown FIT Base type #{base_type_number} in " +
+          "Global FIT Message #{name}"
+        return 0
+      end
+
+      base_type_number
     end
 
   end

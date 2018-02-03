@@ -89,16 +89,10 @@ module Fit4Ruby
             (field_def ? field_def : field).to_s(value))
         end
       end
-      #@definition.developer_fields.each do |field|
-      #  $stderr.puts "  ++ New Developer Field " +
-      #    "#{field.field_number.snapshot}  " +
-      #    "Bytes: #{field.size_in_bytes.snapshot}  " +
-      #    "Developer ID: #{field.developer_data_index.snapshot}"
-      #end
 
-      #if @name == 'field_description'
-      #  obj.create_global_definition
-      #end
+      if @name == 'field_description'
+        obj.create_global_definition
+      end
     end
 
     private
@@ -141,23 +135,21 @@ module Fit4Ruby
 
     def produce(definition)
       fields = []
-      definition.data_fields.each do |field|
+      (definition.data_fields.to_a +
+       definition.developer_fields.to_a).each do |field|
         field_def = [ field.type, field.name ]
+
+        # Some field types need special handling.
         if field.type == 'string'
-          # Strings need special handling. We need to also include the length
-          # of the String.
+          # We need to also include the length of the String.
           field_def << { :read_length => field.total_bytes }
         elsif field.is_array?
+          # For Arrays we have to break them into separte fields.
           field_def = [ :array, field.name,
                         { :type => field.type.intern,
-                          :initial_length => field.total_bytes /
-                                             field.base_type_bytes } ]
+                          :initial_length =>
+                            field.total_bytes / field.base_type_bytes } ]
         end
-        fields << field_def
-      end
-
-      definition.developer_fields.each do |field|
-        field_def = [ field.bindata_type, field.name ]
         fields << field_def
       end
 

@@ -28,8 +28,12 @@ module Fit4Ruby
 
     attr_reader :number
 
-    def initialize(definitions)
+    def initialize(definitions, fit_entity)
       @definitions = definitions
+      # It's a bit ugly that we have to pass the generated FitFileEntity to
+      # the parser classes. But we need to have access to the developer field
+      # definitions to parse them properly.
+      @fit_entity = fit_entity
       @name = @number = @fields = nil
     end
 
@@ -44,8 +48,8 @@ module Fit4Ruby
       local_message_type = header.local_message_type.snapshot
       if header.normal? && header.message_type.snapshot == 1
         # process definition message
-        definition = FitDefinition.read(io, entity,
-                                        header.developer_data_flag.snapshot)
+        definition = FitDefinition.read(
+          io, entity, header.developer_data_flag.snapshot, @fit_entity)
         @definitions[local_message_type] = FitMessageRecord.new(definition)
       else
         # process data message

@@ -25,9 +25,6 @@ module Fit4Ruby
       set_field_values(field_values)
     end
 
-    def create_global_definition
-    end
-
   end
 
 end

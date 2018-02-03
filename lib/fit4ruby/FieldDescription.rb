@@ -26,6 +26,7 @@ module Fit4Ruby
     end
 
     def create_global_definition
+      #gfm = GlobalFitMessages[native_message_num.snapshot]
     end
 
   end
