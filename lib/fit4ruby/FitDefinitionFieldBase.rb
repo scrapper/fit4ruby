@@ -10,52 +10,33 @@
 # published by the Free Software Foundation.
 #
 
+require 'fit4ruby/FitTypeDefs'
+
 module Fit4Ruby
 
   module FitDefinitionFieldBase
 
-    @@TypeDefs = [
-      # FIT Type, BinData type, undefined value, bytes
-      [ 'enum', 'uint8', 0xFF, 1 ],
-      [ 'sint8', 'int8', 0x7F, 1 ],
-      [ 'uint8', 'uint8', 0xFF, 1 ],
-      [ 'sint16', 'int16', 0x7FFF, 2 ],
-      [ 'uint16', 'uint16', 0xFFFF, 2 ],
-      [ 'sint32', 'int32', 0x7FFFFFFF, 4 ],
-      [ 'uint32', 'uint32', 0xFFFFFFFF, 4 ],
-      [ 'string', 'string', '', 0 ],
-      [ 'float32', 'float', 0xFFFFFFFF, 4 ],
-      [ 'float63', 'double', 0xFFFFFFFF, 4 ],
-      [ 'uint8z', 'uint8', 0, 1 ],
-      [ 'uint16z', 'uint16', 0, 2 ],
-      [ 'uint32z', 'uint32', 0, 4 ],
-      [ 'byte', 'uint8', 0xFF, 1 ],
-      [ 'sint64', 'int64', 0x7FFFFFFFFFFFFFFF, 8 ],
-      [ 'uint64', 'uint64', 0xFFFFFFFFFFFFFFFF, 8 ],
-      [ 'uint64z', 'uint64', 0, 8 ]
-    ]
-
     def FitDefinitionFieldBase::fit_type_to_bin_data(fit_type)
-      entry = @@TypeDefs.find { |e| e[0] == fit_type }
+      entry = FIT_TYPE_DEFS.find { |e| e[0] == fit_type }
       raise "Unknown fit type #{fit_type}" unless entry
       entry[1]
     end
 
     def FitDefinitionFieldBase::undefined_value(fit_type)
-      entry = @@TypeDefs.find { |e| e[0] == fit_type }
+      entry = FIT_TYPE_DEFS.find { |e| e[0] == fit_type }
       raise "Unknown fit type #{fit_type}" unless entry
       entry[2]
     end
 
     def set_type(fit_type)
-      idx = @@TypeDefs.index { |x| x[0] == fit_type }
+      idx = FIT_TYPE_DEFS.index { |x| x[0] == fit_type }
       raise "Unknown type #{fit_type}" unless idx
       self.base_type_number = idx
-      self.byte_count = @@TypeDefs[idx][3]
+      self.byte_count = FIT_TYPE_DEFS[idx][3]
     end
 
     def type(fit_type = false)
-      @@TypeDefs[checked_base_type_number][fit_type ? 0 : 1]
+      FIT_TYPE_DEFS[checked_base_type_number][fit_type ? 0 : 1]
     end
 
     def is_array?
@@ -76,17 +57,17 @@ module Fit4Ruby
     end
 
     def base_type_bytes
-      @@TypeDefs[checked_base_type_number][3]
+      FIT_TYPE_DEFS[checked_base_type_number][3]
     end
 
     def undefined_value
-      @@TypeDefs[checked_base_type_number][2]
+      FIT_TYPE_DEFS[checked_base_type_number][2]
     end
 
     private
 
     def checked_base_type_number
-      if @@TypeDefs.length <= base_type_number.snapshot
+      if FIT_TYPE_DEFS.length <= base_type_number.snapshot
         Log.error "Unknown FIT Base type #{base_type_number.snapshot} in " +
           "Global FIT Message #{name}"
         return 0
@@ -95,7 +76,7 @@ module Fit4Ruby
     end
 
     def check_fit_base_type
-      if @@TypeDefs.length <= base_type_number.snapshot
+      if FIT_TYPE_DEFS.length <= base_type_number.snapshot
       end
     end
 

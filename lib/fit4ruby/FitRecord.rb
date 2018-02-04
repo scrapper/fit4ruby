@@ -72,7 +72,7 @@ module Fit4Ruby
             @fields = []
           end
         end
-        definition.read(io, entity, filter, @fields)
+        definition.read(io, entity, filter, @fields, @fit_entity)
       end
 
       self

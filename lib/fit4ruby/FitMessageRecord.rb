@@ -41,8 +41,15 @@ module Fit4Ruby
       @message_record = produce(definition)
     end
 
-    def read(io, entity, filter = nil, fields_dump = nil)
+    def read(io, entity, filter = nil, fields_dump = nil, fit_entity)
       @message_record.read(io)
+
+      # Check if we have a developer defined message for this global message
+      # number.
+      if fit_entity.top_level_record
+        developer_fields = fit_entity.top_level_record.field_descriptions
+        @dfm = developer_fields[@global_message_number]
+      end
 
       if @name == 'file_id'
         unless (entity_type = @message_record['type'].snapshot)
@@ -63,6 +70,7 @@ module Fit4Ruby
           f1alt ? 1 : -1
       end
 
+      #(sorted_fields + @definition.developer_fields).each do |field|
       sorted_fields.each do |field|
         value = @message_record[field.name].snapshot
         # Strings are null byte terminated. There may be more bytes in the
@@ -91,7 +99,7 @@ module Fit4Ruby
       end
 
       if @name == 'field_description'
-        obj.create_global_definition
+        obj.create_global_definition(fit_entity)
       end
     end
 

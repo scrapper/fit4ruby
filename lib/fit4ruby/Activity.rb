@@ -318,7 +318,7 @@ module Fit4Ruby
     # @param field_values [Hash] A Hash that provides initial values for
     #        certain fields of the FitDataRecord.
     # @return [DeveloperDataId]
-    def new_field_description(field_values = {})
+    def new_developer_data_id(field_values = {})
       new_fit_data_record('developer_data_id', field_values)
     end
 

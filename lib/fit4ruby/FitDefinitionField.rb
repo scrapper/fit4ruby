@@ -3,7 +3,7 @@
 #
 # = FitDefinitionField.rb -- Fit4Ruby - FIT file processing library for Ruby
 #
-# Copyright (c) 2014 by Chris Schlaeger <cs@taskjuggler.org>
+# Copyright (c) 2014, 2017, 2018 by Chris Schlaeger <cs@taskjuggler.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of version 2 of the GNU General Public License as
@@ -15,6 +15,7 @@ require 'time'
 require 'fit4ruby/FitDefinitionFieldBase'
 require 'fit4ruby/Log'
 require 'fit4ruby/GlobalFitMessage'
+require 'fit4ruby/FitTypeDefs'
 
 module Fit4Ruby
 
@@ -45,7 +46,7 @@ module Fit4Ruby
                                              "choice_#{field_number}"
          @type = field.respond_to?('type') ? field.type : nil
 
-         if @type && (td = @@TypeDefs[checked_base_type_number]) &&
+         if @type && (td = FIT_TYPE_DEFS[checked_base_type_number]) &&
             td[0] != @type
            Log.warn "#{@global_message_number}:#{@name} must be of type " +
            "#{@type}, not #{td[0]}"

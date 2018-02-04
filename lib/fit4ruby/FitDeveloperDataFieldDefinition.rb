@@ -3,7 +3,7 @@
 #
 # = FitDeveloperDataFieldDefinition.rb -- Fit4Ruby - FIT file processing library for Ruby
 #
-# Copyright (c) 2017 by Chris Schlaeger <cs@taskjuggler.org>
+# Copyright (c) 2017, 2018 by Chris Schlaeger <cs@taskjuggler.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of version 2 of the GNU General Public License as
@@ -12,6 +12,7 @@
 
 require 'bindata'
 require 'fit4ruby/FitDefinitionFieldBase'
+require 'fit4ruby/FitTypeDefs'
 
 module Fit4Ruby
 
@@ -29,11 +30,11 @@ module Fit4Ruby
     end
 
     def type
-      @@TypeDefs[checked_base_type_number][1]
+      FIT_TYPE_DEFS[checked_base_type_number][1]
     end
 
     def base_type_bytes
-      @@TypeDefs[checked_base_type_number][3]
+      FIT_TYPE_DEFS[checked_base_type_number][3]
     end
 
     def byte_count
@@ -59,7 +60,7 @@ module Fit4Ruby
     def checked_base_type_number
       field = find_field_definition
       base_type_number = field.fit_base_type_id & 0x7F
-      if @@TypeDefs.length <= base_type_number
+      if FIT_TYPE_DEFS.length <= base_type_number
         Log.error "Unknown FIT Base type #{base_type_number} in " +
           "Global FIT Message #{name}"
         return 0

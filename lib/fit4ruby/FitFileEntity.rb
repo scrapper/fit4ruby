@@ -3,7 +3,7 @@
 #
 # = FitMessageRecord.rb -- Fit4Ruby - FIT file processing library for Ruby
 #
-# Copyright (c) 2015 by Chris Schlaeger <cs@taskjuggler.org>
+# Copyright (c) 2015, 2016, 2017, 2018 by Chris Schlaeger <cs@taskjuggler.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of version 2 of the GNU General Public License as
@@ -12,6 +12,7 @@
 
 require 'fit4ruby/Activity'
 require 'fit4ruby/Monitoring_B'
+require 'fit4ruby/GlobalFitMessage'
 
 module Fit4Ruby
 
@@ -25,11 +26,12 @@ module Fit4Ruby
   # objec we need to use to store it for later consumption.
   class FitFileEntity
 
-    attr_reader :top_level_record
+    attr_reader :top_level_record, :developer_fit_messages
 
     # Create a FitFileEntity.
     def initialize
       @top_level_record = nil
+      @developer_fit_messages = GlobalFitMessageList.new
     end
 
     # Set what kind of FIT file we are dealing with.

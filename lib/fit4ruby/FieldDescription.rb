@@ -3,7 +3,7 @@
 #
 # = FieldDescription.rb -- Fit4Ruby - FIT file processing library for Ruby
 #
-# Copyright (c) 2017 by Chris Schlaeger <cs@taskjuggler.org>
+# Copyright (c) 2017, 2018 by Chris Schlaeger <cs@taskjuggler.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of version 2 of the GNU General Public License as
@@ -11,6 +11,8 @@
 #
 
 require 'fit4ruby/FitDataRecord'
+require 'fit4ruby/FitDefinitionFieldBase'
+require 'fit4ruby/FitTypeDefs'
 
 module Fit4Ruby
 
@@ -25,8 +27,31 @@ module Fit4Ruby
       set_field_values(field_values)
     end
 
-    def create_global_definition
-      #gfm = GlobalFitMessages[native_message_num.snapshot]
+    def create_global_definition(fit_entity)
+      messages = fit_entity.developer_fit_messages
+      unless (gfm = GlobalFitMessages[@native_mesg_num])
+        Log.error "Developer field description references unknown global " +
+          "message number #{@native_mesg_num}"
+      end
+
+      if @developer_data_index >=
+           fit_entity.top_level_record.developer_data_ids.size
+         Log.error "Developer data index #{@developer_data_index} is too large"
+      end
+
+      msg = messages[@native_mesg_num] ||
+        messages.message(@native_mesg_num, gfm.name)
+      unless (@fit_base_type_id & 0x7F) < FIT_TYPE_DEFS.size
+        Log.error "fit_base_type_id #{@fit_base_type_id} is too large"
+      end
+      options = {}
+      options[:scale] = @scale if @scale
+      options[:offset] = @offset if @offset
+      options[:array] = @array if @array
+      options[:unit] = @units
+      msg.field(@field_definition_number,
+                FIT_TYPE_DEFS[@fit_base_type_id & 0x7F][1],
+                "_#{@developer_data_index}_#{@field_name}", options)
     end
 
   end

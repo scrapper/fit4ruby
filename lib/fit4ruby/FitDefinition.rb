@@ -54,6 +54,7 @@ module Fit4Ruby
         Log.fatal "Illegal architecture value #{architecture.snapshot}"
       end
       data_fields.each { |f| f.check }
+      developer_fields.each { |f| f.check }
     end
 
     def FitDefinition::read(io, entity, developer_data_flag, fit_entity)
