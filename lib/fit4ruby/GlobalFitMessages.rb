@@ -114,7 +114,7 @@ module Fit4Ruby
     field 12, 'enum', 'hr_setting', :dict => 'display_heart'
     field 13, 'enum', 'speed_setting', :dict => 'display_measure'
     field 14, 'enum', 'dist_setting', :dict => 'display_measure'
-    field 17, 'enum', 'activity_class'
+    field 17, 'enum', 'activity_class', :scale => 10
     field 18, 'enum', 'position_setting', :dict => 'display_position'
     field 21, 'enum', 'temperature_setting', :dict => 'display_measure'
     field 24, 'uint8', 'birth_year'
@@ -251,8 +251,8 @@ module Fit4Ruby
     field 35, 'uint16', 'training_stress_score', :scale => 10, :unit => 'tss'
     field 36, 'uint16', 'intensity_factor', :scale => 1000, :unit => 'if'
     field 37, 'uint16', 'left_right_balance', :dict => 'left_right_balance_100'
-    field 38, 'sint32', 'undocumented_field_38'
-    field 39, 'sint32', 'undocumented_field_39'
+    field 38, 'sint32', 'lap1_lat', :type => 'coordinate' # guessed
+    field 39, 'sint32', 'lap1_long', :type => 'coordinate' # guessed
     field 41, 'uint32', 'avg_stroke_count', :scale => 10, :unit => 'strokes/lap'
     field 42, 'uint16', 'avg_stroke_distance', :scale => 100, :unit => 'm'
     field 43, 'enum', 'swim_stroke', :dict => 'swim_stroke'
