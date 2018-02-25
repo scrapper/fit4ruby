@@ -433,6 +433,8 @@ module Fit4Ruby
     field 46, 'uint8', 'right_pedal_smoothness', :scale => 2, :unit => '%'
     field 47, 'uint8', 'combined_pedal_smoothness', :scale => 2, :unit => '%'
     field 53, 'uint8', 'fractional_cadence', :scale => 128
+    field 54, 'uint16', 'total_hemoglobin_conc', :scale => 100, :unit => 'g/dL'
+    field 57, 'uint16', 'saturated_hemoglobin_percent', :scale => 10, :unit => '%'
     field 61, 'uint16', 'undefined_value_61'
     field 63, 'uint16', 'undefined_value_63'
     field 64, 'uint16', 'undefined_value_64'
