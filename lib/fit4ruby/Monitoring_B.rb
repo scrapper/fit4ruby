@@ -25,8 +25,8 @@ module Fit4Ruby
   # record structures used in the FIT file.
   class Monitoring_B < FitDataRecord
 
-    attr_accessor :file_id, :device_infos, :software, :monitoring_infos,
-                  :monitorings
+    attr_accessor :file_id, :field_descriptions, :device_infos, :software,
+      :monitoring_infos, :monitorings
 
     # Create a new Monitoring_B object.
     # @param field_values [Hash] A Hash that provides initial values for
@@ -36,6 +36,7 @@ module Fit4Ruby
       @num_sessions = 0
 
       @file_id = FileId.new
+      @field_descriptions = []
       @device_infos = []
       @softwares = nil
       @monitoring_infos = []
