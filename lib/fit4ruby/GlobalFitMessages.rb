@@ -631,7 +631,7 @@ module Fit4Ruby
     field 0, 'uint16', 'time', :array => true, :scale => 1000, :unit => 's'
 
     # Not part of the official ANT SDK doc
-    message 79, 'old_user_profile'
+    message 79, 'user_data'
     field 0, 'uint16', 'metmax', :scale => 1000, :unit => 'MET' # VO2max / 3.5
     field 1, 'uint8', 'age', :unit => 'years'
     field 2, 'uint8', 'height', :scale => 100, :unit => 'm'

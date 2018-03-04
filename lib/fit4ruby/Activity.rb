@@ -19,6 +19,7 @@ require 'fit4ruby/FileCreator'
 require 'fit4ruby/DeviceInfo'
 require 'fit4ruby/SensorSettings'
 require 'fit4ruby/DataSources'
+require 'fit4ruby/UserData'
 require 'fit4ruby/UserProfile'
 require 'fit4ruby/PhysiologicalMetrics'
 require 'fit4ruby/Session'
@@ -38,7 +39,7 @@ module Fit4Ruby
 
     attr_accessor :file_id, :field_descriptions, :developer_data_ids, :epo_data,
                   :file_creator, :device_infos, :sensor_settings, :data_sources,
-                  :user_profiles, :physiological_metrics,
+                  :user_data, :user_profiles, :physiological_metrics,
                   :sessions, :laps, :records, :hrv,
                   :heart_rate_zones, :events, :personal_records
 
@@ -58,6 +59,7 @@ module Fit4Ruby
       @device_infos = []
       @sensor_settings = []
       @data_sources = []
+      @user_data = []
       @user_profiles = []
       @physiological_metrics = []
       @events = []
@@ -347,12 +349,20 @@ module Fit4Ruby
       new_fit_data_record('data_sources', field_values)
     end
 
+    # Add a new UserData to the Activity.
+    # @param field_values [Hash] A Hash that provides initial values for
+    #        certain fields of the FitDataRecord.
+    # @return [UserData]
+    def new_user_data(field_values = {})
+      new_fit_data_record('user_data', field_values)
+    end
+
     # Add a new UserProfile to the Activity.
     # @param field_values [Hash] A Hash that provides initial values for
     #        certain fields of the FitDataRecord.
     # @return [UserProfile]
     def new_user_profile(field_values = {})
-      new_fit_data_record('old_user_profile', field_values)
+      new_fit_data_record('user_profile', field_values)
     end
 
     # Add a new PhysiologicalMetrics to the Activity.
@@ -461,7 +471,9 @@ module Fit4Ruby
         @sensor_settings << (record = SensorSettings.new(field_values))
       when 'data_sources'
         @data_sources << (record = DataSources.new(field_values))
-      when 'old_user_profile'
+      when 'user_data'
+        @user_data << (record = UserData.new(field_values))
+      when 'user_profile'
         @user_profiles << (record = UserProfile.new(field_values))
       when 'physiological_metrics'
         @physiological_metrics <<

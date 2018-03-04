@@ -20,9 +20,9 @@ describe Fit4Ruby do
     ts = Time.now
     a = Fit4Ruby::Activity.new
     a.total_timer_time = 30 * 60.0
-    a.new_user_profile({ :age => 33, :height => 1.78, :weight => 73.0,
-                         :gender => 'male', :activity_class => 4.0,
-                         :max_hr => 178 })
+    a.new_user_data({ :age => 33, :height => 1.78, :weight => 73.0,
+                      :gender => 'male', :activity_class => 4.0,
+                      :max_hr => 178 })
 
     a.new_event({ :event => 'timer', :event_type => 'start_time' })
     a.new_device_info({ :timestamp => ts,

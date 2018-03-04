@@ -21,7 +21,7 @@ module Fit4Ruby
     # @param field_values [Hash] Hash that provides initial values for certain
     #        fields.
     def initialize(field_values = {})
-      super('old_user_profile')
+      super('user_profile')
       set_field_values(field_values)
     end
 
