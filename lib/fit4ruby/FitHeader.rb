@@ -24,29 +24,33 @@ module Fit4Ruby
     uint16 :profile_version, :initial_value => 1012
     uint32 :data_size, :initial_value => 0
     string :data_type, :read_length => 4, :initial_value => '.FIT'
-    uint16 :crc, :initial_value => 0
+    uint16 :crc, :initial_value => 0, :onlyif => :has_crc?
 
     def check
-      unless header_size == 14
-        Log.fatal "Unsupported header size #{header_size}"
+      unless header_size.snapshot == 12 || header_size.snapshot == 14
+        Log.fatal "Unsupported header size #{header_size.snapshot}"
       end
-      unless data_type == '.FIT'
-        Log.fatal "Unknown file type #{data_type}"
+      unless data_type.snapshot == '.FIT'
+        Log.fatal "Unknown file type #{data_type.snapshot}"
       end
     end
 
     def dump
       puts <<"EOT"
 Fit File Header
-  Header Size: #{header_size}
-  Protocol Version: #{protocol_version}
-  Profile Version: #{profile_version}
-  Data Size: #{data_size}
+  Header Size: #{header_size.snapshot}
+  Protocol Version: #{protocol_version.snapshot}
+  Profile Version: #{profile_version.snapshot}
+  Data Size: #{data_size.snapshot}
 EOT
     end
 
+    def has_crc?
+      header_size.snapshot == 14
+    end
+
     def end_pos
-      header_size + data_size
+      header_size.snapshot  + data_size.snapshot
     end
 
   end

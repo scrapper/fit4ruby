@@ -417,7 +417,11 @@ module Fit4Ruby
     field 5, 'uint32', 'distance', :scale => 100, :unit => 'm'
     field 6, 'uint16', 'speed', :scale => 1000, :unit => 'm/s'
     field 7, 'uint16', 'power', :unit => 'watts'
+    field 8, 'byte', 'compressed_speed_distance', :array => true
+    field 9, 'sint16', 'grade', :scale => 100, :unit => '%'
+    field 10, 'uint8', 'resistence'
     field 11, 'sint32', 'time_from_course', :scale => 1000, :unit => 's'
+    field 12, 'uint8', 'cycle_length', :scale => 100, :unit => 'm'
     field 13, 'sint8', 'temperature', :unit => 'C'
     field 14, 'uint32', 'undefined_field_14'
     field 15, 'uint32', 'undefined_field_15'

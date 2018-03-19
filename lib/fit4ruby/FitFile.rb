@@ -116,7 +116,7 @@ module Fit4Ruby
       io.seek(start_pos)
 
       unless crc == crc_ref
-        Log.fatal "Checksum error in file '#{@file_name}'. " +
+        Log.error "Checksum error in file '#{@file_name}'. " +
                   "Computed 0x#{"%04X" % crc} instead of 0x#{"%04X" % crc_ref}."
       end
     end
