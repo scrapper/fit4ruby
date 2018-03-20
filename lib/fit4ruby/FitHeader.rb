@@ -3,7 +3,8 @@
 #
 # = FitHeader.rb -- Fit4Ruby - FIT file processing library for Ruby
 #
-# Copyright (c) 2014 by Chris Schlaeger <cs@taskjuggler.org>
+# Copyright (c) 2014, 2015, 2016, 2017, 2018
+#   by Chris Schlaeger <cs@taskjuggler.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of version 2 of the GNU General Public License as
@@ -12,10 +13,13 @@
 
 require 'bindata'
 require 'fit4ruby/Log'
+require 'fit4ruby/CRC16'
 
 module Fit4Ruby
 
   class FitHeader < BinData::Record
+
+    include CRC16
 
     endian :little
 
@@ -26,13 +30,25 @@ module Fit4Ruby
     string :data_type, :read_length => 4, :initial_value => '.FIT'
     uint16 :crc, :initial_value => 0, :onlyif => :has_crc?
 
-    def check
+    def read(io)
+      super
+
       unless header_size.snapshot == 12 || header_size.snapshot == 14
         Log.fatal "Unsupported header size #{header_size.snapshot}"
       end
       unless data_type.snapshot == '.FIT'
         Log.fatal "Unknown file type #{data_type.snapshot}"
       end
+      if crc.snapshot != 0 &&
+         compute_crc(io, 0, header_size.snapshot - 2) != crc.snapshot
+        Log.fatal "CRC mismatch in header."
+      end
+    end
+
+    def write(io)
+      super
+
+      write_crc(io, 0, header_size.snapshot - 2)
     end
 
     def dump
