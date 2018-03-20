@@ -24,7 +24,7 @@ module Fit4Ruby
     endian :little
 
     uint8 :header_size, :initial_value => 14
-    uint8 :protocol_version, :initial_value => 16
+    uint8 :protocol_version, :initial_value => 32
     uint16 :profile_version, :initial_value => 1012
     uint32 :data_size, :initial_value => 0
     string :data_type, :read_length => 4, :initial_value => '.FIT'
