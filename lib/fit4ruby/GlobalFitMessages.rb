@@ -134,6 +134,7 @@ module Fit4Ruby
     field 41, 'uint32', 'undocumented_field_41'
     field 42, 'uint32', 'undocumented_field_42'
     field 43, 'enum', 'undocumented_field_43'
+    field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     message 7, 'zones_target'
     field 1, 'uint8', 'max_heart_rate'
