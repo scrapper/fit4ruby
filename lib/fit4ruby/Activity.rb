@@ -261,9 +261,9 @@ module Fit4Ruby
       @events.each do |e|
         return e.vo2max if e.event == 'vo2max'
       end
-      # Then check the user_profile entries for a metmax entry. METmax * 3.5
+      # Then check the user_data entries for a metmax entry. METmax * 3.5
       # is same value as VO2max.
-      @user_profiles.each do |u|
+      @user_data.each do |u|
         return ((u.metmax * 1000.0) * 3.5) / 1024.0 if u.metmax
       end
 
