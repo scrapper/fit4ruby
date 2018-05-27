@@ -304,6 +304,8 @@ module Fit4Ruby
 
     dict 'garmin_product'
     entry 8, 'hrm_run_single_byte_product_id'
+    entry 9, 'bsm'
+    entry 10, 'bcm'
     entry 1551, 'fenix'
     # The Fenix3 is rumored to have a Mediatek MT3333 GPS chipset. Not sure if
     # that would be a beter name.
