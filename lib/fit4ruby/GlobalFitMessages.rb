@@ -100,6 +100,7 @@ module Fit4Ruby
     field 128, 'enum', 'undocumented_field_128'
     field 133, 'enum', 'undocumented_field_133'
     field 138, 'enum', 'undocumented_field_138'
+    field 144, 'enum', 'true_up_enabled'
 
     message 3, 'user_profile'
     field 0, 'string', 'friendly_name'
@@ -203,6 +204,8 @@ module Fit4Ruby
     field 55, 'enum', 'undocumented_field_55'
     field 57, 'enum', 'undocumented_field_57'
     field 60, 'enum', 'undocumented_field_60'
+    field 65, 'enum', 'undocumented_field_65'
+    field 66, 'enum', 'undocumented_field_66'
     field 254, 'uint16', 'message_index'
 
     message 18, 'session'
@@ -577,6 +580,7 @@ module Fit4Ruby
     field 4, 'enum', 'event_type', :dict => 'event_type'
     field 5, 'uint32', 'local_timestamp', :type => 'date_time'
     field 6, 'uint8', 'event_group'
+    field 7, 'uint8', 'undocumented_field_7'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     message 35, 'software'
@@ -586,6 +590,7 @@ module Fit4Ruby
     message 49, 'file_creator'
     field 0, 'uint16', 'software_version'
     field 1, 'uint8', 'hardware_version'
+    field 2, 'string', 'undocumented_field_2'
     field 254, 'uint16', 'message_index', :dict => 'message_index'
 
     message 55, 'monitoring'
@@ -749,6 +754,10 @@ module Fit4Ruby
     field 23, 'uint8', 'undocumented_field_23'
     field 24, 'sint32', 'undocumented_field_24'
     field 25, 'uint8', 'undocumented_field_25'
+    field 26, 'sint32', 'undocumented_field_26'
+    field 29, 'sint32', 'undocumented_field_29'
+    field 34, 'enum', 'undocumented_field_34'
+    field 35, 'uint32', 'undocumented_field_35'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     # Not part of the official ANT SDK doc. The message name is guessed and
@@ -817,6 +826,11 @@ module Fit4Ruby
     field 62, 'uint8', 'undocumented_field_62'
     field 254, 'uint16', 'message_index'
 
+    # Not part of the official ANT SDK doc.
+    message 188, 'undocumented_188'
+    field 0, 'enum', 'undocumented_field_0'
+    field 253, 'uint32', 'timestamp', :type => 'date_time'
+
     message 206, 'field_description'
     field 0, 'uint8', 'developer_data_index'
     field 1, 'uint8', 'field_definition_number'
@@ -862,11 +876,10 @@ module Fit4Ruby
     field 15, 'uint16', 'undocumented_field_15'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
-    # Not part of the official ANT SDK doc.
-    message 227, 'stress'
-    field 0, 'sint16', 'undocumented_0'
-    field 1, 'uint32', 'undocumented_1'
-    field 2, 'sint8', 'level'
+    message 227, 'stress_level'
+    field 0, 'sint16', 'stress_level_value'
+    field 1, 'uint32', 'stress_level_time', :type => 'date_time'
+    field 2, 'sint8', 'undocumented_field_2'
 
     message 1024, 'undocumented_1024'
     field 0, 'enum', 'undocumented_field_0'
