@@ -100,7 +100,9 @@ module Fit4Ruby
     field 128, 'enum', 'undocumented_field_128'
     field 133, 'enum', 'undocumented_field_133'
     field 138, 'enum', 'undocumented_field_138'
+    field 143, 'uint8', 'undocumented_field_143'
     field 144, 'enum', 'true_up_enabled'
+    field 149, 'enum', 'undocumented_field_149'
 
     message 3, 'user_profile'
     field 0, 'string', 'friendly_name'
@@ -495,6 +497,8 @@ module Fit4Ruby
     field 14, 'enum', 'undocumented_field_14'
     field 15, 'uint32', 'undocumented_field_15'
     field 16, 'enum', 'undocumented_field_16'
+    field 19, 'uint8', 'undocumented_field_19'
+    field 20, 'uint8', 'undocumented_field_20'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     # Possibly which device is used as metering source.
@@ -758,6 +762,7 @@ module Fit4Ruby
     field 29, 'sint32', 'undocumented_field_29'
     field 34, 'enum', 'undocumented_field_34'
     field 35, 'uint32', 'undocumented_field_35'
+    field 36, 'uint32', 'undocumented_field_36'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     # Not part of the official ANT SDK doc. The message name is guessed and
