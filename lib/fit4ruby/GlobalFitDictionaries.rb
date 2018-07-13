@@ -245,6 +245,7 @@ module Fit4Ruby
     entry 45, 'elev_high_alert'
     entry 46, 'elev_low_alert'
     entry 47, 'comm_timeout'
+    entry 48, 'functional_threshold_power' # guess (in Watt)
     entry 49, 'lactate_threshold_heart_rate' # guess (in BPM)
     entry 50, 'lactate_threshold_speed' # guess (in m/s)
 
@@ -344,6 +345,8 @@ module Fit4Ruby
     entry 2593, 'running_dynamics_pod'
     entry 2691, 'fr935'
     entry 2697, 'fenix5'
+    entry 2957, 'fenix5_gps_galileo' # Just a guess
+    entry 3111, 'fenix5x_plus'
     entry 10007, 'sdm4'
     entry 20119, 'training_center'
     entry 65532, 'android_antplus_plugin'

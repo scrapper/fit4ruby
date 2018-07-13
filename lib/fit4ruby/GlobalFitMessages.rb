@@ -126,7 +126,7 @@ module Fit4Ruby
     field 30, 'enum', 'height_setting', :dict => 'display_measure'
     field 31, 'uint16', 'user_running_step_length'
     field 32, 'uint16', 'user_walking_step_length'
-    field 33, 'uint16', 'undocumented_field_33'
+    field 33, 'uint16', 'undocumented_field_33' # varies between 800 to 1600, seems VO2max related
     field 34, 'uint16', 'undocumented_field_34'
     field 35, 'uint32', 'undocumented_field_35'
     field 36, 'uint8', 'undocumented_field_36'
@@ -134,7 +134,7 @@ module Fit4Ruby
     field 38, 'uint16', 'undocumented_field_38'
     field 39, 'float32', 'undocumented_field_39'
     field 40, 'float32', 'undocumented_field_40'
-    field 41, 'uint32', 'undocumented_field_41'
+    field 41, 'uint32', 'time_last_lthr_update', :type => 'date_time'
     field 42, 'uint32', 'undocumented_field_42'
     field 43, 'enum', 'undocumented_field_43'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
@@ -490,6 +490,7 @@ module Fit4Ruby
       field 'recovery_time', 'uint32', 'recovery_time', :unit => 'min'
       field 'recovery_info', 'uint32', 'recovery_info', :unit => 'min'
       field 'vo2max', 'uint32', 'vo2max'
+      field 'functional_threshold_power', 'uint32', 'functional_threshold_power', :unit => 'W'
       field 'lactate_threshold_heart_rate', 'uint32', 'lactate_threshold_heart_rate', :unit => 'bpm'
       field 'lactate_threshold_speed', 'uint32', 'lactate_threshold_speed', :scale => 1000, :unit => 'm/s'
     end
@@ -656,9 +657,9 @@ module Fit4Ruby
     field 7, 'sint8', 'undocumented_field_7' # seems to be always 1
     field 8, 'uint16', 'recovery_time', :scale => 60, :unit => 'hours'
     field 9, 'uint16', 'undocumented_field_9' # maybe activity measurement
-    field 10, 'uint8', 'undocumented_field_10'
+    field 10, 'uint8', 'avg_resting_heart_rate', :unit => 'bpm'
     field 11, 'uint16', 'running_lactate_threshold_heart_rate', :unit => 'bpm'
-    field 12, 'uint16', 'undocumented_field_12'
+    field 12, 'uint16', 'functional_threshold_power', :unit => 'W'
     field 13, 'uint16', 'undocumented_field_13'
     field 14, 'uint8', 'undocumented_field_14'
     field 15, 'uint8', 'undocumented_field_15'
@@ -726,8 +727,8 @@ module Fit4Ruby
     # All known fields so far seem to be physiological values. We'll use the
     # name physiological_metrics for now.
     message 140, 'physiological_metrics'
-    field 0, 'uint8', 'max_heart_rate', :unit => 'bpm'
-    field 1, 'uint8', 'undocumented_field_1'
+    field 0, 'uint8', 'min_heart_rate', :unit => 'bpm'
+    field 1, 'uint8', 'max_heart_rate', :unit => 'bpm'
     field 2, 'sint32', 'undocumented_field_2'
     field 3, 'sint32', 'undocumented_field_3'
     field 4, 'uint8', 'aerobic_training_effect', :scale => 10
@@ -737,7 +738,7 @@ module Fit4Ruby
     # Field 8 used to be uint8 but recent devices use sint8. We model this
     # with an alt_field. The switch field is randomly picked as we have no
     # details why the type has been changed.
-    alt_field 8, 'undocumented_field_1' do
+    alt_field 8, 'max_heart_rate' do
       field :default, 'sint8', 'undocumented_field_8s'
       field 255, 'uint8', 'undocumented_field_8u'
     end
