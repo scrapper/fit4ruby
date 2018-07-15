@@ -900,6 +900,16 @@ module Fit4Ruby
     message 233, 'undocumented_233'
     field 2, 'byte', 'undocumented_field_2'
 
+    message 269, 'undocumented_269'
+    field 0, 'enum', 'undocumented_field_0'
+    field 1, 'enum', 'undocumented_field_1'
+    field 253, 'uint32', 'timestamp', :type => 'date_time'
+
+    # Not part of the official ANT SDK doc.
+    message 279, 'undocumented_279'
+    field 0, 'uint32', 'undocumented_field_0'
+    field 253, 'uint32', 'timestamp', :type => 'date_time'
+
   end
 
 end
