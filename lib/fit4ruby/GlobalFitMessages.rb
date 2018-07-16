@@ -887,6 +887,35 @@ module Fit4Ruby
     field 1, 'uint32', 'stress_level_time', :type => 'date_time'
     field 2, 'sint8', 'undocumented_field_2'
 
+    # Not part of the official ANT SDK doc.
+    message 243, 'undocumented_243'
+    field 0, 'uint32', 'undocumented_field_0'
+    field 1, 'uint16', 'undocumented_field_1'
+    field 2, 'string', 'undocumented_field_2'
+    field 3, 'string', 'undocumented_field_3'
+    field 4, 'string', 'undocumented_field_4'
+    field 5, 'uint16', 'undocumented_field_5'
+    field 6, 'uint16', 'undocumented_field_6'
+
+    # Not part of the official ANT SDK doc.
+    message 244, 'undocumented_244'
+
+    # Not part of the official ANT SDK doc.
+    message 233, 'undocumented_233'
+    field 2, 'byte', 'undocumented_field_2'
+
+    # Not part of the official ANT SDK doc.
+    message 269, 'undocumented_269'
+    field 0, 'uint8', 'undocumented_field_0'
+    field 1, 'uint8', 'undocumented_field_1'
+    field 253, 'uint32', 'timestamp', :type => 'date_time'
+
+    # Not part of the official ANT SDK doc.
+    message 279, 'undocumented_279'
+    field 0, 'uint32', 'undocumented_field_0'
+    field 253, 'uint32', 'timestamp', :type => 'date_time'
+
+    # Not part of the official ANT SDK doc.
     message 1024, 'undocumented_1024'
     field 0, 'enum', 'undocumented_field_0'
     field 2, 'enum', 'undocumented_field_2'
@@ -895,20 +924,6 @@ module Fit4Ruby
     field 44, 'enum', 'undocumented_field_44'
     field 247, 'enum', 'undocumented_field_247'
     field 255, 'enum', 'undocumented_field_255'
-
-    # Not part of the official ANT SDK doc.
-    message 233, 'undocumented_233'
-    field 2, 'byte', 'undocumented_field_2'
-
-    message 269, 'undocumented_269'
-    field 0, 'enum', 'undocumented_field_0'
-    field 1, 'enum', 'undocumented_field_1'
-    field 253, 'uint32', 'timestamp', :type => 'date_time'
-
-    # Not part of the official ANT SDK doc.
-    message 279, 'undocumented_279'
-    field 0, 'uint32', 'undocumented_field_0'
-    field 253, 'uint32', 'timestamp', :type => 'date_time'
 
   end
 
