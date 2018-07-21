@@ -277,6 +277,10 @@ module Fit4Ruby
     entry 20, 'activity_summary'
     entry 28, 'monitoring_daily'
     entry 32, 'monitoring_b'
+    entry 34, 'segment'
+    entry 35, 'segment_list'
+    entry 40, 'exd_configuration'
+    entry 44, 'metrics'
 
     dict 'fitness_equipment_state'
     entry 0, 'ready'
@@ -653,6 +657,15 @@ module Fit4Ruby
     entry 58, 'virtual_activity '
     entry 59, 'obstacle '
     entry 254, 'all'
+
+    dict 'training_status'
+    entry 0, 'overreaching'
+    entry 1, 'detraining'
+    entry 2, 'unproductive'
+    entry 3, 'recovery'
+    entry 4, 'maintaining'
+    entry 5, 'productive'
+    entry 6, 'peaking'
 
   end
 

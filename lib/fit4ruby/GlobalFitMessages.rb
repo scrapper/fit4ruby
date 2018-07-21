@@ -927,6 +927,41 @@ module Fit4Ruby
     field 2, 'sint8', 'undocumented_field_2'
 
     # Not part of the official ANT SDK doc.
+    message 229, 'undocumented_229'
+    field 0, 'uint32', 'time', :type => 'date_time'
+    field 1, 'sint32', 'undocumented_field_1'
+    field 2, 'uint16', 'undocumented_field_2'
+    field 3, 'sint8', 'undocumented_field_3'
+    field 4, 'sint8', 'undocumented_field_4'
+    field 5, 'enum', 'undocumented_field_5'
+    field 6, 'enum', 'undocumented_field_6'
+    field 7, 'enum', 'undocumented_field_7'
+    field 8, 'enum', 'undocumented_field_8'
+    field 9, 'enum', 'undocumented_field_9'
+
+    # Not part of the official ANT SDK doc.
+    message 232, 'training_status'
+    field 0, 'enum', 'undocumented_0'
+    field 1, 'enum', 'undocumented_1'
+    field 2, 'enum', 'current_status', :dict => 'training_status'
+    field 3, 'enum', 'undocumented_3'
+    field 4, 'enum', 'undocumented_4'
+    field 5, 'uint16', 'training_load'
+    field 6, 'uint16', 'low_training_load'
+    field 7, 'uint16', 'high_training_load'
+    field 8, 'uint16', 'max_training_load'
+    field 253, 'uint32', 'timestamp', :type => 'date_time'
+
+    # Not part of the official ANT SDK doc.
+    message 233, 'undocumented_233'
+    field 2, 'byte', 'undocumented_field_2'
+
+    # Not part of the official ANT SDK doc.
+    message 241, 'metrics'
+    field 0, 'uint32', 'localtime', :type => 'date_time'
+    field 253, 'uint32', 'timestamp', :type => 'date_time'
+
+    # Not part of the official ANT SDK doc.
     message 243, 'media_player_info'
     field 0, 'uint32', 'undocumented_field_0'
     field 1, 'uint16', 'undocumented_field_1'
@@ -943,10 +978,6 @@ module Fit4Ruby
     field 2, 'uint16', 'undocumented_field_2'
 
     # Not part of the official ANT SDK doc.
-    message 233, 'undocumented_233'
-    field 2, 'byte', 'undocumented_field_2'
-
-    # Not part of the official ANT SDK doc.
     message 269, 'undocumented_269'
     field 0, 'uint8', 'undocumented_field_0'
     field 1, 'uint8', 'undocumented_field_1'
@@ -956,6 +987,11 @@ module Fit4Ruby
     message 279, 'undocumented_279'
     field 0, 'uint32', 'undocumented_field_0'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
+
+    # Not part of the official ANT SDK doc.
+    message 284, 'training_load'
+    field 0, 'uint16', 'load'
+    field 1, 'uint32', 'timestamp', :type => 'date_time'
 
     # Not part of the official ANT SDK doc.
     message 1024, 'undocumented_1024'
