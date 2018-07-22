@@ -686,7 +686,7 @@ module Fit4Ruby
 
     # Not part of the official ANT SDK doc
     message 79, 'user_data'
-    field 0, 'uint16', 'metmax', :scale => 1000, :unit => 'MET' # VO2max / 3.5
+    field 0, 'uint16', 'metmax', :scale => 1024, :unit => 'MET' # VO2max / 3.5
     field 1, 'uint8', 'age', :unit => 'years'
     field 2, 'uint8', 'height', :scale => 100, :unit => 'm'
     field 3, 'uint16', 'weight', :scale => 10, :unit => 'kg'
@@ -773,7 +773,7 @@ module Fit4Ruby
     field 4, 'uint8', 'aerobic_training_effect', :scale => 10
     field 5, 'sint32', 'undocumented_field_5'
     field 6, 'sint32', 'undocumented_field_6'
-    field 7, 'sint32', 'undocumented_field_7'
+    field 7, 'sint32', 'metmax', :scale => 65536, :unit => 'MET'
     # Field 8 used to be uint8 but recent devices use sint8. We model this
     # with an alt_field. The switch field is randomly picked as we have no
     # details why the type has been changed.
@@ -799,7 +799,7 @@ module Fit4Ruby
     field 24, 'sint32', 'undocumented_field_24'
     field 25, 'uint8', 'undocumented_field_25'
     field 26, 'sint32', 'undocumented_field_26'
-    field 29, 'sint32', 'undocumented_field_29'
+    field 29, 'sint32', 'metmax_running', :scale => 65536, :unit => 'MET'
     field 34, 'enum', 'undocumented_field_34'
     field 35, 'uint32', 'undocumented_field_35'
     field 36, 'uint32', 'undocumented_field_36'
@@ -929,8 +929,8 @@ module Fit4Ruby
     # Not part of the official ANT SDK doc.
     message 229, 'undocumented_229'
     field 0, 'uint32', 'time', :type => 'date_time'
-    field 1, 'sint32', 'undocumented_field_1'
-    field 2, 'uint16', 'undocumented_field_2'
+    field 1, 'sint32', 'metmax', :scale => 65536, :unit => 'MET'
+    field 2, 'uint16', 'vo2max', :scale => 10, :unit => 'ml/kg/min'
     field 3, 'sint8', 'undocumented_field_3'
     field 4, 'sint8', 'undocumented_field_4'
     field 5, 'enum', 'undocumented_field_5'

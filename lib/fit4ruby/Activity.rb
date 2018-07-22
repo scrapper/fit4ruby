@@ -264,7 +264,7 @@ module Fit4Ruby
       # Then check the user_data entries for a metmax entry. METmax * 3.5
       # is same value as VO2max.
       @user_data.each do |u|
-        return ((u.metmax * 1000.0) * 3.5) / 1024.0 if u.metmax
+        return u.metmax * 3.5 if u.metmax
       end
 
       nil
