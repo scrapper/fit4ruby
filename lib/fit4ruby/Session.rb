@@ -54,7 +54,9 @@ module Fit4Ruby
     # are reported via the Log object.
     def check(activity)
       unless @first_lap_index
-        Log.fatal 'first_lap_index is not set'
+        @first_lap_index = 0
+        Log.warn('first_lap_index is not set')
+        #Log.fatal 'first_lap_index is not set'
       end
       unless @num_laps
         Log.fatal 'num_laps is not set'
