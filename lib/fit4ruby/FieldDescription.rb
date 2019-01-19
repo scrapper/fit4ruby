@@ -32,17 +32,20 @@ module Fit4Ruby
       unless (gfm = GlobalFitMessages[@native_mesg_num])
         Log.error "Developer field description references unknown global " +
           "message number #{@native_mesg_num}"
+        return
       end
 
       if @developer_data_index >=
            fit_entity.top_level_record.developer_data_ids.size
          Log.error "Developer data index #{@developer_data_index} is too large"
+         return
       end
 
       msg = messages[@native_mesg_num] ||
         messages.message(@native_mesg_num, gfm.name)
       unless (@fit_base_type_id & 0x7F) < FIT_TYPE_DEFS.size
         Log.error "fit_base_type_id #{@fit_base_type_id} is too large"
+        return
       end
       options = {}
       options[:scale] = @scale if @scale

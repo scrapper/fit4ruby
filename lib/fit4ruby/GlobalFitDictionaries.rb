@@ -666,6 +666,13 @@ module Fit4Ruby
     entry 4, 'maintaining'
     entry 5, 'productive'
     entry 6, 'peaking'
+    entry 7, 'productive'
+
+    dict 'training_status_trend'
+    entry 0, 'undefined'
+    entry 1, 'down'
+    entry 2, 'maintaining'
+    entry 3, 'up'
 
   end
 
