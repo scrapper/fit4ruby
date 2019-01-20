@@ -3,7 +3,7 @@
 #
 # = FitMessageRecord.rb -- Fit4Ruby - FIT file processing library for Ruby
 #
-# Copyright (c) 2014, 2015 by Chris Schlaeger <cs@taskjuggler.org>
+# Copyright (c) 2014, 2015, 2018, 2019 by Chris Schlaeger <cs@taskjuggler.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of version 2 of the GNU General Public License as
@@ -116,9 +116,8 @@ module Fit4Ruby
         native_message_number = field_description.native_mesg_num
         native_field_number = field_description.native_field_num
 
-        mr_name = "developer_field_#{field.developer_data_index}_" +
-          "#{field_number}"
-        value = @message_record[mr_name].snapshot
+        value = @message_record[field.name].snapshot
+        value = nil if value == field.undefined_value
 
         if filter && fields_dump &&
            (filter.field_names.nil? ||

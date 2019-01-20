@@ -3,7 +3,7 @@
 #
 # = FitDeveloperDataFieldDefinition.rb -- Fit4Ruby - FIT file processing library for Ruby
 #
-# Copyright (c) 2017, 2018 by Chris Schlaeger <cs@taskjuggler.org>
+# Copyright (c) 2017, 2018, 2019 by Chris Schlaeger <cs@taskjuggler.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of version 2 of the GNU General Public License as
@@ -41,6 +41,10 @@ module Fit4Ruby
       size_in_bytes
     end
 
+    def undefined_value
+      FIT_TYPE_DEFS[checked_base_type_number][2]
+    end
+
     def find_field_definition
       return @field_definition if @field_definition
 
@@ -59,10 +63,29 @@ module Fit4Ruby
     end
 
     def to_s(value)
+      return '' if value.nil?
+
       if (field_definition = find_field_definition)
         "#{value} #{find_field_definition.units}"
       else
-        value.to_s
+        if value.kind_of?(Array)
+          s = '[ '
+          value.each do |v|
+            v /= @field_def.scale.to_f if @field_def.scale
+            v -= @fielid_def.offset if @field_def.offset
+            s << to_s(v) + ' '
+          end
+          s + ']'
+
+          return s
+        else
+          field_number = field_definition_number.snapshot
+
+          value /= @field_def.scale.to_f if @field_def.scale
+          value -= @fielid_def.offset if @field_def.offset
+
+          return value.to_s
+        end
       end
     end
 
