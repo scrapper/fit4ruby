@@ -41,21 +41,32 @@ module Fit4Ruby
       size_in_bytes
     end
 
-    private
-
     def find_field_definition
+      return @field_definition if @field_definition
+
       tlr = parent.parent.fit_entity.top_level_record
-      field = tlr.field_descriptions.find do |fd|
+      @field_definition = tlr.field_descriptions.find do |fd|
         fd.field_definition_number == field_number.snapshot &&
           fd.developer_data_index == developer_data_index.snapshot
       end
-      unless field
+      unless @field_definition
         Log.error "Unknown developer field #{field_number.snapshot} " +
           "for developer #{developer_data_index.snapshot}"
+        return nil
       end
 
-      field
+      @field_definition
     end
+
+    def to_s(value)
+      if (field_definition = find_field_definition)
+        "#{value} #{find_field_definition.units}"
+      else
+        value.to_s
+      end
+    end
+
+    private
 
     def checked_base_type_number
       field = find_field_definition

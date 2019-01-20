@@ -98,6 +98,41 @@ module Fit4Ruby
         end
       end
 
+      field_descriptions = fit_entity.top_level_record.field_descriptions
+      @definition.developer_fields.each do |field|
+        # Find the corresponding field description for the given developer and
+        # field number.
+        field_number = field.field_number.snapshot
+
+        unless (field_description = field.find_field_definition)
+          Log.error "There is no field definition for developer " +
+            "#{field.developer_data_index} field #{field_number}"
+          next
+        end
+
+        field_name = field_description.field_name
+        units = field_description.units
+        type = field.type
+        native_message_number = field_description.native_mesg_num
+        native_field_number = field_description.native_field_num
+
+        mr_name = "developer_field_#{field.developer_data_index}_" +
+          "#{field_number}"
+        value = @message_record[mr_name].snapshot
+
+        if filter && fields_dump &&
+           (filter.field_names.nil? ||
+            filter.field_names.include?(field_name)) &&
+           !(((value.respond_to?('count') &&
+               (value.count(field.undefined_value) == value.length)) ||
+              value == field.undefined_value) && filter.ignore_undef)
+          fields_dump << DumpedField.new(
+            native_message_number,
+            256 * (1 + field.developer_data_index) + field_number,
+            field_name, type, field.to_s(value))
+        end
+      end
+
       if @name == 'field_description'
         obj.create_global_definition(fit_entity)
       end
