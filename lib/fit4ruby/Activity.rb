@@ -113,11 +113,12 @@ module Fit4Ruby
             # broken. Unfortunately, the Skiing/Boarding app in the Fenix3
             # produces such broken FIT files. So we just warn about this
             # problem and discard the earlier records.
-            Log.error "Record #{r.timestamp} has smaller distance " +
+            Log.error "- #{r.timestamp} has smaller distance " +
                       "(#{r.distance}) than an earlier record (#{distance})."
             # Index of the list record to be discarded.
             (idx - 1).downto(0) do |i|
-              if (ri = @records[i]).distance > r.distance
+              ri = @records[i]
+              if ri.distance && (ri.distance > r.distance)
                 # This is just an approximation. It looks like the app adds
                 # records to the FIT file for runs that it meant to discard.
                 # Maybe the two successive time start events are a better
