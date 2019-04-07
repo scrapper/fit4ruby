@@ -98,7 +98,6 @@ module Fit4Ruby
         end
       end
 
-      field_descriptions = fit_entity.top_level_record.field_descriptions
       @definition.developer_fields.each do |field|
         # Find the corresponding field description for the given developer and
         # field number.
