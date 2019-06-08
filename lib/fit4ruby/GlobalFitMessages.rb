@@ -60,6 +60,7 @@ module Fit4Ruby
     field 44, 'enum', 'undocumented_field_44'
     field 45, 'enum', 'undocumented_field_45'
     field 46, 'enum', 'move_alert_enabled'
+    field 47, 'enum', 'date_mode'
     field 48, 'enum', 'undocumented_field_48'
     field 49, 'uint16', 'undocumented_field_49'
     field 51, 'enum', 'undocumented_field_51'
@@ -280,6 +281,7 @@ module Fit4Ruby
     field 64, 'uint16', 'undocumented_field_64'
     field 65, 'enum', 'undocumented_field_65'
     field 66, 'enum', 'undocumented_field_66'
+    field 76, 'enum', 'undocumented_field_76'
     field 254, 'uint16', 'message_index'
 
     message 18, 'session'
@@ -913,6 +915,9 @@ module Fit4Ruby
     field 58, 'enum', 'undocumented_field_58'
     field 59, 'uint8', 'undocumented_field_59'
     field 62, 'uint8', 'undocumented_field_62'
+    field 63, 'enum', 'undocumented_field_63'
+    field 64, 'uint32', 'undocumented_field_64'
+    field 65, 'uint32', 'undocumented_field_65'
     field 254, 'uint16', 'message_index'
 
     # Not part of the official ANT SDK doc.

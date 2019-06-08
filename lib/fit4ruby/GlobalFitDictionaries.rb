@@ -75,6 +75,10 @@ module Fit4Ruby
     entry 4, 'low'
     entry 5, 'critical'
 
+    dict 'date_mode'
+    entry 0, 'day_month'
+    entry 1, 'month_day'
+
     dict 'body_location'
     entry 0, 'left_leg'
     entry 1, 'left_calf'
