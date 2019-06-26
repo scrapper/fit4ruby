@@ -235,7 +235,9 @@ module Fit4Ruby
 
     def register_field_by_name(field, name)
       if @fields_by_name.include?(name)
-        raise "Field '#{name}' has already been defined"
+        #raise "Field '#{name}' has already been defined"
+        Log.warn "Field '#{name}' has already been defined"
+        return
       end
 
       @fields_by_name[name] = field

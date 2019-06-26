@@ -27,7 +27,8 @@ module Fit4Ruby
 
     def check(index)
       unless @lap_index == index
-        Log.fatal "lap_index must be #{index}, not #{@lap_index}"
+        Log.warn "lap_index must be #{index}, not #{@lap_index}"
+        #Log.fatal "lap_index must be #{index}, not #{@lap_index}"
       end
     end
 

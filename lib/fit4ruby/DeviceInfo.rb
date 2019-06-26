@@ -50,9 +50,9 @@ module Fit4Ruby
             Log.fatal 'device info record 0 must have a product field set'
           end
         end
-        if @serial_number.nil?
-          Log.fatal 'device info record 0 must have a serial number set'
-        end
+        #if @serial_number.nil?
+        #  Log.fatal 'device info record 0 must have a serial number set'
+        #end
       end
     end
 
