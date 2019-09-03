@@ -311,6 +311,9 @@ module Fit4Ruby
     field 67, 'enum', 'undocumented_field_67'
     field 69, 'uint16', 'undocumented_field_69'
     field 70, 'enum', 'undocumented_field_70'
+    field 73, 'sint32', 'undocumented_field_73'
+    field 74, 'sint32', 'undocumented_field_74'
+    field 75, 'enum', 'undocumented_field_75'
     field 76, 'enum', 'undocumented_field_76'
     field 254, 'uint16', 'message_index'
 
@@ -594,6 +597,8 @@ module Fit4Ruby
     field 70, 'uint8', 'left_power_phase_peak', :scale => 0.7111111, :unit => 'degrees', :array => true
     field 71, 'uint8', 'right_power_phase', :scale => 0.7111111, :unit => 'degrees', :array => true
     field 72, 'uint8', 'right_power_phase_peak', :scale => 0.7111111, :unit => 'degrees', :array => true
+    field 73, 'uint32', 'enhanced_speed', :scale => 1000, :unit => 'm/s'
+    field 78, 'uint32', 'enhanced_elevation', :scale => 5, :offset => 500, :unit => 'm'
     field 83, 'uint16', 'vertical_ratio', :scale => 100, :unit => '%' # guessed
     field 84, 'uint16', 'gct_balance', :scale => 100, :unit => '%' # guessed
     field 85, 'uint16', 'stride_length', :scale => 10000, :unit => 'm' # guessed
@@ -896,7 +901,7 @@ module Fit4Ruby
     field 12, 'enum', 'undocumented_field_12'
     field 13, 'uint8', 'undocumented_field_13'
     field 14, 'uint16', 'running_lactate_threshold_heart_rate', :unit => 'bpm'
-    field 15, 'uint16', 'running_lactate_threshold_speed', :scale => 100, :unit => 'm/s'
+    field 15, 'uint16', 'running_lactate_threshold_speed', :scale => 1000, :unit => 'm/s'
     field 16, 'uint16', 'undocumented_field_16' # very correlated to 14 and 15
     field 17, 'sint8', 'performance_condition'
     field 18, 'uint8', 'undocumented_field_18'
