@@ -14,6 +14,8 @@ $:.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 
 require 'fit4ruby'
 
+ENV['TZ'] = 'UTC'
+
 describe Fit4Ruby do
 
   before(:each) do
@@ -109,7 +111,7 @@ describe Fit4Ruby do
     expect(File.exists?(fit_file)).to be true
 
     b = Fit4Ruby.read(fit_file)
-    expect(b).to eq(@activity)
+    expect(b.inspect).to eq(@activity.inspect)
     File.delete(fit_file)
   end
 
