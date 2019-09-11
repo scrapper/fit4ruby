@@ -216,7 +216,11 @@ module Fit4Ruby
     # Convenience method that averages the speed over all sessions.
     def avg_speed
       speed = 0.0
-      @sessions.each { |s| speed += s.avg_speed if s.avg_speed }
+      @sessions.each do |s|
+        if (spd = s.avg_speed || s.enhanced_avg_speed)
+          speed += spd
+        end
+      end
       speed / @sessions.length
     end
 
