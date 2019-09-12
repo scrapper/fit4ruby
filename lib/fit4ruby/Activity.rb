@@ -24,6 +24,7 @@ require 'fit4ruby/UserProfile'
 require 'fit4ruby/PhysiologicalMetrics'
 require 'fit4ruby/Session'
 require 'fit4ruby/Lap'
+require 'fit4ruby/Length'
 require 'fit4ruby/Record'
 require 'fit4ruby/HRV'
 require 'fit4ruby/HeartRateZones'
@@ -40,7 +41,7 @@ module Fit4Ruby
     attr_accessor :file_id, :field_descriptions, :developer_data_ids, :epo_data,
                   :file_creator, :device_infos, :sensor_settings, :data_sources,
                   :user_data, :user_profiles, :physiological_metrics,
-                  :sessions, :laps, :records, :hrv,
+                  :sessions, :laps, :records, :lengths, :hrv,
                   :heart_rate_zones, :events, :personal_records
 
     # Create a new Activity object.
@@ -65,15 +66,21 @@ module Fit4Ruby
       @events = []
       @sessions = []
       @laps = []
+      @lengths = []
       @records = []
       @hrv = []
       @heart_rate_zones = []
       @personal_records = []
 
       @cur_session_laps = []
+
       @cur_lap_records = []
+      @cur_lap_lengths = []
+
+      @cur_length_records = []
 
       @lap_counter = 1
+      @length_counter = 1
 
       set_field_values(field_values)
     end
@@ -141,11 +148,20 @@ module Fit4Ruby
 
       # Laps must have a consecutively growing message index.
       @laps.each.with_index do |lap, index|
-        lap.check(index)
+        lap.check(index, self)
         # If we have heart rate zone records, there should be one for each
         # lap
         @heart_rate_zones[index].check(index) if @heart_rate_zones[index]
       end
+
+      # Lengths must have a consecutively growing message index.
+      @lengths.each.with_index do |length, index|
+        length.check(index)
+        # If we have heart rate zone records, there should be one for each
+        # length
+        @heart_rate_zones[index].check(index) if @heart_rate_zones[index]
+      end
+
       @sessions.each { |s| s.check(self) }
     end
 
@@ -206,10 +222,11 @@ module Fit4Ruby
       d
     end
 
-    # Call this method to update the aggregated data fields stored in Lap and
-    # Session objects.
+    # Call this method to update the aggregated data fields stored in Lap, Length,
+    # and Session objects.
     def aggregate
       @laps.each { |l| l.aggregate }
+      @lengths.each { |l| l.aggregate }
       @sessions.each { |s| s.aggregate }
     end
 
@@ -292,7 +309,7 @@ module Fit4Ruby
        @device_infos + @sensor_settings +
        @data_sources + @user_profiles +
        @physiological_metrics + @events +
-       @sessions + @laps + @records + @heart_rate_zones +
+       @sessions + @laps + @records + @lengths + @heart_rate_zones +
        @personal_records).sort.each do |s|
         s.write(io, id_mapper)
       end
@@ -404,6 +421,16 @@ module Fit4Ruby
       new_fit_data_record('lap', field_values)
     end
 
+    # Add a new Length to the Activity. All previoulsy added Record objects are
+    # associated with this Length unless they have been associated with another
+    # Length before.
+    # @param field_values [Hash] A Hash that provides initial values for
+    #        certain fields of the FitDataRecord.
+    # @return [Length]
+    def new_length(field_values = {})
+      new_fit_data_record('length', field_values)
+    end
+
     # Add a new HeartRateZones record to the Activity.
     # @param field_values [Heash] A Hash that provides initial values for
     #        certain fields of the FitDataRecord.
@@ -496,8 +523,12 @@ module Fit4Ruby
         @cur_session_laps = []
       when 'lap'
         record = create_new_lap(field_values)
+      when 'length'
+        record = create_new_length(field_values)
       when 'record'
-        @cur_lap_records << (record = Record.new(field_values))
+        record = Record.new(field_values)
+        @cur_lap_records << record
+        @cur_length_records << record
         @records << record
       when 'hrv'
         @hrv << (record = HRV.new(field_values))
@@ -515,16 +546,29 @@ module Fit4Ruby
     private
 
     def create_new_lap(field_values)
-      lap = Lap.new(@cur_lap_records, @laps.last, field_values)
+      lap = Lap.new(@cur_lap_records,
+                    @cur_lap_lengths, @length_counter,
+                    @laps.last, field_values)
       lap.message_index = @lap_counter - 1
       @lap_counter += 1
       @cur_session_laps << lap
       @laps << lap
       @cur_lap_records = []
+      @cur_lap_lengths = []
 
       lap
     end
 
+    def create_new_length(field_values)
+      length = Length.new(@cur_length_records, @lengths.last, field_values)
+      length.message_index = @length_counter - 1
+      @length_counter += 1
+      @cur_lap_lengths << length
+      @lengths << length
+      @cur_length_records = []
+
+      length
+    end
   end
 
 end
