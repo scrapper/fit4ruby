@@ -131,6 +131,7 @@ module Fit4Ruby
     field 144, 'enum', 'true_up_enabled'
     field 148, 'enum', 'undocumented_field_148'
     field 149, 'enum', 'undocumented_field_149'
+    field 168, 'enum', 'undocumented_field_168'
 
     message 3, 'user_profile'
     field 0, 'string', 'friendly_name'
@@ -445,6 +446,8 @@ module Fit4Ruby
     field 185, 'uint8', 'undocumented_field_185'
     field 187, 'float32', 'undocumented_field_187'
     field 188, 'enum', 'undocumented_field_188'
+    field 189, 'uint16', 'undocumented_field_189'
+    field 190, 'uint16', 'undocumented_field_190'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
     field 254, 'uint16', 'message_index'
 
