@@ -836,6 +836,8 @@ module Fit4Ruby
     field 12, 'enum', 'length_type', :dict => 'length_type'
     field 18, 'uint16', 'player_score'
     field 19, 'uint16', 'opponent_score'
+    field 20, 'unit16', 'stroke_count', :unit => 'counts'
+    field 21,	'unit16', 'zone_count', :unit => 'counts'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
     field 254, 'uint16', 'message_index'
 
