@@ -824,7 +824,7 @@ module Fit4Ruby
     message 101, 'length'
     field 0, 'enum', 'event', :dict => 'event'
     field 1, 'enum', 'event_type', :dict => 'event_type'
-    field 2, 'uint32', 'date_time', :type => 'date_time'
+    field 2, 'uint32', 'start_time', :type => 'date_time'
     field 3, 'uint32', 'total_elapsed_time', :scale => 1000, :unit => 's'
     field 4, 'uint32', 'total_timer_time', :scale => 1000, :unit => 's'
     field 5, 'uint16', 'total_strokes', :unit => 'strokes'
