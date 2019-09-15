@@ -593,7 +593,7 @@ module Fit4Ruby
     dict 'swim_stroke'
     entry 0, 'freestyle'
     entry 1, 'backstroke'
-    entry 2, 'breaststrike'
+    entry 2, 'breaststroke'
     entry 3, 'butterfly'
     entry 4, 'drill'
     entry 5, 'mixed'
