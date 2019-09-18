@@ -46,7 +46,6 @@ describe Fit4Ruby do
                          :speed => 1, :cadence => 3, :elevation => 1,
                          :heart_rate => 2 })
     laps = 0
-    lengths = 0
     0.upto(a.total_timer_time / 60) do |mins|
       ts += 60
       a.new_record({
@@ -66,9 +65,6 @@ describe Fit4Ruby do
       })
 
       if mins > 0 && mins % 5 == 0
-        a.new_length({ :timestamp => ts, :event => 'length',
-                      :message_index => lengths, :total_strokes => 45 })
-        lengths += 1
         a.new_lap({ :timestamp => ts, :sport => 'running',
                     :message_index => laps, :total_cycles => 195 })
         laps += 1
