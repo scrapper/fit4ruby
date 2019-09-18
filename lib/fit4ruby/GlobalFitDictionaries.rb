@@ -355,6 +355,7 @@ module Fit4Ruby
     entry 2697, 'fenix5'
     entry 2957, 'fenix5_gps_galileo' # Just a guess
     entry 3111, 'fenix5x_plus'
+    entry 3126, 'instinct'
     entry 10007, 'sdm4'
     entry 20119, 'training_center'
     entry 65532, 'android_antplus_plugin'
