@@ -21,7 +21,7 @@ module Fit4Ruby
 
     RecordOrder = [ 'user_data', 'user_profile',
                     'device_info', 'data_sources', 'event',
-                    'record', 'lap', 'session', 'heart_rate_zones',
+                    'record', 'lap', 'length', 'session', 'heart_rate_zones',
                     'personal_records' ]
 
     attr_reader :message

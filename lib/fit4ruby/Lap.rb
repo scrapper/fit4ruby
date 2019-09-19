@@ -19,13 +19,24 @@ module Fit4Ruby
 
     include RecordAggregator
 
-    attr_reader :records
+    attr_reader :records, :lengths
 
-    def initialize(records, previous_lap, field_values)
+    # Create a new Lap object.
+    # @param records [Array of Records] Records to associate with the Lap.
+    # @param lengths [Array of Lengths] Lengths to associate with the Lap.
+    # @param first_length_index [Fixnum] Index of the first Length in this Lap.
+    # @param previous_lap [Lap] Previous Lap on same Session.
+    # @param field_values [Hash] Hash that provides initial values for certain
+    #        fields.
+    def initialize(records, previous_lap, field_values, first_length_index, lengths)
       super('lap')
+      @lengths = lengths
       @meta_field_units['avg_stride_length'] = 'm'
       @records = records
       @previous_lap = previous_lap
+      @lengths.each { |length| @records += length.records }
+      @first_length_index = first_length_index
+      @num_lengths = @lengths.length
 
       if previous_lap && previous_lap.records && previous_lap.records.last
         # Set the start time of the new lap to the timestamp of the last record
@@ -43,9 +54,24 @@ module Fit4Ruby
       set_field_values(field_values)
     end
 
-    def check(index)
+    def check(index, activity)
       unless @message_index == index
         Log.fatal "message_index must be #{index}, not #{@message_index}"
+      end
+
+      return if @num_lengths.zero?
+
+      unless @first_length_index
+        Log.fatal 'first_length_index is not set'
+      end
+
+      @first_length_index.upto(@first_length_index - @num_lengths) do |i|
+        if (length = activity.lengths[i])
+          @lengths << length
+        else
+          Log.fatal "Lap references length #{i} which is not contained in "
+          "the FIT file."
+        end
       end
     end
 
