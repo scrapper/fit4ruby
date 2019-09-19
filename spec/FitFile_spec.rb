@@ -17,9 +17,10 @@ require 'fit4ruby'
 ENV['TZ'] = 'UTC'
 
 describe Fit4Ruby do
-
-  before(:each) do
-    ts = Time.now
+  let(:fit_file) { 'test.fit' }
+  let(:timestamp) { Time.now }
+  let(:activity) do
+    ts = timestamp
     a = Fit4Ruby::Activity.new
     a.total_timer_time = 30 * 60.0
     a.new_user_data({ :age => 33, :height => 1.78, :weight => 73.0,
@@ -99,20 +100,65 @@ describe Fit4Ruby do
                   :event_type => 'marker', :recovery_hr => 132 })
 
     a.aggregate
-
-    @activity = a
+    a
   end
 
-  it 'should write an Activity FIT file and read it back' do
-    fit_file = 'test.fit'
+  before do
+    File.delete(fit_file) if File.exist?(fit_file)
+    expect(File.exist?(fit_file)).to be false
+  end
 
-    File.delete(fit_file) if File.exists?(fit_file)
-    Fit4Ruby.write(fit_file, @activity)
-    expect(File.exists?(fit_file)).to be true
+  after { File.delete(fit_file) }
+
+  it 'should write an Activity FIT file and read it back' do
+    Fit4Ruby.write(fit_file, activity)
+    expect(File.exist?(fit_file)).to be true
 
     b = Fit4Ruby.read(fit_file)
-    expect(b.inspect).to eq(@activity.inspect)
-    File.delete(fit_file)
+    expect(b.laps.count).to eq 6
+    expect(b.lengths.count).to eq 0
+    expect(b.inspect).to eq(activity.inspect)
+  end
+
+  context 'activity with Lengths' do
+    let(:activity) do
+      ts = timestamp
+      laps = 0
+      lengths = 0
+      a = Fit4Ruby::Activity.new
+
+      a.total_timer_time = 30 * 60.0
+      a.new_device_info({ :timestamp => ts,
+        :device_index => 0, :manufacturer => 'garmin',
+        :serial_number => 123456789 })
+
+      0.upto(a.total_timer_time / 60) do |mins|
+        ts += 60
+        if mins > 0 && mins % 5 == 0
+          a.new_lap({ :timestamp => ts, :sport => 'swimming',
+            :message_index => laps, :total_cycles => 195 })
+          laps += 1
+
+          a.new_length({ :timestamp => ts, :event => 'length',
+            :message_index => lengths, :total_strokes => 45 })
+          lengths += 1
+        end
+      end
+      a
+    end
+
+    it 'should write an Activity FIT file and read it back' do
+      Fit4Ruby.write(fit_file, activity)
+      expect(File.exist?(fit_file)).to be true
+
+      b = Fit4Ruby.read(fit_file)
+      expect(b.laps.count).to eq 6
+      expect(b.lengths.count).to eq 6
+      expect(b.laps.select { |l| l.sport == 'swimming' }.count).to eq 6
+      expect(b.lengths.select { |l| l.total_strokes == 45 }.count).to eq 6
+      expect(b.inspect).to eq(activity.inspect)
+    end
+
   end
 
 end
