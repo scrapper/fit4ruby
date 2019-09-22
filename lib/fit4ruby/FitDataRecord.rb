@@ -133,7 +133,13 @@ module Fit4Ruby
       fields = []
       global_fit_message.fields_by_number.each do |field_number, field|
         bin_data_type = FitDefinitionFieldBase.fit_type_to_bin_data(field.type)
-        fields << [ bin_data_type, field.name ]
+        if field.opts[:array]
+          fields << [ :array, field.name, {
+            :type => bin_data_type
+          } ]
+        else
+          fields << [ bin_data_type, field.name ]
+        end
       end
       bd = BinData::Struct.new(:endian => :little, :fields => fields)
 
@@ -141,13 +147,21 @@ module Fit4Ruby
       # instance variables.
       global_fit_message.fields_by_number.each do |field_number, field|
         iv = "@#{field.name}"
-        if instance_variable_defined?(iv) &&
-           !(iv_value = instance_variable_get(iv)).nil?
-          value = field.native_to_fit(iv_value)
+        if instance_variable_defined?(iv)
+          iv_value = instance_variable_get(iv)
+          if iv_value && iv_value.is_a?(Array)
+            value = iv_value.map { |ivv| field.native_to_fit(ivv) }
+          else
+            value = field.native_to_fit(iv_value)
+            value = [value] if field.opts[:array]
+          end
         else
           # If we don't have a corresponding variable or the variable is nil
           # we write the 'undefined' value instead.
           value = FitDefinitionFieldBase.undefined_value(field.type)
+
+          # TODO: FitDefinitionFieldBase.undefined_value should take care of this.
+          value = [value] if field.opts[:array]
         end
         bd[field.name] = value
       end
