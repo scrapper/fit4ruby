@@ -28,11 +28,13 @@ module Fit4Ruby
       entry[2]
     end
 
-    def set_type(fit_type)
-      idx = FIT_TYPE_DEFS.index { |x| x[0] == fit_type }
+    def set_type(field, value)
+      fit_type = field.opts[:array] ? 'byte' : field.type
+      idx = FIT_TYPE_DEFS.index { |x| x[0] == field.type }
       raise "Unknown type #{fit_type}" unless idx
       self.base_type_number = idx
       self.byte_count = FIT_TYPE_DEFS[idx][3]
+      self.byte_count *= value.size if value.is_a?(Array)
     end
 
     def type(fit_type = false)

@@ -106,11 +106,11 @@ module Fit4Ruby
     def write(io, id_mapper)
       # Construct a GlobalFitMessage object that matches exactly the provided
       # set of fields. It does not contain any AltField objects.
-      fields = {}
+      instance_fields = {}
       @message.fields_by_name.each_key do |name|
-        fields[name] = instance_variable_get('@' + name)
+        instance_fields[name] = instance_variable_get('@' + name)
       end
-      global_fit_message = @message.construct(fields)
+      global_fit_message = @message.construct(instance_fields)
 
       # Map the global message number to the current local message number.
       unless (local_message_number = id_mapper.get_local(global_fit_message))
@@ -119,7 +119,7 @@ module Fit4Ruby
         # dictionary is the local message number.
         local_message_number = id_mapper.add_global(global_fit_message)
         # Write the definition of the global message number to the file.
-        global_fit_message.write(io, local_message_number)
+        global_fit_message.write(io, local_message_number, instance_fields)
       end
 
       # Write data record header.
@@ -133,10 +133,9 @@ module Fit4Ruby
       fields = []
       global_fit_message.fields_by_number.each do |field_number, field|
         bin_data_type = FitDefinitionFieldBase.fit_type_to_bin_data(field.type)
-        if field.opts[:array]
-          fields << [ :array, field.name, {
-            :type => bin_data_type
-          } ]
+        value = instance_fields[field.name]
+        if field.opts[:array] || value.is_a?(Array)
+          fields << [ :array, field.name, { :type => bin_data_type } ]
         else
           fields << [ bin_data_type, field.name ]
         end

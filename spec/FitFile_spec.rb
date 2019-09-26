@@ -72,7 +72,7 @@ describe Fit4Ruby do
       end
     end
     a.new_session({ :timestamp => ts, :sport => 'running',
-                    :time_in_hr_zone => [1] })
+                    :time_in_hr_zone => [1,2,3,4,5] })
     a.new_event({ :timestamp => ts, :event => 'recovery_time',
                   :event_type => 'marker',
                   :recovery_time => 2160 })
@@ -118,7 +118,7 @@ describe Fit4Ruby do
     b = Fit4Ruby.read(fit_file)
     expect(b.laps.count).to eq 6
     expect(b.lengths.count).to eq 0
-    expect(b.sessions.last.time_in_hr_zone).to eq [1]
+    expect(b.sessions.last.time_in_hr_zone).to eq [1,2,3,4,5]
     expect(b.inspect).to eq(activity.inspect)
   end
 

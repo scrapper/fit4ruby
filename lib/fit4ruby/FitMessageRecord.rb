@@ -81,12 +81,7 @@ module Fit4Ruby
         end
 
         field_name, field_def = get_field_name_and_global_def(field, obj)
-
-        if value.is_a?(Array)
-          v = value.map { |vv| (field_def || field).to_machine(vv)}
-        else
-          v = (field_def || field).to_machine(value)
-        end
+        obj.set(field_name, v = (field_def || field).to_machine(value)) if obj
 
         obj.set(field_name, v) if obj
 
@@ -185,16 +180,13 @@ module Fit4Ruby
       fields = []
       (definition.data_fields.to_a +
        definition.developer_fields.to_a).each do |field|
-        next unless @gfm
-        gfmf = @gfm.fields_by_number[field.field_definition_number]
-
         field_def = [ field.type, field.name ]
 
         # Some field types need special handling.
         if field.type == 'string'
           # We need to also include the length of the String.
           field_def << { :read_length => field.total_bytes }
-        elsif gfmf.respond_to?(:opts) && gfmf.opts[:array]
+        elsif field.is_array?
           # For Arrays we have to break them into separte fields.
           field_def = [ :array, field.name,
                         { :type => field.type.intern,
