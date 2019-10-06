@@ -1013,6 +1013,7 @@ module Fit4Ruby
     field 65, 'uint32', 'undocumented_field_65'
     field 70, 'uint32', 'undocumented_field_70'
     field 71, 'enum', 'undocumented_field_71'
+    field 73, 'uint16z', 'undocumented_field_73'
     field 254, 'uint16', 'message_index'
 
     # Not part of the official ANT SDK doc.
