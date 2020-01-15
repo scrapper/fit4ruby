@@ -129,8 +129,11 @@ module Fit4Ruby
     field 142, 'uint8', 'undocumented_field_142'
     field 143, 'uint8', 'undocumented_field_143'
     field 144, 'enum', 'true_up_enabled'
+    field 145, 'enum', 'undocumented_field_145'
     field 148, 'enum', 'undocumented_field_148'
     field 149, 'enum', 'undocumented_field_149'
+    field 151, 'enum', 'undocumented_field_151'
+    field 167, 'string', 'undocumented_field_167'
     field 168, 'enum', 'undocumented_field_168'
 
     message 3, 'user_profile'
@@ -169,6 +172,8 @@ module Fit4Ruby
     field 41, 'uint32', 'time_last_lthr_update', :type => 'date_time'
     field 42, 'uint32', 'undocumented_field_42'
     field 43, 'enum', 'undocumented_field_43'
+    field 44, 'uint8', 'undocumented_field_44'
+    field 45, 'uint8z', 'undocumented_field_45'
     field 47, 'enum', 'undocumented_field_47'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
@@ -310,6 +315,7 @@ module Fit4Ruby
     field 65, 'enum', 'undocumented_field_65'
     field 66, 'enum', 'undocumented_field_66'
     field 67, 'enum', 'undocumented_field_67'
+    field 68, 'sint32','undocumented_field_68'
     field 69, 'uint16', 'undocumented_field_69'
     field 70, 'enum', 'undocumented_field_70'
     field 73, 'sint32', 'undocumented_field_73'
@@ -608,6 +614,7 @@ module Fit4Ruby
     field 87, 'uint16', 'undefined_value_87' # first seen on F3 FW6.80
     field 88, 'uint16', 'undefined_value_88' # first seen on F3HR FW3.60
     field 90, 'sint8', 'performance_condition' # guessed
+    field 108, 'uint16', 'undefined_value_108'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     message 21, 'event'
