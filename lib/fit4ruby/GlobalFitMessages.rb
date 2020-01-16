@@ -614,7 +614,7 @@ module Fit4Ruby
     field 87, 'uint16', 'undefined_value_87' # first seen on F3 FW6.80
     field 88, 'uint16', 'undefined_value_88' # first seen on F3HR FW3.60
     field 90, 'sint8', 'performance_condition' # guessed
-    field 108, 'uint16', 'undefined_value_108'
+    field 108, 'uint16', 'respiration_rate', :scale => 100, :unit => 'brpm' # guessed
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     message 21, 'event'
