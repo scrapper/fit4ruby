@@ -133,6 +133,9 @@ module Fit4Ruby
     field 148, 'enum', 'undocumented_field_148'
     field 149, 'enum', 'undocumented_field_149'
     field 151, 'enum', 'undocumented_field_151'
+    field 160, 'enum', 'undocumented_field_160'
+    field 163, 'enum', 'undocumented_field_163'
+    field 164, 'uint8', 'undocumented_field_164'
     field 167, 'string', 'undocumented_field_167'
     field 168, 'enum', 'undocumented_field_168'
 
@@ -175,6 +178,9 @@ module Fit4Ruby
     field 44, 'uint8', 'undocumented_field_44'
     field 45, 'uint8z', 'undocumented_field_45'
     field 47, 'enum', 'undocumented_field_47'
+    field 52, 'enum', 'undocumented_field_52'
+    field 53, 'uint8', 'undocumented_field_53'
+    field 54, 'uint8', 'undocumented_field_54'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     message 5, 'sdm_profile'
@@ -231,6 +237,8 @@ module Fit4Ruby
     field 11, 'enum', 'undocumented_field_11'
     field 12, 'enum', 'undocumented_field_12'
     field 13, 'enum', 'undocumented_field_13'
+    field 15, 'uint16', 'undocumented_field_15'
+    field 16, 'uint32', 'undocumented_field_16'
     field 254, 'uint16', 'message_index'
 
     message 12, 'sport'
@@ -251,6 +259,7 @@ module Fit4Ruby
     field 17, 'enum', 'undocumented_field_17'
     field 18, 'enum', 'undocumented_field_18'
     field 19, 'enum', 'undocumented_field_19', :array => true
+    field 21, 'enum', 'undocumented_field_21'
 
     # Not part of the official ANT SDK doc.
     message 13, 'undocumented_13'
@@ -318,10 +327,14 @@ module Fit4Ruby
     field 68, 'sint32','undocumented_field_68'
     field 69, 'uint16', 'undocumented_field_69'
     field 70, 'enum', 'undocumented_field_70'
+    field 71, 'enum', 'undocumented_field_71'
+    field 72, 'enum', 'undocumented_field_72'
     field 73, 'sint32', 'undocumented_field_73'
     field 74, 'sint32', 'undocumented_field_74'
     field 75, 'enum', 'undocumented_field_75'
     field 76, 'enum', 'undocumented_field_76'
+    field 78, 'enum', 'undocumented_field_78'
+    field 79, 'enum', 'undocumented_field_79'
     field 254, 'uint16', 'message_index'
 
     message 18, 'session'
