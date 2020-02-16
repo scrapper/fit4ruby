@@ -635,9 +635,9 @@ module Fit4Ruby
     field 88, 'uint16', 'undefined_value_88' # first seen on F3HR FW3.60
     field 90, 'sint8', 'performance_condition' # guessed
     field 100, 'sint32', 'undocumented_field_100'
-    field 101, 'uint16', 'undocumented_field_101'
+    field 101, 'sint32', 'undocumented_field_101'
     field 107, 'enum', 'undocumented_field_107'
-    field 116, 'sint32', 'undocumented_field_116'
+    field 116, 'uint16', 'undocumented_field_116'
     field 108, 'uint16', 'respiration_rate', :scale => 100, :unit => 'brpm' # guessed
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
