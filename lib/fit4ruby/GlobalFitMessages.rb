@@ -594,6 +594,7 @@ module Fit4Ruby
     field 13, 'sint8', 'temperature', :unit => 'C'
     field 14, 'uint32', 'undefined_field_14'
     field 15, 'uint32', 'undefined_field_15'
+    field 18, 'uint8', 'undefined_field_18'
     field 29, 'uint32', 'accumulated_power', :unit => 'watts'
     field 30, 'uint8', 'left_right_balance', :dict => 'left_right_balance'
     field 39, 'uint16', 'vertical_oscillation', :scale => 10, :unit => 'mm'
@@ -620,6 +621,12 @@ module Fit4Ruby
     field 71, 'uint8', 'right_power_phase', :scale => 0.7111111, :unit => 'degrees', :array => true
     field 72, 'uint8', 'right_power_phase_peak', :scale => 0.7111111, :unit => 'degrees', :array => true
     field 73, 'uint32', 'enhanced_speed', :scale => 1000, :unit => 'm/s'
+    field 74, 'uint32', 'undefined_value_74'
+    field 75, 'uint32', 'undefined_value_75'
+    field 76, 'uint32', 'undefined_value_76'
+    field 77, 'uint32', 'undefined_value_77'
+    field 79, 'uint32', 'undefined_value_79'
+    field 80, 'uint32', 'undefined_value_80'
     field 78, 'uint32', 'enhanced_elevation', :scale => 5, :offset => 500, :unit => 'm'
     field 83, 'uint16', 'vertical_ratio', :scale => 100, :unit => '%' # guessed
     field 84, 'uint16', 'gct_balance', :scale => 100, :unit => '%' # guessed
@@ -627,6 +634,10 @@ module Fit4Ruby
     field 87, 'uint16', 'undefined_value_87' # first seen on F3 FW6.80
     field 88, 'uint16', 'undefined_value_88' # first seen on F3HR FW3.60
     field 90, 'sint8', 'performance_condition' # guessed
+    field 100, 'sint32', 'undocumented_field_100'
+    field 101, 'uint16', 'undocumented_field_101'
+    field 107, 'enum', 'undocumented_field_107'
+    field 116, 'sint32', 'undocumented_field_116'
     field 108, 'uint16', 'respiration_rate', :scale => 100, :unit => 'brpm' # guessed
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
