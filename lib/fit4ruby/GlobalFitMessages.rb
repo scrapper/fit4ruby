@@ -138,6 +138,7 @@ module Fit4Ruby
     field 164, 'uint8', 'undocumented_field_164'
     field 167, 'string', 'undocumented_field_167'
     field 168, 'enum', 'undocumented_field_168'
+    field 170, 'uint8', 'undocumented_field_170'
 
     message 3, 'user_profile'
     field 0, 'string', 'friendly_name'
@@ -181,6 +182,7 @@ module Fit4Ruby
     field 52, 'enum', 'undocumented_field_52'
     field 53, 'uint8', 'undocumented_field_53'
     field 54, 'uint8', 'undocumented_field_54'
+    field 57, 'enum', 'undocumented_field_57'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     message 5, 'sdm_profile'
@@ -850,6 +852,8 @@ module Fit4Ruby
     field 18, 'sint32', 'undocumented_field_18'
     field 19, 'sint32', 'undocumented_field_19'
     field 20, 'uint16', 'undocumented_field_20'
+    field 21, 'sint32', 'undocumented_field_21'
+    field 22, 'sint32', 'undocumented_field_22'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     message 101, 'length'
@@ -964,6 +968,12 @@ module Fit4Ruby
     field 39, 'sint32', 'undocumented_field_39'
     field 40, 'sint32', 'undocumented_field_40'
     field 41, 'enum', 'undocumented_field_41'
+    field 42, 'uint8', 'undocumented_field_42'
+    field 43, 'sint16', 'undocumented_field_43'
+    field 44, 'sint16', 'undocumented_field_44'
+    field 45, 'sint16', 'undocumented_field_45'
+    field 46, 'uint8', 'undocumented_field_46'
+    field 48, 'uint32', 'undocumented_field_48'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     # Not part of the official ANT SDK doc. The message name is guessed and
@@ -1046,6 +1056,11 @@ module Fit4Ruby
     field 71, 'enum', 'undocumented_field_71'
     field 73, 'uint16z', 'undocumented_field_73'
     field 254, 'uint16', 'message_index'
+
+    # Not part of the official ANT SDK doc.
+    message 160, 'undocumented_160'
+    field 3, 'uint32', 'undocumented_field_3'
+    field 4, 'uint32', 'undocumented_field_4'
 
     # Not part of the official ANT SDK doc.
     message 188, 'undocumented_188'
@@ -1186,6 +1201,35 @@ module Fit4Ruby
     field 0, 'sint8', 'undocumented_field_0'
     field 1, 'sint8', 'undocumented_field_1'
     field 2, 'uint16', 'undocumented_field_2'
+    field 251, 'byte', 'undocumented_field_251'
+    field 252, 'uint8', 'undocumented_field_252'
+    field 253, 'uint32', 'timestamp', :type => 'date_time'
+
+    # Not part of the official ANT SDK doc.
+    message 325, 'undocumented_325'
+    field 0, 'uint8', 'undocumented_field_0'
+    field 1, 'uint8', 'undocumented_field_1'
+    field 2, 'uint8', 'undocumented_field_2'
+    field 3, 'uint8', 'undocumented_field_3'
+    field 4, 'uint8', 'undocumented_field_4'
+    field 5, 'uint8', 'undocumented_field_5'
+    field 253, 'uint32', 'timestamp', :type => 'date_time'
+
+    # Not part of the official ANT SDK doc.
+    message 326, 'undocumented_326'
+    field 0, 'uint32', 'undocumented_field_0'
+    field 1, 'uint32', 'undocumented_field_1'
+    field 253, 'uint32', 'timestamp', :type => 'date_time'
+
+    # Not part of the official ANT SDK doc.
+    message 327, 'undocumented_327'
+    field 0, 'uint8', 'undocumented_field_0'
+    field 1, 'uint8', 'undocumented_field_1'
+    field 2, 'uint8', 'undocumented_field_2'
+    field 3, 'uint32', 'undocumented_field_3'
+    field 4, 'uint32', 'undocumented_field_4'
+    field 5, 'uint32', 'undocumented_field_5'
+    field 6, 'enum', 'undocumented_field_6'
     field 251, 'byte', 'undocumented_field_251'
     field 252, 'uint8', 'undocumented_field_252'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
