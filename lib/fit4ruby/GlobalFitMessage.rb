@@ -223,6 +223,11 @@ module Fit4Ruby
       register_field_by_number(field, number)
     end
 
+    # Check if a field with the given name already exists?
+    def has_field?(name)
+      return @fields_by_name.include?(name)
+    end
+
     # Define a new set of Field alternatives for this message definition.
     def alt_field(number, ref_field, &block)
       unless @fields_by_name.include?(ref_field)

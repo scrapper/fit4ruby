@@ -59,8 +59,8 @@ module Fit4Ruby
       end
       obj = entity.new_fit_data_record(@name)
 
-      # It's important to ensure that alternative fields processed after the
-      # regular fields so that the decision field has already been already set.
+      # It's important to ensure that alternative fields are processed after
+      # the regular fields so that the decision field has already been set.
       sorted_fields = @definition.data_fields.sort do |f1, f2|
         f1alt = is_alt_field?(f1)
         f2alt = is_alt_field?(f2)

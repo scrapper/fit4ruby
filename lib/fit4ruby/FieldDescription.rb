@@ -47,6 +47,12 @@ module Fit4Ruby
         Log.error "fit_base_type_id #{@fit_base_type_id} is too large"
         return
       end
+
+      name = "_#{@developer_data_index}_#{@field_name}"
+      # A fit file may include multiple definitions of the same field. We
+      # ignore all subsequent definitions.
+      return if msg.has_field?(name)
+
       options = {}
       options[:scale] = @scale if @scale
       options[:offset] = @offset if @offset
@@ -54,7 +60,7 @@ module Fit4Ruby
       options[:unit] = @units
       msg.field(@field_definition_number,
                 FIT_TYPE_DEFS[@fit_base_type_id & 0x7F][1],
-                "_#{@developer_data_index}_#{@field_name}", options)
+                name, options)
     end
 
   end
