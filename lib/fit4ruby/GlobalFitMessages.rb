@@ -337,6 +337,8 @@ module Fit4Ruby
     field 76, 'enum', 'undocumented_field_76'
     field 78, 'enum', 'undocumented_field_78'
     field 79, 'enum', 'undocumented_field_79'
+    field 81, 'enum', 'undocumented_field_81'
+    field 82, 'enum', 'undocumented_field_82'
     field 254, 'uint16', 'message_index'
 
     message 18, 'session'
@@ -1038,7 +1040,7 @@ module Fit4Ruby
     field 48, 'enum', 'undocumented_field_48'
     field 50, 'uint8', 'undocumented_field_50'
     field 51, 'enum', 'undocumented_field_51'
-    field 52, 'uint8', 'undocumented_field_52'
+    field 52, 'enum', 'undocumented_field_52'
     field 53, 'uint8', 'undocumented_field_53'
     field 54, 'enum', 'undocumented_field_54'
     field 55, 'uint16', 'undocumented_field_55'
