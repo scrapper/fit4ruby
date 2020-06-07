@@ -339,6 +339,7 @@ module Fit4Ruby
     field 79, 'enum', 'undocumented_field_79'
     field 81, 'enum', 'undocumented_field_81'
     field 82, 'enum', 'undocumented_field_82'
+    field 83, 'enum', 'undocumented_field_83'
     field 254, 'uint16', 'message_index'
 
     message 18, 'session'
@@ -471,6 +472,8 @@ module Fit4Ruby
     field 188, 'enum', 'undocumented_field_188'
     field 189, 'uint16', 'undocumented_field_189'
     field 190, 'uint16', 'undocumented_field_190'
+    field 194, 'uint8', 'undocumented_field_194'
+    field 195, 'uint8', 'undocumented_field_195'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
     field 254, 'uint16', 'message_index'
 
@@ -643,6 +646,8 @@ module Fit4Ruby
     field 107, 'enum', 'undocumented_field_107'
     field 116, 'uint16', 'undocumented_field_116'
     field 108, 'uint16', 'respiration_rate', :scale => 100, :unit => 'brpm' # guessed
+    field 135, 'uint8', 'undocumented_field_135'
+    field 136, 'uint8', 'undocumented_field_136'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     message 21, 'event'
