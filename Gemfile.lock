@@ -37,7 +37,7 @@ DEPENDENCIES
   bundler (>= 1.6.4)
   fit4ruby!
   pry (>= 0.12)
-  rake (~> 0.9.6)
+  rake (~> 12.0.0)
   rspec (>= 3.8)
   yard (~> 0.9.20)
 

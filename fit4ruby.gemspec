@@ -26,7 +26,7 @@ EOT
 
   spec.add_dependency('bindata', '=2.3.0')
   spec.add_development_dependency('yard', '~>0.9.20')
-  spec.add_development_dependency('rake', '~>0.9.6')
+  spec.add_development_dependency('rake', '~>12.0.0')
   spec.add_development_dependency('bundler', '>=1.6.4')
   spec.add_development_dependency('rspec', '>=3.8')
   spec.add_development_dependency('pry', '>=0.12')
