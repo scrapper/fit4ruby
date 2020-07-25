@@ -1045,7 +1045,12 @@ module Fit4Ruby
     field 48, 'enum', 'undocumented_field_48'
     field 50, 'uint8', 'undocumented_field_50'
     field 51, 'enum', 'undocumented_field_51'
-    field 52, 'enum', 'undocumented_field_52'
+    # The type of this field changed from 'uint8' to 'enum' in more recent
+    # devices. No idea why and what the proper selection field should be.
+    alt_field 52, 'undocumented_field_51' do
+      field :default, 'uint8', 'undocumented_field_52_0'
+      field 0, 'enum', 'undocumented_field_52_1'
+    end
     field 53, 'uint8', 'undocumented_field_53'
     field 54, 'enum', 'undocumented_field_54'
     field 55, 'uint16', 'undocumented_field_55'

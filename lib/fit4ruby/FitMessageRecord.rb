@@ -36,7 +36,7 @@ module Fit4Ruby
         @name = @gfm.name
       else
         @name = "message#{@global_message_number}"
-        Log.warn { "Unknown global message number #{@global_message_number}" }
+        Log.info { "Unknown global message number #{@global_message_number}" }
       end
       @message_record = produce(definition)
     end
