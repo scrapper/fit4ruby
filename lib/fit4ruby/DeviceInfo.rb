@@ -32,6 +32,25 @@ module Fit4Ruby
         @timestamp <=> fdr.timestamp
     end
 
+    def numeric_manufacturer
+      if @manufacturer.is_a?(String)
+        GlobalFitDictionaries['manufacturer'].value_by_name(@manufacturer)
+      else
+        @manufacturer
+      end
+    end
+
+    def numeric_product
+      if @garmin_product && @garmin_product.is_a?(String)
+        return GlobalFitDictionaries['garmin_product'].
+          value_by_name(@garmin_product)
+      elsif @product.is_a?(String)
+        return GlobalFitDictionaries['product'].value_by_name(@product)
+      else
+        return @product
+      end
+    end
+
     def check(index)
       unless @device_index
         Log.fatal 'device info record must have a device_index'
