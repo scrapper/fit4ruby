@@ -54,8 +54,8 @@ module Fit4Ruby
       else
         @name = "field#{field_definition_number.snapshot}"
         @type = nil
-        Log.info { "Unknown field number #{field_definition_number} " +
-                   "in global message #{@global_message_number}" }
+        Log.debug { "Unknown field number #{field_definition_number} " +
+                    "in global message #{@global_message_number}" }
       end
     end
 
