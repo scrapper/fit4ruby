@@ -33,22 +33,40 @@ module Fit4Ruby
     end
 
     def numeric_manufacturer
-      if @manufacturer.is_a?(String)
-        GlobalFitDictionaries['manufacturer'].value_by_name(@manufacturer)
-      else
-        @manufacturer
+      if @manufacturer && @manufacturer.is_a?(String)
+        if @manufacturer[0..17] == 'Undocumented value'
+          return @manufacturer[18..-1].to_i
+        else
+          return GlobalFitDictionaries['manufacturer'].
+            value_by_name(@manufacturer)
+        end
       end
+
+      Log.fatal "Unexpected @manufacturer (#{@manufacturer}) value"
     end
 
     def numeric_product
+      # The numeric product ID must be an integer or nil. In case the
+      # dictionary did not contain an entry for the numeric ID in the fit file
+      # the @garmin_product or @product variables contain a String starting
+      # with 'Undocumented value ' followed by the ID.
       if @garmin_product && @garmin_product.is_a?(String)
-        return GlobalFitDictionaries['garmin_product'].
-          value_by_name(@garmin_product)
-      elsif @product.is_a?(String)
-        return GlobalFitDictionaries['product'].value_by_name(@product)
-      else
-        return @product
+        if @garmin_product[0..17] == 'Undocumented value'
+          return @garmin_product[18..-1].to_i
+        else
+          return GlobalFitDictionaries['garmin_product'].
+            value_by_name(@garmin_product)
+        end
+      elsif @product && @product.is_a?(String)
+        if @product[0..17] == 'Undocumented value'
+          return @product[18..-1].to_i
+        else
+          return GlobalFitDictionaries['product'].value_by_name(@product)
+        end
       end
+
+      Log.fatal "Unexpected @product (#{@product}) or " +
+        "@garmin_product (#{@garmin_product}) values"
     end
 
     def check(index)
