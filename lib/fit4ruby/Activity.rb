@@ -40,11 +40,33 @@ module Fit4Ruby
   # the FIT file.
   class Activity < FitDataRecord
 
-    attr_accessor :file_id, :field_descriptions, :developer_data_ids, :epo_data,
-                  :file_creator, :device_infos, :sensor_settings, :data_sources,
-                  :user_data, :user_profiles, :physiological_metrics,
-                  :sessions, :laps, :records, :lengths, :hrv,
-                  :heart_rate_zones, :events, :personal_records
+    # These symbols are a complete list of all the sub-sections that an
+    # activity FIT file may contain. This list is used to generate accessors,
+    # instance variables and other sections of code. Some are just simple
+    # instance variables, but the majority can appear multiple times and hence
+    # are stored in an Array.
+    FILE_SECTIONS = [
+      :file_id, :field_descriptions,
+      :developer_data_ids,
+      :epo_data,
+      :file_creator,
+      :device_infos,
+      :sensor_settings,
+      :data_sources,
+      :user_data,
+      :user_profiles,
+      :physiological_metrics,
+      :sessions,
+      :laps,
+      :records,
+      :lengths,
+      :hrv,
+      :heart_rate_zones,
+      :events,
+      :personal_records
+    ]
+
+    attr_accessor *FILE_SECTIONS
 
     # Create a new Activity object.
     # @param field_values [Hash] A Hash that provides initial values for
@@ -58,22 +80,13 @@ module Fit4Ruby
       @file_id = FileId.new
       @file_creator = FileCreator.new
       @epo_data = nil
-      @field_descriptions = []
-      @developer_data_ids = []
-      @device_infos = []
-      @sensor_settings = []
-      @data_sources = []
-      @user_data = []
-      @user_profiles = []
-      @physiological_metrics = []
-      @events = []
-      @sessions = []
-      @laps = []
-      @lengths = []
-      @records = []
-      @hrv = []
-      @heart_rate_zones = []
-      @personal_records = []
+      # Initialize the remaining variables as empty Array.
+      FILE_SECTIONS.each do |fs|
+        ivar_name = '@' + fs.to_s
+        unless instance_variable_defined?(ivar_name)
+          instance_variable_set(ivar_name, [])
+        end
+      end
 
       # The following variables hold derived or auxilliary information that
       # are not directly part of the FIT file.
@@ -311,12 +324,15 @@ module Fit4Ruby
       @file_creator.write(io, id_mapper)
       @epo_data.write(io, id_mapper) if @epo_data
 
-      (@field_descriptions + @developer_data_ids +
-       @device_infos + @sensor_settings +
-       @data_sources + @user_data + @user_profiles +
-       @physiological_metrics + @events +
-       @sessions + @laps + @records + @lengths +
-       @heart_rate_zones + @personal_records).sort.each do |s|
+      ary_ivars = []
+      FILE_SECTIONS.each do |fs|
+        ivar_name = '@' + fs.to_s
+        if (ivar = instance_variable_get(ivar_name)) && ivar.respond_to?(:sort)
+          ary_ivars += ivar
+        end
+      end
+
+      ary_ivars.sort.each do |s|
         s.write(io, id_mapper)
       end
       super
@@ -466,26 +482,17 @@ module Fit4Ruby
     # @return [TrueClass/FalseClass] true if both Activities are equal,
     # otherwise false.
     def ==(a)
-      super(a) &&
-        @file_id == a.file_id &&
-        @field_descriptions == a.field_descriptions &&
-        @developer_data_ids == a.developer_data_ids &&
-        @epo_data == a.epo_data &&
-        @file_creator == a.file_creator &&
-        @device_infos == a.device_infos &&
-        @sensor_settings == a.sensor_settings &&
-        @data_sources == a.data_sources &&
-        @user_data == a.user_data &&
-        @user_profiles == a.user_profiles &&
-        @physiological_metrics == a.physiological_metrics &&
-        @events == a.events &&
-        @sessions == a.sessions &&
-        @laps == a.laps &&
-        @lengths == a.lengths &&
-        @records == a.records &&
-        @hrv == a.hrv &&
-        @heart_rate_zones == a.heart_rate_zones &&
-        @personal_records == a.personal_records
+      return false unless super(a)
+
+      FILE_SECTIONS.each do |fs|
+        ivar_name = '@' + fs.to_s
+        ivar = instance_variable_get(ivar_name)
+        a_ivar = a.instance_variable_get(ivar_name)
+
+        return false unless ivar == a_ivar
+      end
+
+      true
     end
 
     # Create a new FitDataRecord.
@@ -557,28 +564,17 @@ module Fit4Ruby
     end
 
     def export
-      {
-        file_id: @file_id.export,
-        file_creator: @file_creator.export,
-        epo_data: @epo_data ? @epo_data.export : nil,
+      hash = {}
+      FILE_SECTIONS.each do |fs|
+        ivar = instance_variable_get('@' + fs.to_s)
+        if ivar.respond_to?(:sort)
+          hash[fs] = export_list(ivar)
+        else
+          hash[fs] = ivar ? ivar.export : nil
+        end
+      end
 
-        field_descriptions: export_list(@field_descriptions),
-        developer_data_ids: export_list(@developer_data_ids),
-        device_infos: export_list(@device_infos),
-        sensor_settings: export_list(@sensor_settings),
-        data_sources: export_list(@data_sources),
-        user_data: export_list(@user_data),
-        user_profiles: export_list(@user_profiles),
-        physiological_metrics: export_list(@physiological_metrics),
-        events: export_list(@events),
-        sessions: export_list(@sessions),
-        laps: export_list(@laps),
-        lengths: export_list(@lengths),
-        records: export_list(@records),
-        hrv: export_list(@hrv),
-        heart_rate_zones: export_list(@heart_rate_zones),
-        personal_records: export_list(@personal_records)
-      }
+      hash
     end
 
     private
