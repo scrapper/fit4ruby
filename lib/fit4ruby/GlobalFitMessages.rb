@@ -3,7 +3,7 @@
 #
 # = GlobalFitMessages.rb -- Fit4Ruby - FIT file processing library for Ruby
 #
-# Copyright (c) 2014, 2015 by Chris Schlaeger <cs@taskjuggler.org>
+# Copyright (c) 2014, 2015, 2020 by Chris Schlaeger <cs@taskjuggler.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of version 2 of the GNU General Public License as
@@ -1017,7 +1017,7 @@ module Fit4Ruby
     field 18, 'uint8z', 'undocumented_field_18'
     field 19, 'uint8z', 'undocumented_field_19'
     field 20, 'uint8z', 'undocumented_field_20'
-    field 21, 'uint16', 'undocumented_field_21'
+    field 21, 'uint16', 'wheel_size', :unit => 'mm'
     field 25, 'uint16', 'undocumented_field_25'
     field 26, 'uint16', 'undocumented_field_26'
     field 27, 'uint8', 'undocumented_field_27'

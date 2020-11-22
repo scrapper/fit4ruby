@@ -3,7 +3,7 @@
 #
 # = FitDefinitionField.rb -- Fit4Ruby - FIT file processing library for Ruby
 #
-# Copyright (c) 2014, 2017, 2018 by Chris Schlaeger <cs@taskjuggler.org>
+# Copyright (c) 2014, 2017, 2018, 2020 by Chris Schlaeger <cs@taskjuggler.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of version 2 of the GNU General Public License as
@@ -72,15 +72,15 @@ module Fit4Ruby
       if value.kind_of?(Array)
         ary = []
         value.each { |v| ary << to_machine(v) }
-        ary
+        return ary
       else
         if @global_message_definition &&
            (field = @global_message_definition.
             fields_by_number[field_number]) &&
            field.respond_to?('to_machine')
-          field.to_machine(value)
+          return field.to_machine(value)
         else
-          value
+          return value
         end
       end
     end

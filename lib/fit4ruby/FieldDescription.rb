@@ -3,7 +3,7 @@
 #
 # = FieldDescription.rb -- Fit4Ruby - FIT file processing library for Ruby
 #
-# Copyright (c) 2017, 2018, 2019 by Chris Schlaeger <cs@taskjuggler.org>
+# Copyright (c) 2017, 2018, 2019, 2020 by Chris Schlaeger <cs@taskjuggler.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of version 2 of the GNU General Public License as
@@ -18,6 +18,8 @@ module Fit4Ruby
 
   # This class corresponds to the FieldDescription FIT message.
   class FieldDescription < FitDataRecord
+
+    attr_reader :full_field_name
 
     # Create a new FieldDescription object.
     # @param field_values [Hash] Hash that provides initial values for certain
@@ -48,10 +50,16 @@ module Fit4Ruby
         return
       end
 
-      name = "_#{@developer_data_index}_#{@field_name}"
+      app_id = fit_entity.top_level_record.
+        developer_data_ids[@developer_data_index].application_id
+      # Convert the byte array with the app ID into a 16 character hex string.
+      app_id_str = app_id.map { |i| '%02X' % i }.join('')
+      @full_field_name = "_#{app_id_str}_" +
+        "#{@field_name.gsub(/[^A-Za-z0-9_]/, '_')}"
+
       # A fit file may include multiple definitions of the same field. We
       # ignore all subsequent definitions.
-      return if msg.has_field?(name)
+      return if msg.has_field?(@full_field_name)
 
       options = {}
       options[:scale] = @scale if @scale
@@ -60,7 +68,7 @@ module Fit4Ruby
       options[:unit] = @units
       msg.field(@field_definition_number,
                 FIT_TYPE_DEFS[@fit_base_type_id & 0x7F][1],
-                name, options)
+                @full_field_name, options)
     end
 
   end

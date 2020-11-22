@@ -3,7 +3,7 @@
 #
 # = Activity.rb -- Fit4Ruby - FIT file processing library for Ruby
 #
-# Copyright (c) 2014, 2015 by Chris Schlaeger <cs@taskjuggler.org>
+# Copyright (c) 2014, 2015, 2020 by Chris Schlaeger <cs@taskjuggler.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of version 2 of the GNU General Public License as
@@ -33,9 +33,11 @@ require 'fit4ruby/PersonalRecords'
 
 module Fit4Ruby
 
-  # This is the most important class of this library. It holds references to
-  # all other data structures. Each of the objects it references are direct
-  # equivalents of the message record structures used in the FIT file.
+  # Activity files are arguably the most common type of FIT file. The Activity
+  # class represents the top-level structure of an activity FIT file.
+  # It holds references to all other data structures. Each of the objects it
+  # references are direct equivalents of the message record structures used in
+  # the FIT file.
   class Activity < FitDataRecord
 
     attr_accessor :file_id, :field_descriptions, :developer_data_ids, :epo_data,
@@ -49,14 +51,15 @@ module Fit4Ruby
     #        certain fields of the FitDataRecord.
     def initialize(field_values = {})
       super('activity')
-      @meta_field_units['total_gps_distance'] = 'm'
-      @num_sessions = 0
 
+      # The variables hold references to other parts of the FIT file. These
+      # can either be direct references to a certain FIT file section or an
+      # Array in case the section can appear multiple times in the FIT file.
       @file_id = FileId.new
+      @file_creator = FileCreator.new
+      @epo_data = nil
       @field_descriptions = []
       @developer_data_ids = []
-      @epo_data = nil
-      @file_creator = FileCreator.new
       @device_infos = []
       @sensor_settings = []
       @data_sources = []
@@ -72,6 +75,9 @@ module Fit4Ruby
       @heart_rate_zones = []
       @personal_records = []
 
+      # The following variables hold derived or auxilliary information that
+      # are not directly part of the FIT file.
+      @meta_field_units['total_gps_distance'] = 'm'
       @cur_session_laps = []
 
       @cur_lap_records = []
@@ -99,11 +105,6 @@ module Fit4Ruby
       end
       @device_infos.each.with_index { |d, index| d.check(index) }
       @sensor_settings.each.with_index { |s, index| s.check(index) }
-      unless @num_sessions == @sessions.count
-        Log.fatal "Activity record requires #{@num_sessions}, but "
-                  "#{@sessions.length} session records were found in the "
-                  "FIT file."
-      end
 
       # Records must have consecutively growing timestamps and distances.
       ts = Time.parse('1989-12-31')
@@ -308,10 +309,11 @@ module Fit4Ruby
     def write(io, id_mapper)
       @file_id.write(io, id_mapper)
       @file_creator.write(io, id_mapper)
+      @epo_data.write(io, id_mapper) if @epo_data
 
       (@field_descriptions + @developer_data_ids +
        @device_infos + @sensor_settings +
-       @data_sources + @user_profiles +
+       @data_sources + @user_data + @user_profiles +
        @physiological_metrics + @events +
        @sessions + @laps + @records + @lengths +
        @heart_rate_zones + @personal_records).sort.each do |s|
@@ -464,18 +466,26 @@ module Fit4Ruby
     # @return [TrueClass/FalseClass] true if both Activities are equal,
     # otherwise false.
     def ==(a)
-      super(a) && @file_id == a.file_id &&
-        @file_creator == a.file_creator &&
+      super(a) &&
+        @file_id == a.file_id &&
         @field_descriptions == a.field_descriptions &&
         @developer_data_ids == a.developer_data_ids &&
+        @epo_data == a.epo_data &&
+        @file_creator == a.file_creator &&
         @device_infos == a.device_infos &&
         @sensor_settings == a.sensor_settings &&
         @data_sources == a.data_sources &&
-        @physiological_metrics == a.physiological_metrics &&
+        @user_data == a.user_data &&
         @user_profiles == a.user_profiles &&
-        @heart_rate_zones == a.heart_rate_zones &&
+        @physiological_metrics == a.physiological_metrics &&
         @events == a.events &&
-        @sessions == a.sessions && personal_records == a.personal_records
+        @sessions == a.sessions &&
+        @laps == a.laps &&
+        @lengths == a.lengths &&
+        @records == a.records &&
+        @hrv == a.hrv &&
+        @heart_rate_zones == a.heart_rate_zones &&
+        @personal_records == a.personal_records
     end
 
     # Create a new FitDataRecord.
@@ -521,7 +531,6 @@ module Fit4Ruby
           # Ensure that all previous records have been assigned to a lap.
           record = create_new_lap(lap_field_values)
         end
-        @num_sessions += 1
         @sessions << (record = Session.new(@cur_session_laps, @lap_counter,
                                            field_values))
         @cur_session_laps = []
@@ -545,6 +554,31 @@ module Fit4Ruby
       end
 
       record
+    end
+
+    def export
+      {
+        file_id: @file_id.export,
+        file_creator: @file_creator.export,
+        epo_data: @epo_data ? @epo_data.export : nil,
+
+        field_descriptions: export_list(@field_descriptions),
+        developer_data_ids: export_list(@developer_data_ids),
+        device_infos: export_list(@device_infos),
+        sensor_settings: export_list(@sensor_settings),
+        data_sources: export_list(@data_sources),
+        user_data: export_list(@user_data),
+        user_profiles: export_list(@user_profiles),
+        physiological_metrics: export_list(@physiological_metrics),
+        events: export_list(@events),
+        sessions: export_list(@sessions),
+        laps: export_list(@laps),
+        lengths: export_list(@lengths),
+        records: export_list(@records),
+        hrv: export_list(@hrv),
+        heart_rate_zones: export_list(@heart_rate_zones),
+        personal_records: export_list(@personal_records)
+      }
     end
 
     private
@@ -573,6 +607,11 @@ module Fit4Ruby
 
       length
     end
+
+    def export_list(list)
+      list.sort.map { |e| e.export }
+    end
+
   end
 
 end

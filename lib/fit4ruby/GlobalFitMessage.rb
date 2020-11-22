@@ -3,7 +3,7 @@
 #
 # = GlobalFitMessage.rb -- Fit4Ruby - FIT file processing library for Ruby
 #
-# Copyright (c) 2014, 2015 by Chris Schlaeger <cs@taskjuggler.org>
+# Copyright (c) 2014, 2015, 2020 by Chris Schlaeger <cs@taskjuggler.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of version 2 of the GNU General Public License as
@@ -38,8 +38,13 @@ module Fit4Ruby
         @opts = opts
       end
 
+      def is_undefined?(value)
+        value == FitDefinitionFieldBase.undefined_value(@type)
+      end
+
       def to_machine(value)
-        return nil if value.nil?
+        return nil if value.nil? ||
+          value == FitDefinitionFieldBase.undefined_value(@type)
 
         if @opts.include?(:dict) &&
            (dict = GlobalFitDictionaries[@opts[:dict]])
@@ -51,6 +56,13 @@ module Fit4Ruby
           value *= 180.0 / 2147483648
         when 'date_time'
           value = fit_time_to_time(value)
+        when 'float'
+          if value >= 4294967295.0
+            return nil
+          end
+        end
+        if value.is_a?(Float) && value >= 4294967295.0
+          return nil
         end
         value /= @opts[:scale].to_f if @opts[:scale]
         value -= @opts[:offset] if @opts[:offset]
@@ -133,7 +145,7 @@ module Fit4Ruby
         value
       end
 
-      def to_s(value)
+      def to_s(value = nil)
         return "[no value]" if value.nil?
 
         human_readable = to_human(value)
@@ -167,7 +179,7 @@ module Fit4Ruby
 
       def field(ref_value, type, name, opts = {})
         field = Field.new(type, name, opts)
-        if ref_value.respond_to?('each')
+        if ref_value.respond_to?(:each)
           ref_value.each do |rv|
             @fields[rv] = field
           end
@@ -180,13 +192,13 @@ module Fit4Ruby
       # Select the alternative field based on the actual field values of the
       # FitMessageRecord.
       def select(field_values_by_name)
-        unless (value = field_values_by_name[@ref_field])
+        unless (value_of_referenced_field = field_values_by_name[@ref_field])
           Log.fatal "The selection field #{@ref_field} for the alternative " +
                     "field is undefined in global message #{@message.name}: " +
                     field_values_by_name.inspect
         end
         @fields.each do |ref_value, field|
-          return field if ref_value == value
+          return field if ref_value == value_of_referenced_field
         end
         return @fields[:default] if @fields[:default]
 
@@ -214,6 +226,18 @@ module Fit4Ruby
     def ==(m)
       @number == m.number && @name == m.name &&
         @fields_by_name.keys.sort == m.fields_by_name.keys.sort
+    end
+
+    def each_field(field_values)
+      @fields_by_number.each do |number, field|
+        if field.is_a?(AltField)
+          # For alternative fields, we need to look at the value of the
+          # selector field and pick the corresponding Field.
+          field = field.select(field_values)
+        end
+
+        yield(field)
+      end
     end
 
     # Define a new Field for this message definition.

@@ -3,7 +3,7 @@
 #
 # = FitDataRecord.rb -- Fit4Ruby - FIT file processing library for Ruby
 #
-# Copyright (c) 2014, 2015 by Chris Schlaeger <cs@taskjuggler.org>
+# Copyright (c) 2014, 2015, 2020 by Chris Schlaeger <cs@taskjuggler.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of version 2 of the GNU General Public License as
@@ -38,7 +38,7 @@ module Fit4Ruby
       # specification but are convenient to have. These are typcially
       # aggregated or converted values of regular fields.
       @meta_field_units = {}
-      @timestamp = Time.now
+      @timestamp = Time.at(Time.now.to_i)
     end
 
     def set_field_values(field_values)
@@ -58,6 +58,7 @@ module Fit4Ruby
     end
 
     def get(name)
+      # This is a request for a native FIT field.
       ivar_name = '@' + name
       return nil unless instance_variable_defined?(ivar_name)
 
@@ -83,12 +84,13 @@ module Fit4Ruby
     end
 
     def ==(fdr)
-      @message.fields_by_name.each do |name, field|
-        ivar_name = '@' + name
-        v1 = field.fit_to_native(field.native_to_fit(
-          instance_variable_get(ivar_name)))
-        v2 = field.fit_to_native(field.native_to_fit(
-          fdr.instance_variable_get(ivar_name)))
+      @message.each_field do |field|
+        ivar_name = '@' + field.name
+        # Comparison of values is done in the fit file format as the accuracy
+        # of native formats is better and could lead to wrong results if a
+        # value hasn't been read back from a fit file yet.
+        v1 = field.native_to_fit(instance_variable_get(ivar_name))
+        v2 = field.native_to_fit(fdr.instance_variable_get(ivar_name))
 
         return false unless v1 == v2
       end
@@ -104,13 +106,8 @@ module Fit4Ruby
     end
 
     def write(io, id_mapper)
-      # Construct a GlobalFitMessage object that matches exactly the provided
-      # set of fields. It does not contain any AltField objects.
-      fields = {}
-      @message.fields_by_name.each_key do |name|
-        fields[name] = instance_variable_get('@' + name)
-      end
-      global_fit_message = @message.construct(fields)
+      global_fit_message = @message.construct(
+        field_values = field_values_as_hash)
 
       # Map the global message number to the current local message number.
       unless (local_message_number = id_mapper.get_local(global_fit_message))
@@ -139,7 +136,8 @@ module Fit4Ruby
 
       # Fill the BinData::Struct object with the values from the corresponding
       # instance variables.
-      global_fit_message.fields_by_number.each do |field_number, field|
+      #global_fit_message.fields_by_number.each do |field_number, field|
+      global_fit_message.each_field(field_values) do |field|
         iv = "@#{field.name}"
         if instance_variable_defined?(iv) &&
            !(iv_value = instance_variable_get(iv)).nil?
@@ -156,16 +154,32 @@ module Fit4Ruby
       bd.write(io)
     end
 
-    def inspect
+    def export
       fields = {}
-      @message.fields_by_name.each do |name, field|
+
+      @message.each_field(field_values_as_hash) do |field|
         ivar_name = '@' + field.name
-        fields[field.name] = instance_variable_get(ivar_name)
+        fit_value = field.native_to_fit(instance_variable_get(ivar_name))
+        unless field.is_undefined?(fit_value)
+          fields[field.name] = field.fit_to_native(fit_value)
+        end
       end
-      fields.inspect
+
+      fields
     end
 
     private
+
+    def field_values_as_hash
+      # Construct a GlobalFitMessage object that matches exactly the provided
+      # set of fields. It does not contain any AltField objects.
+      field_values = {}
+      @message.fields_by_name.each_key do |name|
+        field_values[name] = instance_variable_get('@' + name)
+      end
+
+      field_values
+    end
 
     def create_instance_variable(name)
       # Create a new instance variable for 'name'. We initialize it with a
