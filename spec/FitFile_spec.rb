@@ -36,6 +36,16 @@ describe Fit4Ruby do
       :max_hr => 178
     }
   end
+  let(:user_profile) do
+    {
+      #:friendly_name => 'Fast Runner',
+      :gender => 'male',
+      :age => 33,
+      :height => 1.78,
+      :weight => 73.0,
+      :resting_heart_rate => 43
+    }
+  end
   def device_info_fenix3(ts)
     {
       :timestamp => ts,
@@ -74,6 +84,7 @@ describe Fit4Ruby do
       a = Fit4Ruby::Activity.new
       a.total_timer_time = 30 * 60.0
       a.new_user_data(user_data)
+      a.new_user_profile(user_profile)
 
       a.new_event({ :event => 'timer', :event_type => 'start_time' })
       a.new_device_info(device_info_fenix3(ts))

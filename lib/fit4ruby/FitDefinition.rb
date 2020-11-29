@@ -77,11 +77,17 @@ module Fit4Ruby
       @@fit_entity
     end
 
-    def setup(fit_message_definition)
+    def setup(fit_message_definition, field_values_by_name)
       fit_message_definition.fields_by_number.each do |number, f|
         fdf = FitDefinitionField.new
         fdf.field_definition_number = number
         fdf.set_type(f.type)
+        value = field_values_by_name[f.name]
+        if value.is_a?(String)
+          fdf.set_length(value.bytes.length)
+        elsif value.is_a?(Array)
+          fdf.set_length(value.length)
+        end
 
         data_fields << fdf
       end

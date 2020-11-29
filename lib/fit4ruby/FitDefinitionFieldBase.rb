@@ -3,7 +3,7 @@
 #
 # = FitDefinitionFieldBase.rb -- Fit4Ruby - FIT file processing library for Ruby
 #
-# Copyright (c) 2014, 2017 by Chris Schlaeger <cs@taskjuggler.org>
+# Copyright (c) 2014, 2017, 2020 by Chris Schlaeger <cs@taskjuggler.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of version 2 of the GNU General Public License as
@@ -30,13 +30,24 @@ module Fit4Ruby
 
     def set_type(fit_type)
       idx = FIT_TYPE_DEFS.index { |x| x[0] == fit_type }
-      raise "Unknown type #{fit_type}" unless idx
+      raise ArgumentError, "Unknown type #{fit_type}" unless idx
       self.base_type_number = idx
       self.byte_count = FIT_TYPE_DEFS[idx][3]
     end
 
     def type(fit_type = false)
       FIT_TYPE_DEFS[checked_base_type_number][fit_type ? 0 : 1]
+    end
+
+    def set_length(count)
+      idx = FIT_TYPE_DEFS.index { |x| x[0] == fit_type }
+      raise "Unknown type #{fit_type}" unless idx
+      self.base_type_number = idx
+      if (byte_count = FIT_TYPE_DEFS[idx][3] * count) > 255
+        raise ArgumentError,
+          "FitDefinitionField byte count too large (#{byte_count})"
+      end
+      self.byte_count = byte_count
     end
 
     def is_array?

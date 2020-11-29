@@ -136,7 +136,6 @@ module Fit4Ruby
 
       # Fill the BinData::Struct object with the values from the corresponding
       # instance variables.
-      #global_fit_message.fields_by_number.each do |field_number, field|
       global_fit_message.each_field(field_values) do |field|
         iv = "@#{field.name}"
         if instance_variable_defined?(iv) &&

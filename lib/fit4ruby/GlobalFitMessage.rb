@@ -21,7 +21,8 @@ module Fit4Ruby
   # the data fields of the message.
   class GlobalFitMessage
 
-    attr_reader :name, :number, :fields_by_name, :fields_by_number
+    attr_reader :name, :number, :fields_by_name, :fields_by_number,
+      :field_values_by_name
 
     # The Field objects describe the name, type and optional attributes of a
     # FitMessage definition field. It also provides methods to convert field
@@ -219,13 +220,45 @@ module Fit4Ruby
       # Field numbers are not unique. A group of alternative fields shares the
       # same number and is stored as an AltField. Otherwise as Field.
       @fields_by_number = {}
+      # To generate the proper definition message we need to know the length
+      # of String and Array fields. This is only needed when writing FIT
+      # files.
+      @field_values_by_name = {}
     end
 
     # Two GlobalFitMessage objects are considered equal if they have the same
-    # number, name and list of named fields.
+    # number, name and list of named fields. In case they have String or Array
+    # values, they must have identical size.
     def ==(m)
-      @number == m.number && @name == m.name &&
-        @fields_by_name.keys.sort == m.fields_by_name.keys.sort
+      unless @number == m.number && @name == m.name &&
+          @fields_by_name.keys.sort == m.fields_by_name.keys.sort
+        return false
+      end
+
+      unless @field_values_by_name.size == m.field_values_by_name.size
+        return false
+      end
+
+      unless @field_values_by_name.empty?
+        @field_values_by_name.keys.each do |name|
+          a = @field_values_by_name[name]
+          b = m[name]
+          if a.class != b.class
+            return false
+          end
+          if a.is_a?(String)
+            if a.bytes.length != b.bytes.length
+              return false
+            end
+          elsif a.is_a?(Array)
+            if a.length != b.length
+              return false
+            end
+          end
+        end
+      end
+
+      true
     end
 
     def each_field(field_values)
@@ -279,6 +312,7 @@ module Fit4Ruby
     end
 
     def construct(field_values_by_name)
+      @field_values_by_name = field_values_by_name
       gfm = GlobalFitMessage.new(@name, @number)
 
       @fields_by_number.each do |number, field|
@@ -302,7 +336,7 @@ module Fit4Ruby
 
       definition = FitDefinition.new
       definition.global_message_number = @number
-      definition.setup(global_fit_message)
+      definition.setup(global_fit_message, @field_values_by_name)
       definition.write(io)
     end
 
