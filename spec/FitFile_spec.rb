@@ -38,7 +38,7 @@ describe Fit4Ruby do
   end
   let(:user_profile) do
     {
-      #:friendly_name => 'Fast Runner',
+      :friendly_name => 'Fast Runner',
       :gender => 'male',
       :age => 33,
       :height => 1.78,
@@ -201,6 +201,10 @@ describe Fit4Ruby do
 
       a.total_timer_time = 30 * 60.0
       a.new_device_info(device_info_fenix3(ts))
+      a.new_developer_data_id({
+        application_id: [ 24, 251, 44, 240, 26, 75, 67, 13,
+                          173, 102, 152, 140, 132, 116, 33, 244 ]
+      })
       a.aggregate
       a
     end

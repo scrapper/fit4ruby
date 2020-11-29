@@ -40,10 +40,7 @@ module Fit4Ruby
     end
 
     def set_length(count)
-      idx = FIT_TYPE_DEFS.index { |x| x[0] == fit_type }
-      raise "Unknown type #{fit_type}" unless idx
-      self.base_type_number = idx
-      if (byte_count = FIT_TYPE_DEFS[idx][3] * count) > 255
+      if (byte_count = FIT_TYPE_DEFS[self.base_type_number][3] * count) > 255
         raise ArgumentError,
           "FitDefinitionField byte count too large (#{byte_count})"
       end
@@ -53,10 +50,11 @@ module Fit4Ruby
     def is_array?
       if total_bytes > base_type_bytes
         if total_bytes % base_type_bytes != 0
-          Log.error "Total bytes (#{total_bytes}) must be multiple of " +
-                    "base type bytes (#{base_type_bytes}) of type " +
-                    "#{base_type_number.snapshot} in Global FIT " +
-                    "Message #{name}."
+          raise RuntimeError,
+            "Total bytes (#{total_bytes}) must be multiple of " +
+            "base type bytes (#{base_type_bytes}) of type " +
+            "#{base_type_number.snapshot} in Global FIT " +
+            "Message #{name}."
         end
         return true
       end

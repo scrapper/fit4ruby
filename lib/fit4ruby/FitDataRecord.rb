@@ -24,7 +24,7 @@ module Fit4Ruby
                     'record', 'lap', 'length', 'session', 'heart_rate_zones',
                     'personal_records' ]
 
-    attr_reader :message
+    attr_reader :message, :timestamp
 
     def initialize(record_id)
       @message = GlobalFitMessages.find_by_name(record_id)
@@ -38,7 +38,7 @@ module Fit4Ruby
       # specification but are convenient to have. These are typcially
       # aggregated or converted values of regular fields.
       @meta_field_units = {}
-      @timestamp = Time.at(Time.now.to_i)
+      @timestamp = Time.now
     end
 
     def set_field_values(field_values)
@@ -128,25 +128,45 @@ module Fit4Ruby
 
       # Create a BinData::Struct object to store the data record.
       fields = []
-      global_fit_message.fields_by_number.each do |field_number, field|
+      values = {}
+
+      # Fill the BinData::Struct object with the values from the corresponding
+      # instance variables.
+      global_fit_message.each_field(field_values) do |field|
         bin_data_type = FitDefinitionFieldBase.fit_type_to_bin_data(field.type)
-        fields << [ bin_data_type, field.name ]
+        field_def = [ bin_data_type, field.name ]
+
+        iv = "@#{field.name}"
+        if instance_variable_defined?(iv) &&
+           !(iv_value = instance_variable_get(iv)).nil?
+          values[field.name] = field.native_to_fit(iv_value)
+        else
+          # If we don't have a corresponding variable or the variable is nil
+          # we write the 'undefined' value instead.
+          value = FitDefinitionFieldBase.undefined_value(field.type)
+          values[field.name] = field.opts[:array] ? [ value ] :
+            field.type == 'string' ? '' : value
+        end
+
+        # Some field types need special handling.
+        if field.type == 'string'
+          # We need to also include the length of the String.
+          #field_def << { :length => values[field.name].bytes.length }
+          values[field.name] += "\0"
+        elsif field.opts[:array]
+          # For Arrays we use a BinData::Array to write them.
+          field_def = [ :array, field.name,
+                        { :type => bin_data_type,
+                          :initial_length => values[field.name].size } ]
+        end
+        fields << field_def
       end
       bd = BinData::Struct.new(:endian => :little, :fields => fields)
 
       # Fill the BinData::Struct object with the values from the corresponding
       # instance variables.
       global_fit_message.each_field(field_values) do |field|
-        iv = "@#{field.name}"
-        if instance_variable_defined?(iv) &&
-           !(iv_value = instance_variable_get(iv)).nil?
-          value = field.native_to_fit(iv_value)
-        else
-          # If we don't have a corresponding variable or the variable is nil
-          # we write the 'undefined' value instead.
-          value = FitDefinitionFieldBase.undefined_value(field.type)
-        end
-        bd[field.name] = value
+        bd[field.name] = values[field.name]
       end
 
       # Write the data record to the file.

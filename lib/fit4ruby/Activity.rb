@@ -46,23 +46,24 @@ module Fit4Ruby
     # instance variables, but the majority can appear multiple times and hence
     # are stored in an Array.
     FILE_SECTIONS = [
-      :file_id, :field_descriptions,
-      :developer_data_ids,
-      :epo_data,
+      :file_id,
       :file_creator,
+      :events,
       :device_infos,
-      :sensor_settings,
       :data_sources,
-      :user_data,
+      :epo_data,
       :user_profiles,
+      :user_data,
+      :sensor_settings,
+      :developer_data_ids,
+      :field_descriptions,
+      :records,
+      :hrv,
+      :laps,
+      :lengths,
+      :heart_rate_zones,
       :physiological_metrics,
       :sessions,
-      :laps,
-      :records,
-      :lengths,
-      :hrv,
-      :heart_rate_zones,
-      :events,
       :personal_records
     ]
 

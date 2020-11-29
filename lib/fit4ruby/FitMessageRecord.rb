@@ -77,8 +77,13 @@ module Fit4Ruby
         # Strings are null byte terminated. There may be more bytes in the
         # file, but we have to discard all bytes from the first null byte
         # onwards.
-        if value.is_a?(String) && (null_byte = value.index("\0"))
-          value = null_byte == 0 ? '' : value[0..(null_byte - 1)]
+        if value.is_a?(String)
+          if (null_byte = value.index("\0"))
+            value = null_byte == 0 ? '' : value[0..(null_byte - 1)]
+          end
+          if value.empty?
+            value = nil
+          end
         end
 
         field_name, field_def = get_field_name_and_global_def(field, obj)

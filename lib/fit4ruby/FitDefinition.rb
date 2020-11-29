@@ -63,9 +63,10 @@ module Fit4Ruby
       super(io)
     end
 
-    def FitDefinitionField::write(io)
+    def write(io)
       # We don't support writing developer data fields yet.
       @@has_developer_data = false
+
       super(io)
     end
 
@@ -83,9 +84,12 @@ module Fit4Ruby
         fdf.field_definition_number = number
         fdf.set_type(f.type)
         value = field_values_by_name[f.name]
-        if value.is_a?(String)
-          fdf.set_length(value.bytes.length)
-        elsif value.is_a?(Array)
+        # For String and Array fields we must adjust the length in the
+        # definition message.
+        if value.is_a?(String) && f.is_string?
+          # String plus 0 byte
+          fdf.set_length(value.bytes.length + 1)
+        elsif value.is_a?(Array) && f.is_array?
           fdf.set_length(value.length)
         end
 

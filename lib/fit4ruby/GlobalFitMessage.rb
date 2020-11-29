@@ -43,6 +43,14 @@ module Fit4Ruby
         value == FitDefinitionFieldBase.undefined_value(@type)
       end
 
+      def is_string?
+        @type == 'string'
+      end
+
+      def is_array?
+        @opts[:array] == true
+      end
+
       def to_machine(value)
         return nil if value.nil? ||
           value == FitDefinitionFieldBase.undefined_value(@type)
@@ -212,7 +220,7 @@ module Fit4Ruby
     # Create a new GlobalFitMessage definition.
     # @param name [String] name of the FIT message
     # @param number [Fixnum] global message number
-    def initialize(name, number)
+    def initialize(name, number, field_values_by_name = {})
       @name = name
       @number = number
       # Field names must be unique. A name always matches a single Field.
@@ -223,7 +231,7 @@ module Fit4Ruby
       # To generate the proper definition message we need to know the length
       # of String and Array fields. This is only needed when writing FIT
       # files.
-      @field_values_by_name = {}
+      @field_values_by_name = field_values_by_name
     end
 
     # Two GlobalFitMessage objects are considered equal if they have the same
@@ -242,7 +250,7 @@ module Fit4Ruby
       unless @field_values_by_name.empty?
         @field_values_by_name.keys.each do |name|
           a = @field_values_by_name[name]
-          b = m[name]
+          b = m.field_values_by_name[name]
           if a.class != b.class
             return false
           end
@@ -312,8 +320,7 @@ module Fit4Ruby
     end
 
     def construct(field_values_by_name)
-      @field_values_by_name = field_values_by_name
-      gfm = GlobalFitMessage.new(@name, @number)
+      gfm = GlobalFitMessage.new(@name, @number, field_values_by_name)
 
       @fields_by_number.each do |number, field|
         if field.is_a?(AltField)
