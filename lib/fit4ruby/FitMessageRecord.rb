@@ -16,6 +16,7 @@ require 'fit4ruby/Log'
 require 'fit4ruby/GlobalFitMessage'
 require 'fit4ruby/FitFileEntity'
 require 'fit4ruby/DumpedField'
+require 'fit4ruby/BDFieldNameTranslator'
 
 module Fit4Ruby
 
@@ -26,6 +27,8 @@ module Fit4Ruby
   # For writing FIT message records, the class FitDataRecord and its
   # decendents are used.
   class FitMessageRecord
+
+    include BDFieldNameTranslator
 
     attr_reader :global_message_number, :name, :message_record
 
@@ -53,7 +56,8 @@ module Fit4Ruby
       end
 
       if @name == 'file_id'
-        unless (entity_type = @message_record['type'].snapshot)
+        # Caveat: 'type' is used as '_type' in BinData fields!
+        unless (entity_type = @message_record['_type'].snapshot)
           Log.fatal "Corrupted FIT file: file_id record has no type definition"
         end
         entity.set_type(entity_type)
@@ -73,7 +77,7 @@ module Fit4Ruby
 
       #(sorted_fields + @definition.developer_fields).each do |field|
       sorted_fields.each do |field|
-        value = @message_record[field.name].snapshot
+        value = @message_record[to_bd_field_name(field.name)].snapshot
         # Strings are null byte terminated. There may be more bytes in the
         # file, but we have to discard all bytes from the first null byte
         # onwards.
@@ -92,8 +96,8 @@ module Fit4Ruby
         if filter && fields_dump &&
            (filter.field_names.nil? ||
             filter.field_names.include?(field_name)) &&
-           !(((value.respond_to?('count') &&
-               (value.count(field.undefined_value) == value.length)) ||
+           !(((value.is_a?(String) &&
+               (value.count(field.undefined_value.chr) == value.length)) ||
               value == field.undefined_value) && filter.ignore_undef)
           fields_dump << DumpedField.new(
             @global_message_number,
@@ -186,7 +190,8 @@ module Fit4Ruby
       fields = []
       (definition.data_fields.to_a +
        definition.developer_fields.to_a).each do |field|
-        field_def = [ field.type, field.name ]
+        field_name = to_bd_field_name(field.name)
+        field_def = [ field.type, field_name ]
 
         # Some field types need special handling.
         if field.type == 'string'
@@ -194,7 +199,7 @@ module Fit4Ruby
           field_def << { :read_length => field.total_bytes }
         elsif field.is_array?
           # For Arrays we have to break them into separte fields.
-          field_def = [ :array, field.name,
+          field_def = [ :array, field_name,
                         { :type => field.type.intern,
                           :initial_length =>
                             field.total_bytes / field.base_type_bytes } ]

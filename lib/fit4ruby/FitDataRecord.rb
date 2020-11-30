@@ -12,12 +12,14 @@
 
 require 'fit4ruby/FitMessageIdMapper'
 require 'fit4ruby/GlobalFitMessages.rb'
+require 'fit4ruby/BDFieldNameTranslator'
 
 module Fit4Ruby
 
   class FitDataRecord
 
     include Converters
+    include BDFieldNameTranslator
 
     RecordOrder = [ 'user_data', 'user_profile',
                     'device_info', 'data_sources', 'event',
@@ -134,7 +136,8 @@ module Fit4Ruby
       # instance variables.
       global_fit_message.each_field(field_values) do |field|
         bin_data_type = FitDefinitionFieldBase.fit_type_to_bin_data(field.type)
-        field_def = [ bin_data_type, field.name ]
+        field_name = to_bd_field_name(field.name)
+        field_def = [ bin_data_type, field_name ]
 
         iv = "@#{field.name}"
         if instance_variable_defined?(iv) &&
@@ -150,12 +153,11 @@ module Fit4Ruby
 
         # Some field types need special handling.
         if field.type == 'string'
-          # We need to also include the length of the String.
-          #field_def << { :length => values[field.name].bytes.length }
+          # Zero terminate the string.
           values[field.name] += "\0"
         elsif field.opts[:array]
           # For Arrays we use a BinData::Array to write them.
-          field_def = [ :array, field.name,
+          field_def = [ :array, field_name,
                         { :type => bin_data_type,
                           :initial_length => values[field.name].size } ]
         end
@@ -166,7 +168,7 @@ module Fit4Ruby
       # Fill the BinData::Struct object with the values from the corresponding
       # instance variables.
       global_fit_message.each_field(field_values) do |field|
-        bd[field.name] = values[field.name]
+        bd[to_bd_field_name(field.name)] = values[field.name]
       end
 
       # Write the data record to the file.

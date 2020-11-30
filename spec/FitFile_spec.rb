@@ -203,7 +203,17 @@ describe Fit4Ruby do
       a.new_device_info(device_info_fenix3(ts))
       a.new_developer_data_id({
         application_id: [ 24, 251, 44, 240, 26, 75, 67, 13,
-                          173, 102, 152, 140, 132, 116, 33, 244 ]
+                          173, 102, 152, 140, 132, 116, 33, 244 ],
+        application_version: 77
+      })
+      a.new_field_description({
+        developer_data_index: 0,
+        field_definition_number: 0,
+        fit_base_type_id: 132,
+        field_name: 'Power',
+        units: 'Watts',
+        native_mesg_num: 20,
+        native_field_num: 7
       })
       a.aggregate
       a
