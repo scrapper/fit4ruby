@@ -86,7 +86,7 @@ module Fit4Ruby
     end
 
     def ==(fdr)
-      @message.each_field do |field|
+      @message.each_field do |number, field|
         ivar_name = '@' + field.name
         # Comparison of values is done in the fit file format as the accuracy
         # of native formats is better and could lead to wrong results if a
@@ -134,7 +134,7 @@ module Fit4Ruby
 
       # Fill the BinData::Struct object with the values from the corresponding
       # instance variables.
-      global_fit_message.each_field(field_values) do |field|
+      global_fit_message.each_field(field_values) do |number, field|
         bin_data_type = FitDefinitionFieldBase.fit_type_to_bin_data(field.type)
         field_name = to_bd_field_name(field.name)
         field_def = [ bin_data_type, field_name ]
@@ -167,7 +167,7 @@ module Fit4Ruby
 
       # Fill the BinData::Struct object with the values from the corresponding
       # instance variables.
-      global_fit_message.each_field(field_values) do |field|
+      global_fit_message.each_field(field_values) do |number, field|
         bd[to_bd_field_name(field.name)] = values[field.name]
       end
 
@@ -176,17 +176,30 @@ module Fit4Ruby
     end
 
     def export
-      fields = {}
+      message = {
+        'message' => @message.name,
+        'number' => @message.number,
+        'fields' => {}
+      }
 
-      @message.each_field(field_values_as_hash) do |field|
+      @message.each_field(field_values_as_hash) do |number, field|
         ivar_name = '@' + field.name
         fit_value = field.native_to_fit(instance_variable_get(ivar_name))
         unless field.is_undefined?(fit_value)
-          fields[field.name] = field.fit_to_native(fit_value)
+          fld = {
+            'number' => number,
+            'value' => field.fit_to_native(fit_value),
+            #'human' => field.to_human(fit_value),
+            'type' => field.type
+          }
+          fld['unit'] = field.opts[:unit] if field.opts[:unit]
+          fld['scale'] = field.opts[:scale] if field.opts[:scale]
+
+          message['fields'][field.name] = fld
         end
       end
 
-      fields
+      message
     end
 
     private

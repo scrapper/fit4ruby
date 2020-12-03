@@ -277,7 +277,7 @@ module Fit4Ruby
           field = field.select(field_values)
         end
 
-        yield(field)
+        yield(number, field)
       end
     end
 

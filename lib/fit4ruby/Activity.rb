@@ -78,8 +78,8 @@ module Fit4Ruby
       # The variables hold references to other parts of the FIT file. These
       # can either be direct references to a certain FIT file section or an
       # Array in case the section can appear multiple times in the FIT file.
-      @file_id = FileId.new
-      @file_creator = FileCreator.new
+      @file_id = new_file_id()
+      @file_creator = new_file_creator()
       @epo_data = nil
       # Initialize the remaining variables as empty Array.
       FILE_SECTIONS.each do |fs|
@@ -565,17 +565,24 @@ module Fit4Ruby
     end
 
     def export
-      hash = {}
+      # Collect all records in a consistent order.
+      records = []
       FILE_SECTIONS.each do |fs|
-        ivar = instance_variable_get('@' + fs.to_s)
-        if ivar.respond_to?(:sort)
-          hash[fs] = export_list(ivar)
+        ivar_name = '@' + fs.to_s
+        ivar = instance_variable_get(ivar_name)
+
+        next unless ivar
+
+        if ivar.respond_to?(:sort) and ivar.respond_to?(:empty?)
+          records += ivar.sort unless ivar.empty?
         else
-          hash[fs] = ivar ? ivar.export : nil
+          records << ivar if ivar
         end
       end
 
-      hash
+      records.map do |record|
+        record.export
+      end
     end
 
     private
@@ -603,10 +610,6 @@ module Fit4Ruby
       @cur_length_records = []
 
       length
-    end
-
-    def export_list(list)
-      list.sort.map { |e| e.export }
     end
 
   end
