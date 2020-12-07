@@ -48,7 +48,7 @@ module Fit4Ruby
     def find_field_definition
       return @field_definition if @field_definition
 
-      tlr = parent.parent.fit_entity.top_level_record
+      tlr = parent.parent.fit_entity
       @field_definition = tlr.field_descriptions.find do |fd|
         fd.field_definition_number == field_number.snapshot &&
           fd.developer_data_index == developer_data_index.snapshot

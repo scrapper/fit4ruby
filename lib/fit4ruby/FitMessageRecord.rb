@@ -48,13 +48,6 @@ module Fit4Ruby
     def read(io, entity, filter = nil, fields_dump = nil, fit_entity)
       @message_record.read(io)
 
-      # Check if we have a developer defined message for this global message
-      # number.
-      if fit_entity.top_level_record
-        developer_fields = fit_entity.top_level_record.field_descriptions
-        @dfm = developer_fields[@global_message_number]
-      end
-
       if @name == 'file_id'
         # Caveat: 'type' is used as '_type' in BinData fields!
         unless (entity_type = @message_record['_type'].snapshot)
@@ -75,7 +68,6 @@ module Fit4Ruby
           f1alt ? 1 : -1
       end
 
-      #(sorted_fields + @definition.developer_fields).each do |field|
       sorted_fields.each do |field|
         value = @message_record[to_bd_field_name(field.name)].snapshot
         # Strings are null byte terminated. There may be more bytes in the
@@ -119,7 +111,7 @@ module Fit4Ruby
           next
         end
 
-        field_name = field_description.full_field_name
+        field_name = field_description.full_field_name(fit_entity)
         units = field_description.units
         type = field.type
         native_message_number = field_description.native_mesg_num

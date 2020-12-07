@@ -49,7 +49,8 @@ module Fit4Ruby
       if header.normal? && header.message_type.snapshot == 1
         # process definition message
         definition = FitDefinition.read(
-          io, entity, header.developer_data_flag.snapshot, @fit_entity)
+          io, entity, header.developer_data_flag.snapshot,
+          @fit_entity.top_level_record)
         @definitions[local_message_type] = FitMessageRecord.new(definition)
       else
         # process data message

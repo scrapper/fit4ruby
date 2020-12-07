@@ -19,14 +19,30 @@ module Fit4Ruby
   # This class corresponds to the FieldDescription FIT message.
   class FieldDescription < FitDataRecord
 
-    attr_reader :full_field_name
-
     # Create a new FieldDescription object.
     # @param field_values [Hash] Hash that provides initial values for certain
     #        fields.
     def initialize(field_values = {})
       super('field_description')
       set_field_values(field_values)
+
+      @full_field_name = nil
+    end
+
+    def full_field_name(developer_data_ids)
+      return @full_field_name if @full_field_name
+
+      if @developer_data_index >=
+           developer_data_ids.size
+         Log.error "Developer data index #{@developer_data_index} is too large"
+         return
+      end
+
+      app_id = developer_data_ids[@developer_data_index].application_id
+      # Convert the byte array with the app ID into a 16 character hex string.
+      app_id_str = app_id.map { |i| '%02X' % i }.join('')
+      @full_field_name =
+        "#{@field_name.gsub(/[^A-Za-z0-9_]/, '_')}_#{app_id_str}"
     end
 
     def create_global_definition(fit_entity)
@@ -37,12 +53,6 @@ module Fit4Ruby
         return
       end
 
-      if @developer_data_index >=
-           fit_entity.top_level_record.developer_data_ids.size
-         Log.error "Developer data index #{@developer_data_index} is too large"
-         return
-      end
-
       msg = messages[@native_mesg_num] ||
         messages.message(@native_mesg_num, gfm.name)
       unless (@fit_base_type_id & 0x7F) < FIT_TYPE_DEFS.size
@@ -50,16 +60,10 @@ module Fit4Ruby
         return
       end
 
-      app_id = fit_entity.top_level_record.
-        developer_data_ids[@developer_data_index].application_id
-      # Convert the byte array with the app ID into a 16 character hex string.
-      app_id_str = app_id.map { |i| '%02X' % i }.join('')
-      @full_field_name = "_#{app_id_str}_" +
-        "#{@field_name.gsub(/[^A-Za-z0-9_]/, '_')}"
-
       # A fit file may include multiple definitions of the same field. We
       # ignore all subsequent definitions.
-      return if msg.has_field?(@full_field_name)
+      return if msg.has_field?(full_field_name(fit_entity.top_level_record.
+                                               developer_data_ids))
 
       options = {}
       options[:scale] = @scale if @scale

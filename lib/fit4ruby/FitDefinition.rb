@@ -64,9 +64,6 @@ module Fit4Ruby
     end
 
     def write(io)
-      # We don't support writing developer data fields yet.
-      @@has_developer_data = false
-
       super(io)
     end
 

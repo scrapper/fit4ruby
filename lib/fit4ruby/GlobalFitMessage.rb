@@ -334,7 +334,7 @@ module Fit4Ruby
       gfm
     end
 
-    def write(io, local_message_type, global_fit_message = self)
+    def write(io, local_message_type)
       header = FitRecordHeader.new
       header.normal = 0
       header.message_type = 1
@@ -343,7 +343,7 @@ module Fit4Ruby
 
       definition = FitDefinition.new
       definition.global_message_number = @number
-      definition.setup(global_fit_message, @field_values_by_name)
+      definition.setup(self, @field_values_by_name)
       definition.write(io)
     end
 

@@ -547,7 +547,7 @@ module Fit4Ruby
       when 'length'
         record = create_new_length(field_values)
       when 'record'
-        record = Record.new(field_values)
+        record = Record.new(self, field_values)
         @cur_lap_records << record
         @cur_length_records << record
         @records << record
@@ -588,7 +588,7 @@ module Fit4Ruby
     private
 
     def create_new_lap(field_values)
-      lap = Lap.new(@cur_lap_records, @laps.last,
+      lap = Lap.new(self, @cur_lap_records, @laps.last,
                     field_values,
                     @length_counter, @cur_lap_lengths)
       lap.message_index = @lap_counter - 1

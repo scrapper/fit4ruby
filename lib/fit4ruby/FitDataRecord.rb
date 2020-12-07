@@ -36,6 +36,7 @@ module Fit4Ruby
       @message.fields_by_name.each do |name, field|
         create_instance_variable(name)
       end
+
       # Meta fields are additional fields that are not part of the FIT
       # specification but are convenient to have. These are typcially
       # aggregated or converted values of regular fields.
@@ -76,8 +77,7 @@ module Fit4Ruby
       if @meta_field_units.include?(name)
         unit = @meta_field_units[name]
       else
-        field = @message.fields_by_name[name]
-        unless (unit = field.opts[:unit])
+        unless (unit = get_unit_by_name(name))
           Log.fatal "Field #{name} has no unit"
         end
       end
@@ -86,7 +86,7 @@ module Fit4Ruby
     end
 
     def ==(fdr)
-      @message.each_field do |number, field|
+      @message.each_field(field_values_as_hash) do |number, field|
         ivar_name = '@' + field.name
         # Comparison of values is done in the fit file format as the accuracy
         # of native formats is better and could lead to wrong results if a
@@ -200,6 +200,11 @@ module Fit4Ruby
       end
 
       message
+    end
+
+    def get_unit_by_name(name)
+      field = @message.fields_by_name[name]
+      field.opts[:unit]
     end
 
     private

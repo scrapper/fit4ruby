@@ -12,24 +12,30 @@
 
 require 'fit4ruby/FitDataRecord'
 require 'fit4ruby/RecordAggregator'
+require 'fit4ruby/FDR_DevField_Extension'
 
 module Fit4Ruby
 
   class Lap < FitDataRecord
 
     include RecordAggregator
+    include FDR_DevField_Extension
 
     attr_reader :records, :lengths
 
     # Create a new Lap object.
+    # @param top_level_record [FitDataRecord] Top level record that is Lap
+    #        belongs to.
     # @param records [Array of Records] Records to associate with the Lap.
     # @param lengths [Array of Lengths] Lengths to associate with the Lap.
     # @param first_length_index [Fixnum] Index of the first Length in this Lap.
     # @param previous_lap [Lap] Previous Lap on same Session.
     # @param field_values [Hash] Hash that provides initial values for certain
     #        fields.
-    def initialize(records, previous_lap, field_values, first_length_index, lengths)
+    def initialize(top_level_record, records, previous_lap, field_values,
+                   first_length_index, lengths)
       super('lap')
+      @top_level_record = top_level_record
       @lengths = lengths
       @meta_field_units['avg_stride_length'] = 'm'
       @records = records
@@ -50,6 +56,9 @@ module Fit4Ruby
       if records.last
         @total_elapsed_time = records.last.timestamp - @start_time
       end
+
+      # Create instance variables for developer fields
+      create_dev_field_instance_variables
 
       set_field_values(field_values)
     end
