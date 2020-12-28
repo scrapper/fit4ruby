@@ -81,6 +81,8 @@ module Fit4Ruby
         io.close
       end
 
+      return nil if entities.empty?
+
       entities[0].top_level_record
     end
 

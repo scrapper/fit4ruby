@@ -12,7 +12,7 @@
 
 $:.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 
-require "super_diff/rspec"
+#require "super_diff/rspec"
 require 'fit4ruby'
 
 ENV['TZ'] = 'UTC'
