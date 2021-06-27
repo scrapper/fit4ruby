@@ -62,7 +62,7 @@ EOT
     end
 
     def has_crc?
-      header_size.snapshot == 14
+      header_size.snapshot == 14 && crc != 0x0000
     end
 
     def end_pos
