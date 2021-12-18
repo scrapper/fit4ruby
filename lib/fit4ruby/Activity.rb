@@ -30,6 +30,8 @@ require 'fit4ruby/HRV'
 require 'fit4ruby/HeartRateZones'
 require 'fit4ruby/Event'
 require 'fit4ruby/PersonalRecords'
+require 'fit4ruby/Workout'
+require 'fit4ruby/WorkoutStep'
 
 module Fit4Ruby
 
@@ -54,6 +56,8 @@ module Fit4Ruby
       :epo_data,
       :user_profiles,
       :user_data,
+      :workouts,
+      :workout_steps,
       :sensor_settings,
       :developer_data_ids,
       :field_descriptions,
@@ -405,6 +409,22 @@ module Fit4Ruby
       new_fit_data_record('user_profile', field_values)
     end
 
+    # Add a new Workout to the Activity.
+    # @param field_values [Hash] A Hash that provides initial values for
+    #        certain fields of the FitDataRecord.
+    # @return [UserProfile]
+    def new_workout(field_values = {})
+      new_fit_data_record('workout', field_values)
+    end
+
+    # Add a new WorkoutSet to the Activity.
+    # @param field_values [Hash] A Hash that provides initial values for
+    #        certain fields of the FitDataRecord.
+    # @return [UserProfile]
+    def new_workout_set(field_values = {})
+      new_fit_data_record('workout_set', field_values)
+    end
+
     # Add a new PhysiologicalMetrics to the Activity.
     # @param field_values [Hash] A Hash that provides initial values for
     #        certain fields of the FitDataRecord.
@@ -522,6 +542,10 @@ module Fit4Ruby
         @data_sources << (record = DataSources.new(field_values))
       when 'user_data'
         @user_data << (record = UserData.new(field_values))
+      when 'workout'
+        @workouts << (record = Workout.new(field_values))
+      when 'workout_step'
+        @workout_steps << (record = WorkoutStep.new(field_values))
       when 'user_profile'
         @user_profiles << (record = UserProfile.new(field_values))
       when 'physiological_metrics'

@@ -3,7 +3,7 @@
 #
 # = FitDataRecord.rb -- Fit4Ruby - FIT file processing library for Ruby
 #
-# Copyright (c) 2014, 2015, 2020 by Chris Schlaeger <cs@taskjuggler.org>
+# Copyright (c) 2014, 2015, 2020, 2021 by Chris Schlaeger <cs@taskjuggler.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of version 2 of the GNU General Public License as
@@ -21,7 +21,7 @@ module Fit4Ruby
     include Converters
     include BDFieldNameTranslator
 
-    RecordOrder = [ 'user_data', 'user_profile',
+    RecordOrder = [ 'user_data', 'user_profile', 'workout', 'workout_set',
                     'device_info', 'data_sources', 'event',
                     'record', 'lap', 'length', 'session', 'heart_rate_zones',
                     'personal_records' ]

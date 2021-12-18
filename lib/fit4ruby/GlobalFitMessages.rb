@@ -3,7 +3,7 @@
 #
 # = GlobalFitMessages.rb -- Fit4Ruby - FIT file processing library for Ruby
 #
-# Copyright (c) 2014, 2015, 2020 by Chris Schlaeger <cs@taskjuggler.org>
+# Copyright (c) 2014, 2015, 2020, 2021 by Chris Schlaeger <cs@taskjuggler.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of version 2 of the GNU General Public License as
@@ -461,19 +461,23 @@ module Fit4Ruby
     field 169, 'uint16', 'undocumented_field_169'
     field 170, 'uint16', 'undocumented_field_170'
     field 177, 'uint16', 'undocumented_field_177'
-    field 178, 'uint16', 'undocumented_field_178'
+    field 178, 'uint16', 'est_sweat_loss', :unit => 'ml' # guessed
     field 179, 'uint16', 'undocumented_field_179'
     field 180, 'uint16', 'undocumented_field_180'
-    field 181, 'float32', 'undocumented_field_181'
-    field 183, 'uint16', 'undocumented_field_183'
+    field 181, 'float32', 'total_grit', :unit => 'kGrit'
+    field 182, 'float32', 'total_flow', :unit => 'Flow'
+    field 183, 'uint16', 'jump_count'
     field 184, 'enum', 'undocumented_field_184'
     field 185, 'uint8', 'undocumented_field_185'
-    field 187, 'float32', 'undocumented_field_187'
+    field 186, 'float32', 'avg_grit', :unit => 'kGrit'
+    field 187, 'float32', 'avg_flow', :unit => 'Flow'
     field 188, 'enum', 'undocumented_field_188'
     field 189, 'uint16', 'undocumented_field_189'
     field 190, 'uint16', 'undocumented_field_190'
     field 194, 'uint8', 'undocumented_field_194'
     field 195, 'uint8', 'undocumented_field_195'
+    field 199, 'uint8', 'total_fractional_ascent', :scale => 100, :unit => 'm'
+    field 200, 'uint8', 'total_fractional_descent', :scale => 100, :unit => 'm'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
     field 254, 'uint16', 'message_index'
 
@@ -744,6 +748,48 @@ module Fit4Ruby
     # The Array contains 16 bytes. Bytes 2(lsb) and 3(msb) seem to be a
     # counter.
     field 2, 'byte', 'undocumented_field_2', :array => true
+
+    message 26, 'workout'
+    field 4, 'enum', 'sport', :dict => 'sport'
+    field 5, 'uint32z', 'capabilities', :dict => 'workout_capabilities'
+    field 6, 'uint16', 'num_valid_step'
+    field 8, 'string', 'wkt_name'
+    field 11, 'enum', 'sub_sport', :dict => 'sub_sport'
+    field 14, 'uint16', 'pool_length', :scale => 100, :unit => 'm'
+    field 15, 'enum', 'pool_length_unit'
+
+    message 27, 'workout_step'
+    field 0, 'string', 'wkt_step_name'
+    field 1, 'enum', 'duration_type', :dict => 'wkt_step_duration'
+    alt_field 2, 'duration_type' do
+     field :default, 'uint32', 'duration_value'
+     field 'distance', 'uint32', 'duration_distance', :scale => 100, :unit => 'm'
+     field 'time', 'uint32', 'duration_time', :scale => 1000, :unit => 's'
+     field 'repeat_until_steps_cmplt', 'uint32', 'duration_reps'
+    end
+    field 3, 'enum', 'target_type', :dict => 'wkt_step_target'
+    alt_field 4, 'target_type' do
+      field :default, 'uint32', 'target_value'
+      field 'speed', 'uint32', 'target_speed_zone'
+      field 'cadence', 'uint32', 'target_cadence_zone'
+      field 'power', 'uint32', 'target_power_zone'
+    end
+    alt_field 5, 'target_type' do
+      field :default, 'uint32', 'custom_target_value_low'
+      field 'speed', 'uint32', 'custom_target_speed_low', :scale => 1000, :unit => 'm/s'
+    end
+    alt_field 6, 'target_type' do
+      field :default, 'uint32', 'custom_target_value_high'
+      field 'speed', 'uint32', 'custom_target_speed_high', :scale => 1000, :unit => 'm/s'
+    end
+    field 7, 'enum', 'intensity', :dict => 'intensity'
+    field 8, 'string', 'notes'
+    field 9, 'enum', 'equipment', :dict => 'workout_equipment'
+    field 10, 'uint16', 'exercise_category'
+    field 11, 'uint16', 'exercise_name'
+    field 12, 'uint16', 'exercise_weight', :scale => 100, :unit => 'kg'
+    field 13, 'uint16', 'weight_display_unit'
+    field 254, 'uint16', 'message_index'
 
     # Message 29 is just a guess. It's not officially documented.
     # Found in LCTNS.FIT on Fenix 3
