@@ -10,7 +10,7 @@ me comments and patches. It was developed to form the back-end of
 
 ## Supported Devices
 
-Tested devices: Garmin FR620
+Tested devices: Garmin FR620, Fenix 3, Fenix 5, Fenix 5X, Fenix 6X
 
 Other Garmin devices that generate FIT files may work as well. Since I
 don't have any other devices, I can't add support for them.
