@@ -817,7 +817,7 @@ module Fit4Ruby
     message 34, 'activity'
     field 0, 'uint32', 'total_timer_time', :type => 'duration',  :scale => 1000
     field 1, 'uint16', 'num_sessions'
-    field 2, 'enum', 'type', :dict => 'activity_type'
+    field 2, 'enum', 'type', :dict => 'activity'
     field 3, 'enum', 'event', :dict => 'event'
     field 4, 'enum', 'event_type', :dict => 'event_type'
     field 5, 'uint32', 'local_timestamp', :type => 'date_time'
@@ -1115,14 +1115,19 @@ module Fit4Ruby
     field 73, 'uint16z', 'undocumented_field_73'
     field 254, 'uint16', 'message_index'
 
-    # Not part of the official ANT SDK doc.
-    message 160, 'undocumented_160'
-    field 3, 'uint32', 'undocumented_field_3'
-    field 4, 'uint32', 'undocumented_field_4'
+    message 160, 'gps_metadata'
+    field 0, 'uint16', 'timestamp_ms'
+    field 1, 'sint32', 'position_lat'
+    field 2, 'sint32', 'position_long'
+    field 3, 'uint32', 'enhanced_altitude', :scale => 5, :offset => 500, :unit => 'm'
+    field 4, 'uint32', 'enhanced_speed', :unit => 'm/s', :scale => 1000
+    field 5, 'uint16', 'heading', :unit => 'degrees', :scale => 100
+    field 6, 'uint32', 'utc_timestamp', :type => 'date_time'
+    field 7, 'sint16', 'velocity', :array => true, :scale => 100, :unit => 'm/s'
+    field 253, 'uint32', 'timestamp', :type => 'date_time'
 
-    # Not part of the official ANT SDK doc.
-    message 188, 'undocumented_188'
-    field 0, 'enum', 'undocumented_field_0'
+    message 188, 'ohr_settings'
+    field 0, 'enum', 'switch'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     message 206, 'field_description'
@@ -1262,6 +1267,24 @@ module Fit4Ruby
     field 251, 'byte', 'undocumented_field_251'
     field 252, 'uint8', 'undocumented_field_252'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
+
+    # Not part of the official ANT SDK doc.
+    message 312, 'undocumented_312'
+    field 0, 'enum', 'undocumented_field_0'
+    field 9, 'uint32', 'interval_start', :type => 'date_time'
+    field 15, 'uint8', 'min_heart_rate', :unit => 'bpm'
+    field 16, 'uint8', 'max_heart_rate', :unit => 'bpm'
+    field 21, 'sint32', 'position_lat', :type => 'coordinate'
+    field 22, 'sint32', 'position_long', :type => 'coordinate'
+    field 27, 'uint32', 'interval_end', :type => 'date_time'
+    field 32, 'sint8', 'avg_temperature', :unit => 'C'
+    field 33, 'sint8', 'max_temperature', :unit => 'C'
+    field 34, 'sint8', 'min_temperature', :unit => 'C'
+    field 37, 'uint16', 'undocumented_field_37'
+    field 38, 'uint16', 'undocumented_field_38'
+    field 39, 'uint16', 'undocumented_field_39'
+    field 253, 'uint32', 'timestamp', :type => 'date_time'
+    field 254, 'uint16', 'message_index'
 
     # Not part of the official ANT SDK doc.
     message 325, 'undocumented_325'
