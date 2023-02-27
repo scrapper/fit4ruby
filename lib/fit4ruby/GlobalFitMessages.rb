@@ -642,7 +642,7 @@ module Fit4Ruby
     field 83, 'uint16', 'vertical_ratio', :scale => 100, :unit => '%' # guessed
     field 84, 'uint16', 'gct_balance', :scale => 100, :unit => '%' # guessed
     field 85, 'uint16', 'stride_length', :scale => 10000, :unit => 'm' # guessed
-    field 87, 'uint16', 'undefined_value_87' # first seen on F3 FW6.80
+    field 87, 'uint16', 'stroke_distance', :scale => 100, :unit => 'm'
     field 88, 'uint16', 'undefined_value_88' # first seen on F3HR FW3.60
     field 90, 'sint8', 'performance_condition' # guessed
     field 100, 'sint32', 'undocumented_field_100'
@@ -1328,4 +1328,3 @@ module Fit4Ruby
   end
 
 end
-
