@@ -188,7 +188,7 @@ module Fit4Ruby
     # sessions.
     def total_distance
       d = 0.0
-      @sessions.each { |s| d += s.total_distance }
+      @sessions.each { |s| d += (s.total_distance || 0) }
       d
     end
 
@@ -639,4 +639,3 @@ module Fit4Ruby
   end
 
 end
-
