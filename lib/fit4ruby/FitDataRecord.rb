@@ -82,7 +82,7 @@ module Fit4Ruby
         end
       end
 
-      value * conversion_factor(unit, to_unit)
+      value = convert_value(value, unit, to_unit)
     end
 
     def ==(fdr)

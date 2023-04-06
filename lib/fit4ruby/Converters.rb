@@ -37,6 +37,14 @@ module Fit4Ruby
       factor
     end
 
+    def convert_value(from_value, from_unit, to_unit)
+      if from_unit == 'C' and to_unit == 'F'
+        return (from_value * 9 / 5) + 32
+      end
+
+      return from_value * conversion_factor(from_unit, to_unit)
+    end
+
     def speedToPace(speed, distance = 1000.0)
       if speed && speed > 0.01
         # We only show 2 fractional digits, so make sure we round accordingly
