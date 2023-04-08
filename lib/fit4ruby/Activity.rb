@@ -315,9 +315,19 @@ module Fit4Ruby
       @sessions[0].sport
     end
 
+    # Sets the sport type of this activity.
+    def sport=(sport)
+      @sessions[0].sport = sport
+    end
+
     # Returns the sport subtype of this activity.
     def sub_sport
       @sessions[0].sub_sport
+    end
+
+    # Sets the sport subtype of this activity.
+    def sub_sport=(sub_sport)
+      @sessions[0].sub_sport = sub_sport
     end
 
     # Write the Activity data to a file.
