@@ -21,7 +21,7 @@ module Fit4Ruby
         'mm' => { 'cm' => 0.1, 'in' => 0.0393701 },
         'm/s' => { 'km/h' => 3.6, 'mph' => 2.23694 },
         'min/km' => { 'min/mi' => 1.60934 },
-        'kg' => { 'lbs' => 0.453592 }
+        'kg' => { 'lbs' => 2.20462262 }
       }
       return 1.0 if from_unit == to_unit
       unless factors.include?(from_unit)
