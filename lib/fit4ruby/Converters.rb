@@ -1,5 +1,4 @@
 #!/usr/bin/env ruby -w
-# encoding: UTF-8
 #
 # = Converters.rb -- Fit4Ruby - FIT file processing library for Ruby
 #
@@ -9,32 +8,45 @@
 # it under the terms of version 2 of the GNU General Public License as
 # published by the Free Software Foundation.
 #
+# frozen_string_literal: true
 
 module Fit4Ruby
-
   module Converters
+    FACTORS = {
+      'm' => { 'km' => 0.001, 'in' => 39.3701, 'ft' => 3.28084,
+               'mi' => 0.000621371 },
+      'mm' => { 'cm' => 0.1, 'in' => 0.0393701 },
+      'm/s' => { 'km/h' => 3.6, 'mph' => 2.23694 },
+      'min/km' => { 'min/mi' => 1.60934 },
+      'kg' => { 'lbs' => 0.453592 },
+      'C' => { 'F' => 9.0 / 5.0 }
+    }.freeze
+    OFFSETS = {
+      'C' => { 'F' => 32 }
+    }.freeze
 
     def conversion_factor(from_unit, to_unit)
-      factors = {
-        'm' => { 'km' => 0.001, 'in' => 39.3701, 'ft' => 3.28084,
-                 'mi' => 0.000621371 },
-        'mm' => { 'cm' => 0.1, 'in' => 0.0393701 },
-        'm/s' => { 'km/h' => 3.6, 'mph' => 2.23694 },
-        'min/km' => { 'min/mi' => 1.60934 },
-        'kg' => { 'lbs' => 0.453592 }
-      }
       return 1.0 if from_unit == to_unit
-      unless factors.include?(from_unit)
-        Log.fatal "No conversion factors defined for unit " +
+
+      unless FACTORS.include?(from_unit)
+        Log.fatal 'No conversion factors defined for unit ' \
                   "'#{from_unit}' to '#{to_unit}'"
       end
 
-      factor = factors[from_unit][to_unit]
+      factor = FACTORS[from_unit][to_unit]
       if factor.nil?
-        Log.fatal "No conversion factor from '#{from_unit}' to '#{to_unit}' " +
-                  "defined."
+        Log.fatal "No conversion factor from '#{from_unit}' to '#{to_unit}' " \
+                  'defined.'
       end
+
       factor
+    end
+
+    def conversion_offset(from_unit, to_unit)
+      return 0.0 if from_unit == to_unit || !OFFSETS.include?(from_unit) ||
+                    !OFFSETS[from_unit].include?(to_unit)
+
+      OFFSETS[from_unit][to_unit]
     end
 
     def speedToPace(speed, distance = 1000.0)
@@ -89,4 +101,3 @@ module Fit4Ruby
   end
 
 end
-
