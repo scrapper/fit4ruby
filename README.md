@@ -99,8 +99,8 @@ Then you can access the data in the file.
 
 ```
 a.records.each do |r|
-  puts "Latitude: #{r['position_lat']}"
-  puts "Longitude: #{r['position_long']}"
+  puts "Latitude: #{r.get 'position_lat'}"
+  puts "Longitude: #{r.get 'position_long'}"
 end
 ```
 
