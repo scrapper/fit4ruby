@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby -w
 # encoding: UTF-8
 #
-# = FitDataRecord.rb -- Fit4Ruby - FIT file processing library for Ruby
+# = BDFieldNameTranslator.rb -- Fit4Ruby - FIT file processing library for Ruby
 #
 # Copyright (c) 2020 by Chris Schlaeger <cs@taskjuggler.org>
 #
