@@ -23,11 +23,7 @@ module Fit4Ruby
     }
 
     def to_bd_field_name(name)
-      if (bd_name = BD_DICT[name])
-        return bd_name
-      end
-
-      name
+      BD_DICT.fetch(name, name)
     end
 
   end
