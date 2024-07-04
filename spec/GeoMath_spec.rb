@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby -w
 # encoding: UTF-8
 #
-# = FitFile_spec.rb -- Fit4Ruby - FIT file processing library for Ruby
+# = GeoMath_spec.rb -- Fit4Ruby - FIT file processing library for Ruby
 #
 # Copyright (c) 2014, 2015 by Chris Schlaeger <cs@taskjuggler.org>
 #
@@ -27,7 +27,7 @@ describe Fit4Ruby::GeoMath do
       [ 48.17970883101225, 11.611351054161787, 100.225 ]
     ]
     points.each do |p|
-      expect(Fit4Ruby::GeoMath.distance(
+      expect(described_class.distance(
         p0_lat, p0_lon, p[0], p[1])).to be_within(0.001).of(p[2])
     end
   end
