@@ -104,7 +104,7 @@ a.records.each do |r|
 end
 ```
 
-Please see lib/fit4ruby/GlobalFitMessages.rb for the data fields that
+Please see [`GlobalFitMessages.rb`](lib/fit4ruby/GlobalFitMessages.rb) for the data fields that
 are supported for the various FIT record types.
 
 ## License
