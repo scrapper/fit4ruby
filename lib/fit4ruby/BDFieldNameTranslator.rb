@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby -w
 # encoding: UTF-8
 #
-# = FitDataRecord.rb -- Fit4Ruby - FIT file processing library for Ruby
+# = BDFieldNameTranslator.rb -- Fit4Ruby - FIT file processing library for Ruby
 #
 # Copyright (c) 2020 by Chris Schlaeger <cs@taskjuggler.org>
 #
@@ -23,11 +23,7 @@ module Fit4Ruby
     }
 
     def to_bd_field_name(name)
-      if (bd_name = BD_DICT[name])
-        return bd_name
-      end
-
-      name
+      BD_DICT.fetch(name, name)
     end
 
   end
