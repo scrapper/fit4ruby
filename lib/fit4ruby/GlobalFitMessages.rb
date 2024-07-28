@@ -652,6 +652,8 @@ module Fit4Ruby
     field 108, 'uint16', 'respiration_rate', :scale => 100, :unit => 'brpm' # guessed
     field 135, 'uint8', 'undocumented_field_135'
     field 136, 'uint8', 'undocumented_field_136'
+    field 137, 'uint8', 'stamina', :unit => '%'
+    field 138, 'uint8', 'stamina_potential', :unit => '%'
     field 253, 'uint32', 'timestamp', :type => 'date_time'
 
     message 21, 'event'

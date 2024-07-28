@@ -147,6 +147,8 @@ describe Fit4Ruby do
       b = Fit4Ruby.read(fit_file)
       expect(b.laps.count).to eq 6
       expect(b.lengths.count).to eq 0
+      expect(b.records.first.get('position_lat')).to be_within(0.001).of(51.551)
+      expect(b.records.first.get('position_long')).to be_within(0.001).of(11.647)
       expect(b.export).to eq(activity.export)
     end
 
