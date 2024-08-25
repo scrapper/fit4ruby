@@ -21,6 +21,7 @@ module Fit4Ruby
       'kg' => { 'lbs' => 2.20462262 },
       'C' => { 'F' => 9.0 / 5.0 }
     }.freeze
+
     OFFSETS = {
       'C' => { 'F' => 32 }
     }.freeze
@@ -28,18 +29,10 @@ module Fit4Ruby
     def conversion_factor(from_unit, to_unit)
       return 1.0 if from_unit == to_unit
 
-      unless FACTORS.include?(from_unit)
-        Log.fatal 'No conversion factors defined for unit ' \
-                  "'#{from_unit}' to '#{to_unit}'"
-      end
-
-      factor = FACTORS[from_unit][to_unit]
-      if factor.nil?
-        Log.fatal "No conversion factor from '#{from_unit}' to '#{to_unit}' " \
-                  'defined.'
-      end
-
-      factor
+      FACTORS.fetch(from_unit).fetch(to_unit)
+    rescue KeyError
+      Log.fatal 'No conversion factor defined ' \
+        "from unit '#{from_unit}' to unit '#{to_unit}'"
     end
 
     def conversion_offset(from_unit, to_unit)
