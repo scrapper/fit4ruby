@@ -43,10 +43,9 @@ module Fit4Ruby
     end
 
     def conversion_offset(from_unit, to_unit)
-      return 0.0 if from_unit == to_unit || !OFFSETS.include?(from_unit) ||
-                    !OFFSETS[from_unit].include?(to_unit)
+      return 0.0 if from_unit == to_unit
 
-      OFFSETS[from_unit][to_unit]
+      OFFSETS.fetch(from_unit, {}).fetch(to_unit, 0.0)
     end
 
     def speedToPace(speed, distance = 1000.0)
