@@ -34,22 +34,22 @@ module Fit4Ruby
 
       io.seek(start_pos)
 
-      crc = 0
-      while io.pos < end_pos
-        if io.eof?
-          raise IOError, "Premature end of file"
-        end
+      number_of_bytes = end_pos - start_pos
 
-        byte = io.readbyte
+      data = io.read(number_of_bytes)
 
+      if data.nil? || data.bytesize != number_of_bytes
+        raise IOError, "Premature end of file"
+      end
+
+      data.bytes.reduce(0) do |crc, byte|
         0.upto(1) do |i|
           tmp = crc_table[crc & 0xF]
           crc = (crc >> 4) & 0x0FFF
           crc = crc ^ tmp ^ crc_table[(byte >> (4 * i)) & 0xF]
         end
+        crc
       end
-
-      crc
     end
 
   end
