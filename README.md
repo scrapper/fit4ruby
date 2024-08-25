@@ -15,13 +15,13 @@ Tested devices: Garmin FR620, Fenix 3, Fenix 5, Fenix 5X, Fenix 6X
 Other Garmin devices that generate FIT files may work as well. Since I
 don't have any other devices, I can't add support for them.
 
-##Supported Operating Systems
+## Supported Operating Systems
 
 This library was developed and tested on Linux using Ruby 2.0 (MRI).
 Other operating systems that are Supported by Ruby 2.0 may probably
 work as well.
 
-##Usage
+## Usage
 
 You can create an Activity.
 
