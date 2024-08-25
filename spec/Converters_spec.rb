@@ -18,6 +18,30 @@ describe Fit4Ruby::Converters do
 
   include described_class
 
+  describe '#conversion_factor' do
+
+    it 'should return one for matching "from" and "to" units' do
+      expect(conversion_factor('C', 'C')).to be(1.0)
+    end
+
+    it 'should raise an error for unsupported "from" unit' do
+      expect {
+        conversion_factor('F', 'C')
+      }.to raise_error(Fit4Ruby::Error)
+    end
+
+    it 'should raise an error for unsupported "to" unit' do
+      expect {
+        conversion_factor('C', 'K')
+      }.to raise_error(Fit4Ruby::Error)
+    end
+
+    it 'should return correct Celsius-to-Fahrenheit factor' do
+      expect(conversion_factor('C', 'F')).to eq(9.0 / 5.0)
+    end
+
+  end
+
   describe '#conversion_offset' do
 
     it 'should return zero for missing "from" unit' do
