@@ -221,6 +221,11 @@ module Fit4Ruby
       # Create a new instance variable for 'name'. We initialize it with a
       # provided default value or nil.
       instance_variable_set("@#{name}", nil)
+
+      # Skip creating the accessor methods *again* (for this class)
+      # for fields that already had them defined previously.
+      return if self.class.method_defined?(name)
+
       # And create an accessor method for it as well.
       self.class.__send__(:attr_accessor, name)
     end
