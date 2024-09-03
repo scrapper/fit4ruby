@@ -60,10 +60,10 @@ module Fit4Ruby
         Log.fatal 'num_laps is not set'
       end
       @first_lap_index.upto(@first_lap_index - @num_laps) do |i|
-        if (lap = activity.lap[i])
+        if (lap = activity.laps[i])
           @laps << lap
         else
-          Log.fatal "Session references lap #{i} which is not contained in "
+          Log.fatal "Session references lap #{i} which is not contained in " \
                     "the FIT file."
         end
       end
