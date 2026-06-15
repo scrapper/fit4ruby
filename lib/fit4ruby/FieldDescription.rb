@@ -38,11 +38,18 @@ module Fit4Ruby
          return
       end
 
-      app_id = developer_data_ids[@developer_data_index].application_id
-      # Convert the byte array with the app ID into a 16 character hex string.
-      app_id_str = app_id.map { |i| '%02X' % i }.join('')
-      @full_field_name =
-        "#{@field_name.gsub(/[^A-Za-z0-9_]/, '_')}_#{app_id_str}"
+      if (app_id = developer_data_ids[@developer_data_index].application_id)
+        # Convert the byte array with the app ID into a 16 character hex string.
+        id_str = app_id.map { |i| '%02X' % i }.join('')
+        @full_field_name =
+            "#{@field_name.gsub(/[^A-Za-z0-9_]/, '_')}_#{id_str}"
+      elsif (manf_id = developer_data_ids[@developer_data_index].manufacturer_id)
+        id_str = '%02X' % manf_id
+        @full_field_name = @field_name
+      else
+        id_str = ""
+        @full_field_name = @field_name
+      end
     end
 
     def create_global_definition(fit_entity)
@@ -78,4 +85,3 @@ module Fit4Ruby
   end
 
 end
-

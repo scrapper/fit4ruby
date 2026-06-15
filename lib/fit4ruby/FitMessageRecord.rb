@@ -111,7 +111,7 @@ module Fit4Ruby
           next
         end
 
-        field_name = field_description.full_field_name(fit_entity)
+        field_name = field_description.full_field_name(fit_entity.top_level_record.developer_data_ids)
         units = field_description.units
         type = field.type
         native_message_number = field_description.native_mesg_num
@@ -205,4 +205,3 @@ module Fit4Ruby
   end
 
 end
-
